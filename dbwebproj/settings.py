@@ -125,3 +125,6 @@ USE_TZ = True
 STATIC_URL = '/dbwebproj/static/'
 
 STATIC_ROOT = os.path.dirname(BASE_DIR) + '/dbwebproj/static/'
+
+# New Addition --- Kamils
+EMAIL = "user@email.com"

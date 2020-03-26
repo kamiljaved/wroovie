@@ -1,0 +1,10 @@
+{% autoescape off %}
+    Hi {{ admin.username }},
+    {{ user.username }} has submitted a request to become an Instructor.
+    
+    Kindly review the following User Profile to decide:
+    http://{{ domain }}/user/{{ user.username }}
+
+    Click the link below to provide {{ user.username }} with {{ request }} level authorities:
+    http://{{ domain }}{% url 'user_process_upgrade_instructor' uidb64=uid token=token %}
+{% endautoescape %}

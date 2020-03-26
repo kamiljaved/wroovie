@@ -1,0 +1,298 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(".fa-search").click(function () {
+                $(".search-box").toggle();
+                $("input[type='text']").focus();
+            });
+
+        });
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
+
+
+    <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'blog/sidebar.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'blog/emojionearea.min.css' %}">
+    <style>
+        a.dropdown-item {
+            transition: all .2s ease-in-out;
+        }
+
+        a.dropdown-item:hover {
+            transform: scale(1.1);
+            background: #2d95f621
+        }
+    </style>
+
+    {% if title %}
+    <title>Welcome to {{ title }}</title>
+    {% else %}
+    <title>Welcome</title>
+    {% endif %}
+</head>
+
+<body>
+    {% block sidebar %}
+    {% if user.is_authenticated %}
+    <div class="wrapper" style=" z-index:+1;position:relative; ">
+        <!-- Sidebar  -->
+        <nav id="sidebar" class="active" style="min-height:200%">
+
+            <ul class="list-unstyled components mt-0">
+                <li>
+                    <a href="{% url 'profile' user.username %}" class="sidebar sidebarHome">
+                        <i class="fa fa-home"></i>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'profile' user.username %}" class="sidebar sidebarLatest">
+                        <i class="fa fa-newspaper-o"></i>
+                        Latest
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'profile' user.username %}" class="sidebar sidebarSuggested">
+                        <i class="fa fa-lightbulb-o"></i>
+                        Suggested
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'profile' user.username %}" class="sidebar sidebarTrending">
+                        <i class="fas fa-fire"></i>
+                        Trending
+                    </a>
+                </li>
+                <li>
+                <li>
+                    <a href="{% url 'profile' user.username %}" class="sidebar sidebarCircle">
+                        <i class="fas fa-user-friends"></i>
+                        My Cicrle
+                    </a>
+                </li>
+                <li>
+
+                    <a href="{% url 'profile' user.username %}" class="sidebar sidebarFAQ">
+                        <i class="fas fa-question"></i>
+                        FAQ
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    {% endif %}
+    {% endblock %}
+    <section class="sticky-top">
+        <nav class="navbar navbar-expand-md navbar-dark bg-steel bg-info fixed-top"
+            style="background-image: linear-gradient(to right, #1bcfff ,rgba(162, 0, 255, 0.39), #2dacf66e); font-size: 110%">
+            <button type="button" id="sidebarCollapse" class="btn btn-info">
+                <i class="fas fa-align-left"></i>
+
+            </button>
+            <div class="container">
+
+                <a class="navbar-brand p-0" href="/"><img src="/media/site_assets/thisBlog.png" width="" height="50"
+                        class="d-inline-block align-top" alt="thisBlog"></a>
+
+
+
+                <div class="navbar-header navbar-right">
+                    <ul class="nav navbar-nav navbar-right">
+                        <form class="search-box container fixed-top p-0"
+                            style="float:right; display:none; width:40%; margin-top: 60px; margin-left: 51%; margin-right:0%; z-index:1; position:fixed;"
+                            action="/search/">
+                            <input class="form-control" type="search" name="q" placeholder="Search" aria-label="Search">
+                        </form>
+
+                        <li class="nav-item mt-1 mr-3 float-right"><a class="nav-item nav-link ml-3">
+                                <script src="{% static 'js/08aa760c74.js' %}" type="text/javascript"></script>
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+
+
+                {% if user.is_authenticated %}
+
+                {% if user.profile.email_verified and user.profile.user_status > 1 %}
+                <div class="navbar-header navbar-right pull-right">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item dropdown"> <a class="nav-item nav-link" href="{% url 'profile' user.username %}">
+                                <section class="fa-stack">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                </section>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                {% endif %}
+                <div class="navbar-header navbar-right pull-right">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item">
+                            <a class="nav-item nav-link mx-1" href="#">
+                                <span class="fa-stack"><i class="far fa-bell fa-lg" aria-hidden="true"></i></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar-header navbar-right pull-right">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span class="fa-stack"><i class="far fa-comment-alt fa-lg"
+                                        aria-hidden="true"></i></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+
+                {% else %}
+                <div class="navbar-nav">
+
+
+                    {% if request.path == "/logout/" or request.path == "/register/" or request.path == "/post/new/" %}
+                    <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                    {% else %}
+                    <a class="nav-item nav-link" href="{% url 'login' %}?next={{request.path}}">Login</a>
+                    {% endif %}
+                    <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+                </div>
+                {% endif %}
+
+
+
+                {% if user.is_authenticated %}
+
+                <div class="navbar-header navbar-right pull-right">
+                    <ul class="nav navbar-nav navbar-right">
+
+                        <li class="nav-item dropdown active">
+                            <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdownMenuLink"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="rounded-circle p-0" width="50px" height="50px"
+                                    src="{{ user.profile.image.url }}" alt="User">
+                            </a>
+                            <div class="dropdown-menu px-2 text-right" aria-labelledby="navbarDropdownMenuLink"
+                                style="left: -130%; margin-top:10%; background: #097cff10">
+                                <a class="dropdown-item my-1" href="{% url 'profile' request.user %}"><i
+                                        class="fa fa-user p-1 mr-3 float-left" aria-hidden="true"></i> Profile</a>
+                                <a class="dropdown-item my-1" href="{% url 'settings' %}"><i
+                                        class="fa fa-gear p-1 mr-3 float-left" aria-hidden="true"></i> Settings</a>
+
+                                {% with object.id|stringformat:"i" as obj_id %}
+                                {% if request.path == "/post/new/" or request.path == "/post/"|add:obj_id|add:"/update/" %}
+                                <a class="dropdown-item my-1" href="{% url 'logout' %}"><i
+                                        class="fa fa-sign-out p-1 mr-3 float-left" aria-hidden="true"></i> Logout</a>
+                                {% else %}
+                                <a class="dropdown-item my-1"
+                                    href="{% url 'logout' %}?next={{ request.path | urlencode }}"><i
+                                        class="fa fa-sign-out p-1 mr-3 float-left" aria-hidden="true"></i> Logout</a>
+                                {% endif %}
+                                {% endwith %}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+            </div>
+        </nav>
+
+    </section>
+
+    {% block main %}
+    <main role="main" class="container" style="min-height: 72.8vh;">
+        <div class="row">
+            <div class="col-md-9">
+                {% block pagetitle %}
+                {% endblock %}
+                <section id="messages">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </section>
+                {% block content %}{% endblock %}
+            </div>
+            <div class="col-md-3 float-right" style="padding-left: 30px">
+
+                {% block optionbar %}
+                <div class="content-section">
+                    <h3>More Options</h3>
+                    <p class='text-muted'>
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-light">Latest Posts</li>
+                            <li class="list-group-item list-group-item-light">Announcements</li>
+                            <li class="list-group-item list-group-item-light">Parent Site</li>
+                            <li class="list-group-item list-group-item-light">Contact</li>
+                        </ul>
+                    </p>
+                </div>
+                {% endblock %}
+            </div>
+        </div>
+    </main>
+    {% endblock %}
+
+    <br />
+    <footer class="footer" style="text-align:center; background-image: linear-gradient(to right, red ,#4888f7);">
+        <div class="container">
+            <br />
+            <div style="color:whitesmoke;">© 2019 thisBlog Services</div>
+            <br />
+        </div>
+    </footer>
+
+    {% block js %}
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+        </script>
+    <script src="{% static 'js/animations.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/notify.js' %}" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
+    </script>
+    {% endblock %}
+
+    {% block extrajs %}
+    {% endblock %}
+
+</body>
+
+</html>

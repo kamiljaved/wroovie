@@ -1,0 +1,136 @@
+{% load embed_video_tags %}
+{% load crispy_forms_tags  %}
+{% load filename %}
+{% load js %}
+{% load humanize %}
+{% load static %}
+{% load cool_number%}
+{% if not comment_detail %}
+<li class="media postComment" data-id="{{ comment.id }}" id="comment-{{ comment.id }}">
+    {% endif %}
+    <img src="{{ comment.user.profile.image.url }}" alt="usr-img" class="rounded-circle" width="75" height="75"
+        style="margin-right: 20px">
+    <div class="media-body">
+        <a class=" mr-2" style="color: #00a9dd"
+            href="{% url 'user-posts' comment.user.username %}"><strong>{{ comment.user.username }}</strong></a>
+        <small class="text-muted">{{ comment.created|naturaltime }}</small>
+        {% if comment.edited %}
+        <small class="text-muted ml-2">(edited)</small>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+
+        {% if user in comment.likes.all %}
+        <button class="btn btn-light likeBtnC ml-4 text-center" data-id="{{ comment.id }}" style="color: #4edcff">
+            <i class="fa fa-thumbs-o-up fa-lg mr-1 likeBtnC1" aria-hidden="true" data-id="{{ comment.id }}"
+                style="text-shadow: 0px 0px 7px"></i>
+            <small class="likeBtnC2 glyphicon glyphicon-share" data-id="{{ comment.id }}"
+                id="likesC-{{ comment.id }}">{{ comment.likes.count|cool_number }}</small>
+        </button>
+        {% else %}
+        <button class="btn btn-light likeBtnC ml-4 text-center" data-id="{{ comment.id }}">
+            <i class="fa fa-thumbs-o-up fa-lg mr-1 likeBtnC1" aria-hidden="true" data-id="{{ comment.id }}"></i>
+            <small class="likeBtnC2 glyphicon glyphicon-share" data-id="{{ comment.id }}"
+                id="likesC-{{ comment.id }}">{{ comment.likes.count|cool_number }}</small>
+        </button>
+        {% endif %}
+
+        {% if user in comment.dislikes.all %}
+        <button class="btn btn-light dislikeBtnC ml-0 text-center" data-id="{{ comment.id }}" style="color: #4edcff">
+            <i class="fa fa-thumbs-o-down fa-lg mr-1 dislikeBtnC1" aria-hidden="true" data-id="{{ comment.id }}"
+                style="text-shadow: 0px 0px 7px"></i>
+            <small class="dislikeBtnC2 glyphicon glyphicon-share " data-id="{{ comment.id }}"
+                id="dislikesC-{{ comment.id }}">{{ comment.dislikes.count|cool_number }}</small>
+        </button>
+        {% else %}
+        <button class="btn btn-light dislikeBtnC ml-0 text-center" data-id="{{ comment.id }}">
+            <i class="fa fa-thumbs-o-down fa-lg mr-1 dislikeBtnC1" aria-hidden="true" data-id="{{ comment.id }}"></i>
+            <small class="dislikeBtnC2 glyphicon glyphicon-share" data-id="{{ comment.id }}"
+                id="dislikesC-{{ comment.id }}">{{ comment.dislikes.count|cool_number }}</small>
+        </button>
+        {% endif %}
+
+        <button class="btn btn-light repliesCntC ml-0 text-center" data-id="{{ comment.id }}" style="pointer-events: none">
+            <i class="fas fa-comments fa-md mr-1 repliesCntC1" aria-hidden="true" data-id="{{ comment.id }}"></i>
+            <small class="repliesCntC2 glyphicon glyphicon-share" data-id="{{ comment.id }}"
+                id="repliesCntC-{{ comment.id }}">{{ comment.replies.count|cool_number }}</small>
+        </button>
+
+        {% endif %}
+
+        {% if user == comment.user  or user == post.author %}
+        <button class="btn btn-danger deleteBtn float-right mx-2" data-id="{{ comment.id }}">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+        </button>
+        {% endif %}
+        {% if user == comment.user %}
+        <button class="btn btn-info updateBtn float-right ml-2" data-id="{{ comment.id }}">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+        </button>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <button class="btn btn-success replyBtn float-right" data-id="{{ comment.id }}">
+            <i class="fa fa-reply" aria-hidden="true"></i>
+        </button>
+        {% endif %}
+        <p>
+            {{ comment.content }}
+        </p>
+    </div>
+    {% if not comment_detail %}
+</li>
+
+
+
+<ul class="media-list commentReplies" data-id="{{ comment.id }}" id="comment-{{ comment.id }}" style="padding-left: 15%; padding-right: 1%">
+    {% for reply in comment.replies.all %}
+    <li class="media replyM py-1" data-id="{{ reply.id }}" id="reply-{{ reply.id }}">
+        <div class="media-body" style="margin-top: -3%;" style="padding:0; margin: 0;">
+            <div class="row" style="padding:0px; margin: 0;">
+                <div class="col-lg-3" style="padding:0; margin: 0;">
+                    <i class="fa fa-reply mr-2" aria-hidden="true" style="color: rgba(90, 104, 92, 0.363)"></i>
+                    <img src="{{ reply.user.profile.image.url }}" alt="usr-img" class="img-fluid rounded-circle"
+                        style="width:30px; height:30px;">
+                    <a class="text" style="color: #1e6279; font-size: 90%;"
+                        href="{% url 'user-posts' reply.user.username %}">{{ reply.user.username }}
+                        <strong>:</strong></a>
+
+                </div>
+                <div class="col-lg-6" style="padding:0px; margin-top: 3px;">
+                    <div class="content" style="line-height: 20px;">
+                        <small class="text-muted" style="font-size: 85%;">{{ reply.content }}</small>
+                    </div>
+                </div>
+                <div class="col-lg-3" style="padding:0px; margin: 0;">
+                    {% if user == reply.user or user == comment.user %}
+                    <button class="btn btn-light deleteBtnR float-right" data-id="{{ reply.id }}">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>
+                    {% endif %}
+
+                    {% if user.is_authenticated %}
+
+                    {% if user in reply.likes.all %}
+                    <button class="btn btn-light likeBtnR text-center mr-1 float-right" data-id="{{ reply.id }}"
+                        style="color: #4edcff">
+                        <i class="fa fa-thumbs-o-up fa-sm likeBtnR1" aria-hidden="true" data-id="{{ reply.id }}"
+                            style="text-shadow: 0px 0px 7px"></i>
+                        <small class="likeBtnR2 glyphicon glyphicon-share" data-id="{{ reply.id }}"
+                            id="likesR-{{ reply.id }}">{{ reply.likes.count|cool_number }}</small>
+                    </button>
+                    {% else %}
+                    <button class="btn btn-light likeBtnR text-center mr-1 float-right" data-id="{{ reply.id }}">
+                        <i class="fa fa-thumbs-o-up fa-sm likeBtnR1" aria-hidden="true" data-id="{{ reply.id }}"></i>
+                        <small class="likeBtnR2 glyphicon glyphicon-share" data-id="{{ reply.id }}"
+                            id="likesR-{{ reply.id }}">{{ reply.likes.count|cool_number }}</small>
+                    </button>
+                    {% endif %}
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}

@@ -22,24 +22,11 @@ class PathAndRename(object):
 path_and_rename = PathAndRename("profile_pics")
 
 
+
 class Profile(models.Model):
-    USER_STATUS = (
-        (1, 'Student'),
-        (2, 'Instructor'),
-        (3, 'Admin'),
-    )
-
-    PENDING_REQUEST_BECOME_INSTRUCTOR = models.BooleanField(default=False)
-    PENDING_REQUEST_BECOME_ADMIN = models.BooleanField(default=False)
-    PENDING_REQUEST_PASSWORD_CHANGE = models.BooleanField(default=False)
-
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(default='profile_pics/default.png', upload_to=path_and_rename)
     email_verified = models.BooleanField(default=False)
-    user_status = models.PositiveSmallIntegerField(choices=USER_STATUS, default=USER_STATUS[0][0])
-    
-    followings = models.ManyToManyField("Profile", blank = True, related_name='followers')
-
 
     def __str__(self):
         return f'{self.user.username} Profile'

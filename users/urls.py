@@ -25,5 +25,4 @@ urlpatterns = [
 
     path('<str:username>', profile, name='profile'),
 
-    # Added by Usman END
 ]

@@ -1,0 +1,3 @@
+img.grow { transition: all .2s ease-in-out; }
+img.grow:hover { transform: scale(1.2); }
+

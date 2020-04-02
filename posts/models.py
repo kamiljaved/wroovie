@@ -3,13 +3,15 @@ from community.models import Community
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+from mptt.models import MPTTModel, TreeForeignKey
+
 # Create your models here.
 
 class Post(models.Model):
-    community = models.ForeignKey(Community, on_delete=models.CASCADE)
+    community = models.ForeignKey(Community, on_delete=models.CASCADE, related_name="posts")
     dt_creation = models.DateTimeField(default=timezone.now)
 
-    author = models.ForeignKey(User, on_delete=models.CASCADE)     # if User is deleted, their post is also deleted
+    author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     upvotes = models.ManyToManyField(User, blank = True, related_name='upvoted_posts')
     downvotes = models.ManyToManyField(User, blank = True, related_name='downvoted_posts')
@@ -20,9 +22,8 @@ class Thread(Post):
     content = models.TextField(max_length=1500)
 
     view_count = models.IntegerField("Views", default=0)
-    replies = models.ManyToManyField(Reply, blank=True)
 
-    main_reply = models.ForeignKey(Reply)
+    # main_replies = models.ForeignKey(Reply)
 
 # reply can have replies of itself, those replies will also be associated to the main thread...
 # what if a reply is a reply to a reply through thread?
@@ -33,9 +34,31 @@ class Thread(Post):
 # we can do one thing
 
 # here instead of null we can have foreign key towards the parent reply of the thread for main replies
-class Reply(Post):
+class Reply(MPTTModel):
+
+    author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     
-    parent = models.ForeignKey(Post, null=False, related_name=)
+    # achha ab yaha kya krna baki reh gya hai
+    # wo path_and_rename kidhar kia hai??
+    # community k models mein tha
+    # kahin aur nahi chahiye hoga??
+    # yr try to see 
+    # there?
+    
+    post = models.ForeignKey(Post, null=False, on_delete=models.CASCADE, related_name='replies')
+
+    dt_creation = models.DateTimeField(default=timezone.now)
+
+
+    upvotes = models.ManyToManyField(User, blank = True, related_name='upvoted_replies')
+    downvotes = models.ManyToManyField(User, blank = True, related_name='downvoted_replies')
+
+    content = models.TextField(max_length=3000)
+
+    parent = TreeForeignKey('self', related_name='children', null=True, blank=True, db_index=True, on_delete=models.SET_NULL)
+    
+    # i will be back in a few minutes
+    # ok
 
     # and check in clean that a parent should be either a thread or a reply
     # or, we could just use this same model for article comments.....

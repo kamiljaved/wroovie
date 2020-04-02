@@ -30,6 +30,7 @@ urlpatterns = [
 
 ]
 
+handler404 = 'common.views.handler404'
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

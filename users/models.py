@@ -1,12 +1,28 @@
 from django.db import models
 from django.contrib.auth.models import User
-from PIL import Image
+
 import os
-from uuid import uuid4
+
 from django.utils.deconstruct import deconstructible
 from enum import Enum
+from common.storage import OverwriteStorage
+from common.utils import resize_image
 
-@deconstructible
+# users (FOLDER)
+# -- comm1 (FOLDER)
+# -- -- icon.png
+# -- -- banner.png
+# -- -- post_images (FOLDER)
+# -- -- -- post1-pic1.png
+
+BASE_PATH = "users"
+PROFILE_PICTURES_PATH = os.path.join(BASE_PATH, 'profile_pictures')
+DEFAULT_PROFILE_IMAGE_PATH = os.path.join(PROFILE_PICTURES_PATH, 'default.png')
+
+def ProfileImageSavePath(instance, filename):
+    return os.path.join(PROFILE_PICTURES_PATH, f'{instance.user.username}'+os.path.splitext(filename)[1])
+
+""" @deconstructible
 class PathAndRename(object):
 
     def __init__(self, sub_path):
@@ -18,27 +34,20 @@ class PathAndRename(object):
         filename = str(instance.pk) + '-' + instance.user.username + '-{}.{}'.format(uuid4().hex, ext)
         # return the whole path to the file
         return os.path.join(self.path, filename)
-
-path_and_rename = PathAndRename("profile_pics")
-
-
+ """
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(default='profile_pics/default.png', upload_to=path_and_rename)
+    image = models.ImageField(default=DEFAULT_PROFILE_IMAGE_PATH, storage=OverwriteStorage(), upload_to=ProfileImageSavePath)
     email_verified = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.user.username} Profile'
 
     def save(self, *args, **kwargs):
+
         super().save(*args, **kwargs)
 
-        img = Image.open(self.image.path)
-
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-        
-        img.save(self.image.path)
-
+        # ******** /home/kamiljaved/Desktop/Django Workspace/db-project/dbwebproj/media/users/profile_pictures/kamiljaved_BUNctiE.png
+        # https://stackoverflow.com/questions/34098434/django-image-save-typeerror-get-valid-name-missing-positional-argument-na
+        resize_image(self.image.path, 300, 300)

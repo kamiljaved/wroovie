@@ -1,8 +1,9 @@
 from django.http import Http404
 from django.shortcuts import render
 from django.utils.text import slugify
-
 from django.contrib.auth.decorators import login_required
+
+from .models import Community
 
 # Create your views here.
 BASE_TEMPLATE_URL='community'

@@ -4,7 +4,11 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
+from django.template import RequestContext
 
+
+def handler404(request, exception):
+    return render(request, '404.html', {})
 
 def home(request):    
 

@@ -48,11 +48,8 @@
         }
     </style>
 
-    {% if title %}
-    <title>Welcome to {{ title }}</title>
-    {% else %}
-    <title>Welcome</title>
-    {% endif %}
+    <title>{% block title %}{% endblock %}</title>
+    
 </head>
 
 <body>
@@ -232,7 +229,7 @@
     <main role="main" class="container" style="min-height: 72.8vh;">
         <div class="row">
             <div class="col-md-9">
-                {% block pagetitle %}
+                {% block pageheader %}
                 {% endblock %}
                 <section id="messages">
                     {% if messages %}

@@ -1,14 +1,18 @@
 {% extends "common/base.html" %}
 {% load static %}
 
-{% block pagetitle %}
-    <h1>wroovie - community.name</h1>
+{% block title %}
+    {{ community.name }} - wroovie
+{% endblock %}
+
+{% block pageheader %}
+    <h1>{{ community.name }}</h1>
     <br/>
 {% endblock %}
 
 {% block content %}
 
-    {% for post in community.posts %}
+    {% for post in community.posts.all %}
         <article class="media content-section">
             <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}" alt="Author Image">
             <div class="media-body">
@@ -16,9 +20,9 @@
                     <a class="mr-2" href="{% url 'profile' post.author.username %}">{{ post.author }}</a>
                     <small class="text-muted">{{ post.dtop|date:"F d, Y" }}</small>
                 </div>
-                <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
+                <h2><a class="article-title" href="#">{{ post.thread.title }}</a></h2>
                 <p class="article-content">
-                    {{ post.content | truncatewords:30 }}
+                    {{ post.thread.content | truncatewords:30 }}
                 </p>
             </div>
         </article>

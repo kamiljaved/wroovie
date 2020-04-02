@@ -17,7 +17,7 @@ from common.utils import resize_image
 
 BASE_PATH = "users"
 PROFILE_PICTURES_PATH = os.path.join(BASE_PATH, 'profile_pictures')
-DEFAULT_PROFILE_IMAGE_PATH = os.path.join(PROFILE_PICTURES_PATH, 'default.png')
+DEFAULT_PROFILE_IMAGE_PATH = os.path.join(BASE_PATH, 'default_profile_picture.png')
 
 def ProfileImageSavePath(instance, filename):
     return os.path.join(PROFILE_PICTURES_PATH, f'{instance.user.username}'+os.path.splitext(filename)[1])

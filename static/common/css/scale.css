@@ -1,0 +1,155 @@
+
+/* Small screens */
+@media only screen and (max-width: 620px) {
+    .navbar {
+      bottom: 0;
+      width: 100vw;
+      height: 4rem;
+    }
+  
+    .footer {
+      display: none;
+    }
+  
+    .main-content {
+      height: calc(100vh - 5rem);
+      margin-top: 0;
+    }
+  
+    .nav-item:hover #dd-projects{
+      height: 400%;
+    }
+  
+    .nav-item:hover #dd-more{
+      height: 300%;
+    }
+  
+    .logo {
+      display: none;
+    }
+  
+    .navbar-nav {
+      flex-direction: row;
+    }
+  
+    .nav-link {
+      justify-content: center;
+    }
+  
+    .footer-link {
+      justify-content: center;
+    }
+  
+    main {
+      margin: 0;
+    }
+  }
+  
+  @media only screen and (min-width:620px) and (max-width: 800px){
+  
+    .link-text{
+      font-size: 14px;    
+      margin: 0rem 0rem;
+    }
+  
+    .nav-item:hover .dropdown .link-text {
+      margin: 0rem 1rem;
+    }
+  
+    .nav-item:hover .dropdown .drop-link svg{
+      margin: 0rem 1rem;
+    }
+  
+  
+    .nav-item:hover svg{
+      margin: 0rem 1rem;
+    }
+  
+  }
+  
+  @media only screen and (min-width: 800px) {
+  
+    .nav-item:hover .dropdown .link-text {
+      margin: 0rem 2rem;
+    }
+  
+    .nav-item:hover .dropdown .drop-link svg{
+      margin: 0rem 2rem;
+    }
+  
+  
+    .nav-item.wroovie:hover svg{
+      margin: 0rem 2rem;
+    }
+    
+    .nav-item.search:hover svg{
+      margin: 0rem 2rem;
+    }
+  
+  }
+  
+  /* Large screens */
+  @media only screen and (min-width: 620px) {
+    .navbar {
+      top: 0;
+      width: 100vw;
+      height: 4rem;
+    }
+  
+    .main-content{
+      height: calc(100vh - 8rem);
+      z-index: -1;
+  
+    }
+  
+    .nav-item.wroovie:hover svg{
+      right: 0;
+      transform: translateX(0) rotate(360deg);
+    }
+  
+    .nav-item.search:hover svg{
+      right: 0;
+      transform: translateX(0);
+    }
+    
+  
+    .nav-item:hover .dropdown .link-text {
+      visibility: visible;  
+      opacity: 100;
+      left: 0;
+      transform: translateX(0);
+    }
+  
+    .nav-item:hover #dd-projects{
+      height: 400%;
+    }
+  
+    .nav-item:hover #dd-more{
+      height: 300%;
+    }
+  
+    .nav-item:hover .dropdown .drop-link{
+      height: 4rem;
+    }
+  
+    .nav-item:hover .dropdown .drop-link svg{
+      visibility: visible;
+      opacity: 100;
+      right: 0;
+      transform: translateX(0);
+    }
+  
+    .navbar:hover .logo svg
+    {
+      margin-left: 11rem;
+    }
+  
+    .navbar:hover .logo-text
+    {
+      left: 0px;
+    }
+  
+    main{
+      z-index: -1;
+    }
+  }

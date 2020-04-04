@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_cleanup.apps.CleanupConfig',
+    'django.contrib.humanize',
+
     'crispy_forms',
     'mptt',
 
@@ -134,7 +136,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 
-STATIC_ROOT = ''
+
 STATIC_URL = '/static/'
 STATICFILES_DIRS = ( os.path.join('static'), )
 

@@ -317,12 +317,18 @@ body::-webkit-scrollbar-thumb {
   padding-left: 1rem;
   padding-right: 1rem;
 
-  width: calc(100% - 2rem - 2rem - 10%);
+  width: calc(100% - 2rem - 2rem - 1.5rem - 4rem);
+
 
 }
 
 .searchbar:focus{
   outline: none;
+}
+
+.searchbar::placeholder { 
+  color: var(--text-primary);
+
 }
 
 .nav-item.search svg {
@@ -335,6 +341,43 @@ body::-webkit-scrollbar-thumb {
   margin: 0 0rem;
 
   z-index: -1;
+}
+
+.search-clear {
+  
+  text-align: center; 
+  margin-right: 6rem;
+
+  display: none;
+
+  right: 0;
+
+  position: absolute;
+
+
+  width: 2rem;
+  height: var(--nav-height);
+
+  flex-direction: column;
+  justify-content: center;
+
+  transition: none;
+
+  align-items: flex-start;
+}
+
+.search-clear svg {
+  height: 1.5rem;
+  
+  position: absolute !important;
+  
+  left: 0 !important;
+
+  transform: none !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
 }
 
 .nav-link {

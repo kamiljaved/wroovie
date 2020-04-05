@@ -81,10 +81,6 @@
     .nav-item.wroovie:hover svg{
       margin: 0rem 2rem;
     }
-    
-    .nav-item.search:hover svg{
-      margin: 0rem 2rem;
-    }
   
   }
   
@@ -106,12 +102,6 @@
       right: 0;
       transform: translateX(0) rotate(360deg);
     }
-  
-    .nav-item.search:hover svg{
-      right: 0;
-      transform: translateX(0);
-    }
-    
   
     .nav-item:hover .dropdown .link-text {
       visibility: visible;  

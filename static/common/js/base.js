@@ -1,8 +1,24 @@
 var searchItem = document.querySelector(".search")
 var searchbar = document.querySelector(".searchbar")
 var searchLink = document.querySelector(".search-link")
-var searchSVG = searchItem.querySelector("svg")
+var searchSVG = searchItem.querySelector(".search-svg")
+var searchClear = searchItem.querySelector(".search-clear")
 var mouse_in_search_item = false
+
+searchClear.addEventListener("click", function() {
+    searchClear.style.display = "none";
+    searchbar.value = ""
+})
+
+searchbar.addEventListener("input", function() { 
+    if (searchbar.value) {
+        searchClear.style.display = "flex";
+    }
+    else
+    {
+        searchClear.style.display = "none";
+    }
+});
 
 searchbar.addEventListener("focus", function() {
     searchLink.style.filter = "grayscale(0%) opacity(1)"

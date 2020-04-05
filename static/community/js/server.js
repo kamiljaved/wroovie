@@ -38,6 +38,7 @@ function handler_JoinToggle(data)
             {
                 btnJoinText.innerHTML = 'LEAVE';
                 user_is_member = true
+                if(!joinTick.classList.contains('fa-secondary')) joinTick.classList.add('fa-secondary');
             }
         }
         else
@@ -46,6 +47,8 @@ function handler_JoinToggle(data)
             {
                 btnJoinText.innerHTML = 'JOIN';
                 user_is_member = false
+
+                if(joinTick.classList.contains('fa-secondary')) joinTick.classList.remove('fa-secondary');
             }
         }
     }

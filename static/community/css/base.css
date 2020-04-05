@@ -535,6 +535,13 @@ a {
     color: #818384;
 }
 
+.community-button .join-tick.fa-secondary {
+    color: #818384 !important;
+}
+
+.community-button .join-tick {
+    color: rgba(0, 0, 0, 0);
+}
 
 .comm-tabs {
     display: flex;

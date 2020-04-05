@@ -43,6 +43,8 @@ window.onresize = function(){
 var btnJoin = document.querySelector('.comm-btn-join');
 var btnJoinText = document.querySelector('.community-button-text')
 
+var joinTick = document.querySelector('.join-tick')
+
 if (user_is_authenticated)
 {
     btnJoin.addEventListener("mouseenter", listener_mouseenter_btnJoin);

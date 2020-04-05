@@ -250,7 +250,7 @@
 				</a>
 			</li>
 
-			<li class="nav-item search">
+			<li class="nav-item search" {% if user.is_authenticated %} style="margin-left: none !important;" {% endif %}>
 				<a href="#" class="nav-link search-link">
 
                     <input class="searchbar" type="search" placeholder="Search"></input>
@@ -264,20 +264,33 @@
 				</a>
 			</li>
 
-			<li class="nav-item login">
-				<a href="#" class="nav-link">
+            {% if user.is_authenticated %}
+                <li class="nav-item user-box">
+                    <a href="#" class="nav-link">
 
-					<span class="link-text">Login</span>
-				</a>
-			</li>
+                        <div class="user-image-wrapper">
+                            <img class="user-image" src="{{ user.profile.image.url }}" alt="User Image">
+                        </div>
 
-			<li class="nav-item signup">
-				
-				<a href="#" class="nav-link">
+                        <span class="link-text">{{ user.username }}</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="nav-item login">
+                    <a href="#" class="nav-link">
 
-					<span class="link-text">Signup</span>
-				</a>
-			</li>
+                        <span class="link-text">Login</span>
+                    </a>
+                </li>
+
+                <li class="nav-item signup">
+                    
+                    <a href="#" class="nav-link">
+
+                        <span class="link-text">Signup</span>
+                    </a>
+                </li>
+            {% endif %}
 
 			<li class="nav-settings" id="themeButton">
 				<a href="#" class="nav-link">

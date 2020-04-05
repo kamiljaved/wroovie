@@ -261,6 +261,28 @@ body::-webkit-scrollbar-thumb {
   margin: 0;
 }
 
+.nav-item.user-box {
+  margin-left: auto;
+
+  max-width: 12rem;
+  min-width: 8rem;
+  overflow: hidden;
+}
+.nav-item.user-box .nav-link {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.user-image {
+  width: 2rem;
+  height: 2rem;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+.nav-item.user-box .link-text {
+  position: relative;
+  margin: 0;
+}
+
 .nav-item.signup {
   width: 6rem;
 }

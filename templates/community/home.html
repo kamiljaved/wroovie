@@ -1,6 +1,8 @@
 {% extends "common/base.html" %}
 {% load static %}
 {% load humanize %}
+{% load extra_tags %}
+
 
 {% block title %}
     {{ community.name }} - wroovie
@@ -20,8 +22,66 @@
 
     <div class="wrapper">
         {% block banner %}
-            <div class="community-banner">
-                hi
+            <div class="community-header">
+                <div class="comm-banner">
+                    {% if community.banner %}
+
+                    {% else %}
+
+                    {% endif %}
+                </div>
+                <div class="comm-menu">
+                    <div class = "comm-info">
+                        <div class="comm-icon">
+                            <img class="community-icon" src="{{ community.icon.url }}" alt="Community Icon">
+                        </div>
+                        <div class="comm-intro">
+                            <div class="community-title">
+                                {{ community.title }}
+                            </div>
+                            <div class="community-name">
+                                c/{{ community.name }}
+                            </div>
+                        </div>
+                        <div class="comm-buttons">
+
+                            {% if user.is_authenticated %}
+                                <div class="community-button comm-btn-join">
+                                    <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="user-check" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="svg-inline--fa fa-user-check fa-w-20 fa-9x"><g class="fa-group"><path fill="currentColor" d="M636.6 159.6a12 12 0 0 1-.1 16.8L495.2 316.6a11.86 11.86 0 0 1-16.8-.1l-81.7-82.3a11.86 11.86 0 0 1 .1-16.8l28.1-27.9a11.86 11.86 0 0 1 16.8.1l45.5 45.8 104.8-104a11.86 11.86 0 0 1 16.8.1z" class="fa-secondary"></path><path fill="currentColor" d="M224 256A128 128 0 1 0 96 128a128 128 0 0 0 128 128zm89.6 32h-16.7a174.08 174.08 0 0 1-145.8 0h-16.7A134.43 134.43 0 0 0 0 422.4V464a48 48 0 0 0 48 48h352a48 48 0 0 0 48-48v-41.6A134.43 134.43 0 0 0 313.6 288z" class="fa-primary"></path></g></svg>
+                                    <div class="community-button-text">
+                                        {% if user_is_member %}
+                                            JOINED
+                                        {% else %}
+                                            JOIN
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="community-button comm-btn-report">
+                                    <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="exclamation-triangle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="svg-inline--fa fa-exclamation-triangle fa-w-18 fa-9x"><g class="fa-group"><path fill="currentColor" d="M569.52 440L329.58 24c-18.44-32-64.69-32-83.16 0L6.48 440c-18.42 31.94 4.64 72 41.57 72h479.89c36.87 0 60.06-40 41.58-72zM288 448a32 32 0 1 1 32-32 32 32 0 0 1-32 32zm38.24-238.41l-12.8 128A16 16 0 0 1 297.52 352h-19a16 16 0 0 1-15.92-14.41l-12.8-128A16 16 0 0 1 265.68 192h44.64a16 16 0 0 1 15.92 17.59z" class="fa-primary"></path><path fill="currentColor" d="M310.32 192h-44.64a16 16 0 0 0-15.92 17.59l12.8 128A16 16 0 0 0 278.48 352h19a16 16 0 0 0 15.92-14.41l12.8-128A16 16 0 0 0 310.32 192zM288 384a32 32 0 1 0 32 32 32 32 0 0 0-32-32z" class="fa-secondary"></path></g></svg>
+                                    <div class="community-button-text">REPORT</div>
+                                </div>
+                            {% else %}
+                                <a href="{% url 'login' %}">
+                                    <div class="community-button comm-btn-join">
+                                        <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="user-check" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="svg-inline--fa fa-user-check fa-w-20 fa-9x"><g class="fa-group"><path fill="currentColor" d="M636.6 159.6a12 12 0 0 1-.1 16.8L495.2 316.6a11.86 11.86 0 0 1-16.8-.1l-81.7-82.3a11.86 11.86 0 0 1 .1-16.8l28.1-27.9a11.86 11.86 0 0 1 16.8.1l45.5 45.8 104.8-104a11.86 11.86 0 0 1 16.8.1z" class="fa-secondary"></path><path fill="currentColor" d="M224 256A128 128 0 1 0 96 128a128 128 0 0 0 128 128zm89.6 32h-16.7a174.08 174.08 0 0 1-145.8 0h-16.7A134.43 134.43 0 0 0 0 422.4V464a48 48 0 0 0 48 48h352a48 48 0 0 0 48-48v-41.6A134.43 134.43 0 0 0 313.6 288z" class="fa-primary"></path></g></svg>
+                                        <div class="community-button-text">
+                                            {% if user_is_member %}
+                                                JOINED
+                                            {% else %}
+                                                JOIN
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </a>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                    
+                    <div class = "comm-tabs">
+                            
+                    </div>
+                </div>
             </div>
         {% endblock %}
 
@@ -33,9 +93,18 @@
                     <div class="comm-content-box">
                         
                         <div class="comm-content-box-1">
-                            <div class="post-vote-button">
-                                <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="ellipsis-h" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-ellipsis-h fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M256 184a72 72 0 1 0 72 72 72 72 0 0 0-72-72z" class="fa-secondary"></path><path fill="currentColor" d="M432 184a72 72 0 1 0 72 72 72 72 0 0 0-72-72zm-352 0a72 72 0 1 0 72 72 72 72 0 0 0-72-72z" class="fa-primary"></path></g></svg>
+                            <div class="post-vote-button upvote-button">
+                                <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="arrow-alt-square-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-arrow-alt-square-up fa-w-14 fa-9x"><g class="fa-group"><path fill="currentColor" d="M400 32H48A48 48 0 0 0 0 80v352a48 48 0 0 0 48 48h352a48 48 0 0 0 48-48V80a48 48 0 0 0-48-48zm-60.15 224h-71.49v116a12.07 12.07 0 0 1-12.1 12h-64.52a12.07 12.07 0 0 1-12.1-12V256h-71.49c-10.78 0-16.23-12.83-8.57-20.32l116-115.16a12.08 12.08 0 0 1 17 0l115.84 115.16c7.66 7.49 2.21 20.32-8.57 20.32z" class="fa-secondary"></path><path fill="currentColor" d="M256.26 384h-64.52a12.07 12.07 0 0 1-12.1-12V256h-71.49c-10.78 0-16.23-12.83-8.57-20.32l116-115.16a12.08 12.08 0 0 1 17 0l115.84 115.16c7.66 7.49 2.21 20.32-8.57 20.32h-71.49v116a12.07 12.07 0 0 1-12.1 12z" class="fa-primary"></path></g></svg>
                             </div>
+
+                            <div class="post-score">
+                                {% subtract post.upvotes.count post.downvotes.count %}
+                            </div>
+
+                            <div class="post-vote-button downvote-button">
+                                <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="arrow-alt-square-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-arrow-alt-square-down fa-w-14 fa-9x"><g class="fa-group"><path fill="currentColor" d="M400 32H48A48 48 0 0 0 0 80v352a48 48 0 0 0 48 48h352a48 48 0 0 0 48-48V80a48 48 0 0 0-48-48zm-51.58 244.32l-116 115.16a12.08 12.08 0 0 1-17 0L99.58 276.32c-7.66-7.49-2.21-20.32 8.57-20.32h71.49V140a12.07 12.07 0 0 1 12.1-12h64.52a12.07 12.07 0 0 1 12.1 12v116h71.49c10.78 0 16.23 12.83 8.57 20.32z" class="fa-secondary"></path><path fill="currentColor" d="M191.74 128h64.52a12.07 12.07 0 0 1 12.1 12v116h71.49c10.78 0 16.23 12.83 8.57 20.32l-116 115.16a12.08 12.08 0 0 1-17 0L99.58 276.32c-7.66-7.49-2.21-20.32 8.57-20.32h71.49V140a12.07 12.07 0 0 1 12.1-12z" class="fa-primary"></path></g></svg>
+                            </div>
+
                         </div>
 
                         <div class="comm-content-box-2">
@@ -55,7 +124,7 @@
                             </div>
 
                             <div class="post-text">
-                                {{ post.thread.content|truncatechars:300 }}
+                                {{ post.thread.content | truncatechars:300 | truncatewords:50 }}
                             </div>
 
                             {% if post.image %}
@@ -78,7 +147,7 @@
                                     <div class="post-options-button-text">Save</div>
                                 </div>
                                 <div class="post-options-button">
-                                    <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="ellipsis-h" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-ellipsis-h fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M256 184a72 72 0 1 0 72 72 72 72 0 0 0-72-72z" class="fa-secondary"></path><path fill="currentColor" d="M432 184a72 72 0 1 0 72 72 72 72 0 0 0-72-72zm-352 0a72 72 0 1 0 72 72 72 72 0 0 0-72-72z" class="fa-primary"></path></g></svg>
+                                    <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="ellipsis-h" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-ellipsis-h fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M256 184a72 72 0 1 0 72 72 72 72 0 0 0-72-72z" class="fa-primary"></path><path fill="currentColor" d="M432 184a72 72 0 1 0 72 72 72 72 0 0 0-72-72zm-352 0a72 72 0 1 0 72 72 72 72 0 0 0-72-72z" class="fa-secondary"></path></g></svg>
                                 </div>
                             </div>
 
@@ -185,5 +254,15 @@
 
 
 {% block extrajs %}
+    <script src="{% static 'common/js/jquery-3.4.1.min.js' %}" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        // define variables
+        var user_is_authenticated = '{{ user.is_authenticated }}'==='True'?true:false;
+        var user_is_member = '{{ user_is_member }}'==='True'?true:false;
+        var community_name = '{{ community.name }}'
+    </script>
+
     <script src="{% static 'community/js/base.js' %}" type="text/javascript"></script>
+    <script src="{% static 'community/js/server.js' %}" type="text/javascript"></script>
 {% endblock %}

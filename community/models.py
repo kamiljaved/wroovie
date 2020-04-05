@@ -49,7 +49,7 @@ class Community(models.Model):
     # attributes
     creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     name = models.CharField(max_length=25, unique=True)      # only alphabets (capital/small), no spaces
-    tagline = models.CharField(max_length=50)   # short tagline
+    title = models.CharField(max_length=50)   # short tagline
     about = models.CharField(max_length=500)    # no links allowed
 
     admins = models.ManyToManyField(User, related_name='administered_communities')
@@ -63,7 +63,7 @@ class Community(models.Model):
     dt_creation = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return f'{self.name} - {self.tagline}'
+        return f'{self.name} - {self.title}'
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

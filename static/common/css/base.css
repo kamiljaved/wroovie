@@ -215,7 +215,7 @@ body::-webkit-scrollbar-thumb {
   position: fixed;
   background-color: var(--bg-primary);
   transition: height 600ms ease;
-  z-index: 2;
+  z-index: 3;
 
   box-shadow:  1px 1px 5px #c2c2c27a;
 }

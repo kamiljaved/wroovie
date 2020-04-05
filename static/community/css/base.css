@@ -3,7 +3,7 @@
     margin-top: 4rem;
     padding: 0;
     
-    
+    position: relative;
     display: flex;
     flex-direction: column;
 
@@ -22,22 +22,7 @@
     color: white;
 }
 
-.community-banner {
-    background-color: bisque;
-    
 
-    
-    width: 100%;
-    padding: 0;
-
-
-    color: blue;
-
-    min-height: 8rem;
-    max-height: 11rem;
-
-    z-index: 2;
-}
 
 
 .comm-1 {
@@ -47,11 +32,12 @@
 
     min-width: 30rem;
 
-    max-width: 70rem;
+    max-width: 60rem;
 
     margin-top: 8px;
 
     z-index: 1;
+
 }
 
 
@@ -185,6 +171,9 @@ a {
 .comm-content-box-2 {
     display: flex;
     flex-direction: column;
+    
+    width: calc(100% - 3rem);
+
 }
 
 .comm-content-box-2 a:hover {
@@ -219,7 +208,7 @@ a {
     padding-left: 0.8rem;
     padding-right: 0.8rem;
 
-    font-size: 25px;
+    font-size: 22px;
     font-weight: bold;
 
     padding-top: 6px;
@@ -246,8 +235,10 @@ a {
     display: flex;
     flex-direction: row;
 
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+
+    margin-left: 0.4rem;
 }
 
 .post-options-button {
@@ -256,10 +247,13 @@ a {
     font-weight: bold;
     cursor: pointer;
 
-    margin-left: 0.4rem;
+    margin-right: 0.8rem;
 
     padding-left: 0.4rem;
     padding-right: 0.4rem;
+
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
 
     border-radius: 5px;
 
@@ -299,15 +293,16 @@ a {
 
 
 .comm-content-box-1 {
-    width: 5rem;
+    width: 3rem;
     background: #151516;
 
     display: flex;
     flex-direction: column;
 
-    align-items: stretch;
-    justify-content: space-between;
-    
+    overflow: hidden;
+
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
     
 }
 
@@ -325,30 +320,209 @@ a {
     display: flex;
     flex-direction: row;
     
-    justify-content: space-between;
+
 
     align-self: center;
 }
 
-.post-vote-button-text {
-    
-}
-
-.post-vote-button:hover {
-    color:#6F7071;
-    background-color: #2D2D2F;
-}
-
 .post-vote-button svg {
-    height: 20px;
+    height: 30px;
 }
 
 .post-vote-button .fa-primary {
-    color: #575757;
+    color: #818384;
 }
 
 .post-vote-button .fa-secondary {
+    color: #151516;
+}
+
+.post-vote-button:hover .fa-secondary {
+    color: #29292B;
+}
+
+.fa-primary {
+    transition: none;
+}
+
+.fa-secondary {
+    transition: none;
+}
+
+.upvote-button:hover .fa-primary {
+    color:#ff0055;
+}
+
+.downvote-button:hover .fa-primary {
+    color:rgb(106, 43, 255);
+}
+
+.post-score {
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+
+/* header */
+
+.community-header {
+    background-color: #1A1A1B;
+    width: 100%;
+    padding: 0;
+
+
+    color: blue;
+
+    z-index: 2;
+    
+    display: flex;
+    flex-direction: column;
+
+}
+
+.comm-banner {
+    min-height: 6rem;
+    max-height: 8rem;
+
+    background: black;
+}
+
+.comm-menu {
+
+    min-height: 5rem;
+    max-height: 6.5rem;
+
+    flex: 1;
+    
+
+    min-width: 30rem;
+
+    max-width: 60rem;
+    align-self: center;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+.comm-info {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.comm-icon {
+    position: relative;
+    width: 80px;
+}
+.community-icon {
+    border-radius: 50%;
+    border: 5px solid rgba(255, 255, 255, 0.123);
+    width: calc(80px - 5px);
+    position: absolute;
+    top: -1rem;
+}
+
+.comm-intro {
+    display: flex;
+    flex-direction: column;
+
+    margin-left: 20px;
+    justify-content: center;
+}
+
+.community-title {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+
+    margin-bottom: 5px;
+}
+
+.community-name {
     color: #818384;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.comm-buttons{
+    display: flex;
+    flex-direction: row;
+
+    margin-left: auto;
+    justify-content: center;
+
+    align-items: center;
+
+    margin-right: 5px;
+}
+
+
+.community-button {
+    border: 1px solid rgba(255, 255, 255, 0.068);
+    color:#6F7071;
+
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
+
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+
+    border-radius: 5px;
+
+    display: flex;
+    flex-direction: row;
+    
+    height: 2rem;
+
+    align-items: center;
+
+    margin-left: 15px;
+}
+
+.community-button svg {
+    
+    margin-top: 1px;
+    height: 30px;
+    width: 30px;
+
+    transform: scale(1.5);
+}
+
+.community-button-text {
+    margin-left: 5px;
+    width: 57px;
+    text-align: center;
+}
+
+.community-button:hover {
+    color:#6F7071;
+    background-color: #2D2D2F;
+    border: 1px solid transparent;
+}
+
+.community-button svg {
+    height: 12px;
+}
+
+.community-button .fa-primary {
+    color: #575757;
+}
+
+.community-button .fa-secondary {
+    color: #818384;
+}
+
+
+.comm-tabs {
+    display: flex;
+    flex-direction: row;
 }
 
 

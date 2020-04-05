@@ -20,7 +20,7 @@ menu.style.minWidth = `${comm1.offsetWidth}px`;
 
 wrapper.addEventListener("scroll", function(e) { 
 
-    if (wrapper.scrollTop + navbar.offsetHeight + footer_margin_top > footer.offsetTop && !footer_fixed)
+    if (wrapper.scrollTop + footer_margin_top > footer.offsetTop && !footer_fixed)
     {
         footer_top_old = footer.offsetTop;
         footer.classList.add("site-footer-fixed")
@@ -28,7 +28,7 @@ wrapper.addEventListener("scroll", function(e) {
 
     }
 
-    if (wrapper.scrollTop + navbar.offsetHeight + footer_margin_top <= footer_top_old && footer_fixed)
+    if (wrapper.scrollTop + footer_margin_top <= footer_top_old && footer_fixed)
     {
         footer.classList.remove("site-footer-fixed")
         footer_fixed = false;

@@ -187,6 +187,8 @@ font-size: 2.5rem;
   --bg-primary: #23232e;
   --bg-secondary: #141418;
   --transition-speed: 600ms;
+
+  --nav-height: 3.7rem
 }
 
 body {
@@ -269,8 +271,9 @@ body::-webkit-scrollbar-thumb {
   margin: 0;
 }
 
-.settings-link {
-  width: 4rem;
+.nav-settings {
+  padding: 0;
+  margin: 0;
 }
 
 .nav-link svg {
@@ -283,7 +286,6 @@ body::-webkit-scrollbar-thumb {
   min-width: 2rem;
   margin: 0 0rem;
 }
-
 
 .nav-item.wroovie svg {
   position: absolute;
@@ -309,10 +311,18 @@ body::-webkit-scrollbar-thumb {
   overflow-y: hidden;
   
   height: 1rem;
+  
   padding-top: 1.2rem;
   padding-bottom: 1.2rem;
-  width: calc(100% - 2rem);
+  padding-left: 1rem;
+  padding-right: 1rem;
 
+  width: calc(100% - 2rem - 2rem - 10%);
+
+}
+
+.searchbar:focus{
+  outline: none;
 }
 
 .nav-item.search svg {
@@ -323,13 +333,15 @@ body::-webkit-scrollbar-thumb {
   width: 2rem;
   min-width: 2rem;
   margin: 0 0rem;
+
+  z-index: -1;
 }
 
 .nav-link {
   position: relative;
   display: flex;
   align-items: center;
-  height: 4rem;
+  height: var(--nav-height);
   color: var(--text-primary);
   text-decoration: none;
   filter: grayscale(100%) opacity(0.7);

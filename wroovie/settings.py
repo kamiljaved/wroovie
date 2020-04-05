@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,10 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_cleanup.apps.CleanupConfig',
     'django.contrib.humanize',
-
+    # imported apps
     'crispy_forms',
     'mptt',
-
+    # my apps
     'users.apps.UsersConfig',
     'common.apps.CommonConfig',
     'community.apps.CommunityConfig',

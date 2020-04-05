@@ -30,9 +30,9 @@
     display: flex;
     flex-direction: row;
 
-    min-width: 30rem;
+    min-width: 45rem;
 
-    max-width: 60rem;
+    max-width: 65rem;
 
     margin-top: 8px;
 
@@ -147,9 +147,7 @@ a {
 
 
 .comm-content-box {
-    border: 1px solid #474748;
-
-    border-radius: 5px;
+    
     
     background: #1A1A1B;
 
@@ -157,7 +155,7 @@ a {
     
     margin-bottom: 12px;
 
-
+    border-radius: 0 15px 15px 0px;
 
     font-size: 13px;
 
@@ -167,8 +165,20 @@ a {
     flex-direction: row;
 }
 
+.comm-content-box:hover {
+    cursor: pointer;
+}
+
+.comm-content-box:hover .comm-content-box-2{
+    border: 1px solid #3a3a3acb;
+    cursor: pointer;
+}
 
 .comm-content-box-2 {
+    border: 1px solid transparent;
+    border-radius: 0 15px 15px 0px;
+
+
     display: flex;
     flex-direction: column;
     
@@ -384,9 +394,13 @@ a {
 
 .comm-banner {
     min-height: 6rem;
-    max-height: 8rem;
+    max-height: 10rem;
 
-    background: black;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    
+    justify-content: center;
 }
 
 .comm-menu {
@@ -421,8 +435,10 @@ a {
     border-radius: 50%;
     border: 5px solid rgba(255, 255, 255, 0.123);
     width: calc(80px - 5px);
+    height: calc(80px - 5px);
     position: absolute;
     top: -1rem;
+    object-fit: cover;
 }
 
 .comm-intro {

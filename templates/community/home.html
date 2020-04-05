@@ -23,11 +23,9 @@
     <div class="wrapper">
         {% block banner %}
             <div class="community-header">
-                <div class="comm-banner">
+                <div class="comm-banner" style="background-color: #{{ community.highlight_color_hex }};">
                     {% if community.banner %}
-
-                    {% else %}
-
+                        <img class="community-banner-image" src="{{ community.banner.url }}" alt="Community Banner">
                     {% endif %}
                 </div>
                 <div class="comm-menu">

@@ -1,10 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+
 import os
 from django.utils.deconstruct import deconstructible
+
 from common.storage import OverwriteStorage
-from common.utils import resize_image
+from common.utils import resize_image, ComputeProminentColor
+
+
 # Create your models here.
 
 # Community
@@ -62,16 +66,23 @@ class Community(models.Model):
     # dtop = models.DateTimeField(auto_now_add=True)  # object creation (cannot be updated)
     dt_creation = models.DateTimeField(default=timezone.now)
 
+    # extra community attrs
+    highlight_color_hex =  models.CharField(default='000000', max_length=8, blank=True) 
+
     def __str__(self):
         return f'{self.name} - {self.title}'
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         
+        # resize image and banner
         resize_image(self.icon.path, 300, 300)
         if self.banner:
             resize_image(self.banner.path, 500, 500)
 
+        # set highlight color
+        self.highlight_color_hex = ComputeProminentColor(self.icon.path)
+        super().save(update_fields=['highlight_color_hex'])
 
 class Membership(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

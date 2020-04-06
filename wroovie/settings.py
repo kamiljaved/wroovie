@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'common.apps.CommonConfig',
     'community.apps.CommunityConfig',
     'posts.apps.PostsConfig',
+    # apps for debugging
+    'django_extensions',
 ]
 
 MIDDLEWARE = [

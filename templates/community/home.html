@@ -93,7 +93,6 @@
 
                             <div class="post-score">
                                 {% subtract_and_cool_number post.upvotes.count post.downvotes.count %}
-                                <br/>{% subtract_and_cool_number 100000000000 100000000 1 %}
                             </div>
 
                             <div class="post-vote-button downvote-button">
@@ -145,10 +144,6 @@
                                     <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="ellipsis-h" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-ellipsis-h fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M256 184a72 72 0 1 0 72 72 72 72 0 0 0-72-72z" class="fa-primary"></path><path fill="currentColor" d="M432 184a72 72 0 1 0 72 72 72 72 0 0 0-72-72zm-352 0a72 72 0 1 0 72 72 72 72 0 0 0-72-72z" class="fa-secondary"></path></g></svg>
                                 </div>
                             </div>
-
-                            <!-- <p class="article-content">
-                                {{ post.thread.content | truncatewords:30 }}
-                            </p> -->
 
                         </div>
 

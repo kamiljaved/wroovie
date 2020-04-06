@@ -16,7 +16,7 @@
       margin-top: 0;
     }
   
-    .nav-item:hover #dd-projects{
+    .nav-item:hover #dd-user-options{
       height: 400%;
     }
   
@@ -59,7 +59,14 @@
     .nav-item:hover .dropdown .drop-link svg{
       margin: 0rem 1rem;
     }
+    
+    .browse-box:hover .dropdown .link-text {
+      margin: 0rem 0.8rem;
+    }
   
+    .browse-box:hover .dropdown .drop-link svg{
+      margin: 0rem 0.8rem !important;
+    }
   
     .nav-item:hover svg{
       margin: 0rem 1rem;
@@ -70,13 +77,20 @@
   @media only screen and (min-width: 800px) {
   
     .nav-item:hover .dropdown .link-text {
-      margin: 0rem 2rem;
+      margin: 0rem 1rem;
     }
   
     .nav-item:hover .dropdown .drop-link svg{
-      margin: 0rem 2rem;
+      margin: 0rem 1rem;
     }
   
+    .browse-box:hover .dropdown .link-text {
+      margin: 0rem 0.8rem;
+    }
+  
+    .browse-box:hover .dropdown .drop-link svg{
+      margin: 0rem 0.8rem !important;
+    }
   
     .nav-item.wroovie:hover svg{
       margin: 0rem 2rem;
@@ -109,17 +123,25 @@
       left: 0;
       transform: translateX(0);
     }
-  
-    .nav-item:hover #dd-projects{
-      height: 400%;
+    
+    .browse-box:hover .dropdown .drop-link{
+      height: calc(var(--nav-height) - 1rem) !important;
     }
-  
+
+    .nav-item:hover #dd-user-options{
+      height: calc(3 * var(--nav-height));
+    }
+    
+    .nav-item:hover #dd-browse-options{
+      height: calc(8 * calc(var(--nav-height) - 1rem));
+    }
+
     .nav-item:hover #dd-more{
       height: 300%;
     }
   
     .nav-item:hover .dropdown .drop-link{
-      height: 4rem;
+      height: var(--nav-height);
     }
   
     .nav-item:hover .dropdown .drop-link svg{

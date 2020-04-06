@@ -67,3 +67,40 @@ searchItem.addEventListener("mouseleave", function() {
         searchSVG.style.margin = "0rem 0rem"
     }
 })
+
+
+
+
+
+var ddUserOptions = document.querySelector(".user-options")
+var userBox = document.querySelector(".user-box")
+
+var ddBrowseOptions = document.querySelector(".browse-options")
+var browseBox = document.querySelector(".browse-box")
+
+// tasks on complete page & resources load
+document.addEventListener('readystatechange', event => {
+
+    if (event.target.readyState === "complete") 
+    {        
+        navbarFixes();
+    }
+
+});
+
+window.onresize = function() {
+    navbarFixes();
+}   
+
+function navbarFixes() {
+    if (userBox.clientWidth > ddUserOptions.clientWidth)        // ddUserOptions.clientWidth should initially be min-width
+    {
+        ddUserOptions.style.minWidth = `${userBox.clientWidth}px`
+    }
+    ddUserOptions.style.right = `${window.innerWidth - userBox.getBoundingClientRect().right}px`
+}
+
+browseBox.addEventListener("mouseenter", function() {
+    ddBrowseOptions.scrollTop = 0;
+    console.log("no")
+})

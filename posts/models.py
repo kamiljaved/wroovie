@@ -5,7 +5,7 @@ from django.utils import timezone
 
 from mptt.models import MPTTModel, TreeForeignKey
 
-# Create your models here.
+# Create your models here. terminal
 
 class Post(models.Model):
     community = models.ForeignKey(Community, on_delete=models.CASCADE, related_name="posts")

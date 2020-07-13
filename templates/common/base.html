@@ -8,15 +8,38 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    {% block site_favicon %}
+    <link rel="icon" href="{% static 'common/icons/favicon.svg' %}" type="image/ico" />
+    {% endblock %}
+
+    {% block base_fonts %}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400">
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap" rel="stylesheet" />
+    {% endblock %}
 
-    <link rel="stylesheet" type="text/css" href="{% static 'common/css/base.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'common/css/scale.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'common/css/theme.css' %}">
-    
+    {% block fonts %}
+
+    {% endblock %}
+
+    {% block base_stylesheets %}
+        <link rel="stylesheet" type="text/css" href="{% static 'common/css/base.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'common/css/scale.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'common/css/theme.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'common/css/notification.css' %}">
+
+        {% if not user.is_authenticated %}
+            <!-- <link rel="stylesheet" type="text/css" href="{% static 'common/css/modal.css' %}">
+            <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@700&display=swap" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=Nixie+One&display=swap" rel="stylesheet">
+            <link rel="stylesheet" type="text/css" href="{% static 'common/css/login.css' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'common/css/register.css' %}"> -->
+        {% endif %}
+
+    {% endblock %}
+
     {% block stylesheets %}
+
     {% endblock %}
 
     <title>{% block title %}{% endblock %}</title>
@@ -24,54 +47,8 @@
 </head>
 
 <body>
+    <section class="base-layer" style="background-color: black; margin:0;">
     {% block sidebar %}
-        <!-- {% if user.is_authenticated %}
-        <div class="wrapper" style=" z-index:+1;position:relative; ">
-            <nav id="sidebar" class="active" style="min-height:200%">
-
-                <ul class="list-unstyled components mt-0">
-                    <li>
-                        <a href="{% url 'profile' user.username %}" class="sidebar sidebarHome">
-                            <i class="fa fa-home"></i>
-                            Home
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'profile' user.username %}" class="sidebar sidebarLatest">
-                            <i class="fa fa-newspaper-o"></i>
-                            Latest
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'profile' user.username %}" class="sidebar sidebarSuggested">
-                            <i class="fa fa-lightbulb-o"></i>
-                            Suggested
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'profile' user.username %}" class="sidebar sidebarTrending">
-                            <i class="fas fa-fire"></i>
-                            Trending
-                        </a>
-                    </li>
-                    <li>
-                    <li>
-                        <a href="{% url 'profile' user.username %}" class="sidebar sidebarCircle">
-                            <i class="fas fa-user-friends"></i>
-                            My Cicrle
-                        </a>
-                    </li>
-                    <li>
-
-                        <a href="{% url 'profile' user.username %}" class="sidebar sidebarFAQ">
-                            <i class="fas fa-question"></i>
-                            FAQ
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-        {% endif %} -->
     {% endblock %}
 
     {% block navbar %}
@@ -233,7 +210,7 @@
       </li> -->
 
 			<li class="nav-item wroovie">
-				<a href="#" class="nav-link">
+				<a href="{% url 'home' %}" class="nav-link">
 
 					<svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="alien-monster" role="img"
 						xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
@@ -252,66 +229,95 @@
 
             {% if user.is_authenticated %}
             <li class="nav-item browse-box">
-                <a href="#" class="nav-link">
+                <a {% block browse_current_page_link %} style="cursor:pointer;" {% endblock %} class="nav-link browse-current-page">
+                    
                     <div class="browse-image-wrapper">
-                        <img class="browse-image" src="{{ community.icon.url }}" alt="browse Image">
+                        {% block browse_current_page_icon %}
+                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="home-lg-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="svg-inline--fa fa-home-lg-alt fa-w-18 fa-9x"><g class="fa-group"><path fill="currentColor" d="M352 496V368a16 16 0 0 0-16-16h-96a16 16 0 0 0-16 16v128a16 16 0 0 1-16 16H80a16 16 0 0 1-16-16V311.07c1.78-1.21 3.85-1.89 5.47-3.35L288 115l218.74 192.9c1.54 1.38 3.56 2 5.26 3.2V496a16 16 0 0 1-16 16H368a16 16 0 0 1-16-16z" class="fa-secondary"></path><path fill="currentColor" d="M527.92 283.91L298.6 81.64a16 16 0 0 0-21.17 0L48.11 283.92a16 16 0 0 1-22.59-1.21L4.1 258.89a16 16 0 0 1 1.21-22.59l256-226a39.85 39.85 0 0 1 53.45 0l255.94 226a16 16 0 0 1 1.22 22.59l-21.4 23.82a16 16 0 0 1-22.6 1.2z" class="fa-primary"></path></g></svg>
+                        {% endblock %}
                     </div>
-                    <span class="link-text">c/{{ community.name | truncatechars:15 }}</span>
+                    <span class="link-text">
+                        {% block browse_current_page_name %}
+                            Base
+                        {% endblock %}
+                    </span>
+                    
+                    <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="chevron-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-chevron-down fa-w-14 fa-9x"><g class="fa-group"><path fill="currentColor" d="M224.1 284.64l-56.89 56.78-154-154.31a24 24 0 0 1 0-33.94l22.65-22.7a23.93 23.93 0 0 1 33.84 0z" class="fa-secondary"></path><path fill="currentColor" d="M435 187.15L241 381.48a23.94 23.94 0 0 1-33.84 0l-40-40 211.34-211a23.93 23.93 0 0 1 33.84 0L435 153.21a24 24 0 0 1 0 33.94z" class="fa-primary"></path></g></svg>
+                                    
                 </a>
-                <ul class="dropdown browse-options" id="dd-browse-options">
+                <ul class="dropdown browse-options" id="dd-browse-options" {% if user.joined_communities.count == 0 %} style="overflow: hidden;" {% endif %}>
+                    <li class="nav-indicator">
+                        <a class="drop-link">
+                            <span class="link-text">Feeds</span>
+                        </a>
+                    </li>
                     <li class="nav-item">
-                        <a href="#" class="drop-link">
-                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="user-cog" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="svg-inline--fa fa-user-cog fa-w-20 fa-9x"><g class="fa-group"><path fill="currentColor" d="M636.3 388.2l-25.8-14.9a117.31 117.31 0 0 0 0-42.6l25.8-14.9a7.24 7.24 0 0 0 3.3-8.5 150.07 150.07 0 0 0-33.2-57.4 7.29 7.29 0 0 0-9-1.4l-25.8 14.9a117.4 117.4 0 0 0-36.9-21.3v-29.8a7.28 7.28 0 0 0-5.7-7.1 150.88 150.88 0 0 0-66.2 0 7.28 7.28 0 0 0-5.7 7.1v29.8a117.4 117.4 0 0 0-36.9 21.3l-25.8-14.9a7.31 7.31 0 0 0-9 1.4 150.07 150.07 0 0 0-33.2 57.4 7.37 7.37 0 0 0 3.3 8.5l25.8 14.9a117.31 117.31 0 0 0 0 42.6l-25.8 14.9a7.24 7.24 0 0 0-3.3 8.5 150.82 150.82 0 0 0 33.2 57.4 7.29 7.29 0 0 0 9 1.4l25.8-14.9a117.4 117.4 0 0 0 36.9 21.3v29.8a7.28 7.28 0 0 0 5.7 7.1 150.88 150.88 0 0 0 66.2 0 7.28 7.28 0 0 0 5.7-7.1v-29.8a117.4 117.4 0 0 0 36.9-21.3l25.8 14.9a7.31 7.31 0 0 0 9-1.4 150.07 150.07 0 0 0 33.2-57.4 7.37 7.37 0 0 0-3.3-8.5zM496 400.5a48.5 48.5 0 1 1 48.5-48.5 48.55 48.55 0 0 1-48.5 48.5z" class="fa-secondary"></path><path fill="currentColor" d="M425.2 491.7v-9.2c-2.3-1.2-4.6-2.6-6.8-3.9l-7.9 4.6a39.23 39.23 0 0 1-48.5-7.3 182.34 182.34 0 0 1-40.2-69.6 39.11 39.11 0 0 1 17.9-45.7l7.9-4.6q-.15-3.9 0-7.8l-7.9-4.6a39.07 39.07 0 0 1-17.9-45.7c.9-2.9 2.2-5.8 3.2-8.7-3.8-.3-7.5-1.2-11.4-1.2h-16.7a174.08 174.08 0 0 1-145.8 0h-16.7A134.43 134.43 0 0 0 0 422.4V464a48 48 0 0 0 48 48h352a47.94 47.94 0 0 0 27.2-8.5 39 39 0 0 1-2-11.8zM224 256A128 128 0 1 0 96 128a128 128 0 0 0 128 128z" class="fa-primary"></path></g></svg>
+                        <a href="{% url 'home' %}" class="drop-link">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="home-lg-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="svg-inline--fa fa-home-lg-alt fa-w-18 fa-9x"><g class="fa-group"><path fill="currentColor" d="M352 496V368a16 16 0 0 0-16-16h-96a16 16 0 0 0-16 16v128a16 16 0 0 1-16 16H80a16 16 0 0 1-16-16V311.07c1.78-1.21 3.85-1.89 5.47-3.35L288 115l218.74 192.9c1.54 1.38 3.56 2 5.26 3.2V496a16 16 0 0 1-16 16H368a16 16 0 0 1-16-16z" class="fa-secondary"></path><path fill="currentColor" d="M527.92 283.91L298.6 81.64a16 16 0 0 0-21.17 0L48.11 283.92a16 16 0 0 1-22.59-1.21L4.1 258.89a16 16 0 0 1 1.21-22.59l256-226a39.85 39.85 0 0 1 53.45 0l255.94 226a16 16 0 0 1 1.22 22.59l-21.4 23.82a16 16 0 0 1-22.6 1.2z" class="fa-primary"></path></g></svg>
                             <span class="link-text">Home</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="drop-link">
-                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="sign-out-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-sign-out-alt fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M64 160v192a32 32 0 0 0 32 32h84a12 12 0 0 1 12 12v40a12 12 0 0 1-12 12H96a96 96 0 0 1-96-96V160a96 96 0 0 1 96-96h84a12 12 0 0 1 12 12v40a12 12 0 0 1-12 12H96a32 32 0 0 0-32 32z" class="fa-secondary"></path><path fill="currentColor" d="M288 424v-96H152a23.94 23.94 0 0 1-24-24v-96a23.94 23.94 0 0 1 24-24h136V88c0-21.4 25.9-32 41-17l168 168a24.2 24.2 0 0 1 0 34L329 441c-15 15-41 4.52-41-17z" class="fa-primary"></path></g></svg>
+                        <a href="{% url 'top' %}" class="drop-link">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="sort-amount-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-sort-amount-up fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M304 416h-64a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h64a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm128-256H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h192a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm-64 128H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM496 32H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h256a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z" class="fa-secondary"></path><path fill="currentColor" d="M16 160h48v304a16 16 0 0 0 16 16h32a16 16 0 0 0 16-16V160h48c14.21 0 21.38-17.24 11.31-27.31l-80-96a16 16 0 0 0-22.62 0l-80 96C-5.35 142.74 1.77 160 16 160z" class="fa-primary"></path></g></svg>
                             <span class="link-text">Top Posts</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="drop-link">
-                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="sign-out-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-sign-out-alt fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M64 160v192a32 32 0 0 0 32 32h84a12 12 0 0 1 12 12v40a12 12 0 0 1-12 12H96a96 96 0 0 1-96-96V160a96 96 0 0 1 96-96h84a12 12 0 0 1 12 12v40a12 12 0 0 1-12 12H96a32 32 0 0 0-32 32z" class="fa-secondary"></path><path fill="currentColor" d="M288 424v-96H152a23.94 23.94 0 0 1-24-24v-96a23.94 23.94 0 0 1 24-24h136V88c0-21.4 25.9-32 41-17l168 168a24.2 24.2 0 0 1 0 34L329 441c-15 15-41 4.52-41-17z" class="fa-primary"></path></g></svg>
+                        <a href="{% url 'top-communities' %}" class="drop-link">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="sort-shapes-up-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-sort-shapes-up-alt fa-w-14 fa-9x"><g class="fa-group"><path fill="currentColor" d="M444.1 438.86L361 301.71c-11.09-18.28-38.81-18.28-49.9 0l-83.2 137.15c-11.08 18.28 2.77 41.14 24.95 41.14h166.3c22.18 0 36.03-22.86 24.95-41.14zM264 224h144a24 24 0 0 0 24-24V56a24 24 0 0 0-24-24H264a24 24 0 0 0-24 24v144a24 24 0 0 0 24 24z" class="fa-secondary"></path><path fill="currentColor" d="M107.31 36.69a16 16 0 0 0-22.62 0l-80 96C-5.35 142.74 1.78 160 16 160h48v304a16 16 0 0 0 16 16h32a16 16 0 0 0 16-16V160h48c14.21 0 21.39-17.24 11.31-27.31z" class="fa-primary"></path></g></svg>
                             <span class="link-text">Top Communities</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="drop-link">
-                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="sign-out-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-sign-out-alt fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M64 160v192a32 32 0 0 0 32 32h84a12 12 0 0 1 12 12v40a12 12 0 0 1-12 12H96a96 96 0 0 1-96-96V160a96 96 0 0 1 96-96h84a12 12 0 0 1 12 12v40a12 12 0 0 1-12 12H96a32 32 0 0 0-32 32z" class="fa-secondary"></path><path fill="currentColor" d="M288 424v-96H152a23.94 23.94 0 0 1-24-24v-96a23.94 23.94 0 0 1 24-24h136V88c0-21.4 25.9-32 41-17l168 168a24.2 24.2 0 0 1 0 34L329 441c-15 15-41 4.52-41-17z" class="fa-primary"></path></g></svg>
+                        <a href="{% url 'latest' %}" class="drop-link">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="asterisk" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-asterisk fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M479 177.64l-.41.23-182.5 100.45 3.45 209.17A24 24 0 0 1 276.06 512h-39.55a24 24 0 0 1-24-24v-.52L216 278 33.47 177.91A24 24 0 0 1 24 145.32l.25-.45 19.5-33.74a24.07 24.07 0 0 1 32.89-8.75l.38.23L256 208l179-105.39a24.07 24.07 0 0 1 33.05 8.12l.23.4 19.5 33.74a24 24 0 0 1-8.78 32.77z" class="fa-secondary"></path><path fill="currentColor" d="M488 366.68l-.25.45-19.5 33.74a24.07 24.07 0 0 1-32.89 8.75l-.38-.23L256 304 77 409.39a24.07 24.07 0 0 1-33-8.12l-.23-.4-19.5-33.74a24 24 0 0 1 8.83-32.77l.41-.23 182.4-100.45-3.45-209.17A24 24 0 0 1 235.94 0h39.55a24 24 0 0 1 24 24v.52L296 234l182.53 100.09a24 24 0 0 1 9.47 32.59z" class="fa-primary"></path></g></svg>
                             <span class="link-text">All</span>
                         </a>
                     </li>
-                    {% for community in user.joined_communities.all %}
-                    <li class="nav-item">
-                        <a href="#" class="drop-link">
-                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="user-circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" class="svg-inline--fa fa-user-circle fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M248,8C111,8,0,119,0,256S111,504,248,504,496,393,496,256,385,8,248,8Zm0,96a88,88,0,1,1-88,88A88,88,0,0,1,248,104Zm0,344a191.61,191.61,0,0,1-146.5-68.2C120.3,344.4,157.1,320,200,320a24.76,24.76,0,0,1,7.1,1.1,124.67,124.67,0,0,0,81.8,0A24.76,24.76,0,0,1,296,320c42.9,0,79.7,24.4,98.5,59.8A191.61,191.61,0,0,1,248,448Z" class="fa-secondary"></path><path fill="currentColor" d="M248,280a88,88,0,1,0-88-88A88,88,0,0,0,248,280Zm48,40a24.76,24.76,0,0,0-7.1,1.1,124.67,124.67,0,0,1-81.8,0A24.76,24.76,0,0,0,200,320c-42.9,0-79.7,24.4-98.5,59.8,68.07,80.91,188.84,91.32,269.75,23.25A192,192,0,0,0,394.5,379.8C375.7,344.4,338.9,320,296,320Z" class="fa-primary"></path></g></svg>
-                            <span class="link-text">c/{{ community.name }}</span>
+                    {% if user.joined_communities.count != 0 %}
+                        <li class="nav-indicator">
+                            <a class="drop-link">
+                                <span class="link-text">My Communities</span>
+                            </a>
+                        </li>
+                        {% for community in user.joined_communities.all %}
+                        <li class="nav-item user-comms">
+                            <a href="{% url 'community-home' community.name %}" class="drop-link">
+                                <div class="browse-image-wrapper">
+                                    <img class="browse-image-comms" src="{{ community.icon.url }}" alt="browse Image">
+                                </div>
+                                <span class="link-text">c/{{ community.name | truncatechars:15 }}</span>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    {% endif %}
+                    <li class="nav-indicator">
+                        <a class="drop-link">
+                            <span class="link-text">Other Options</span>
                         </a>
                     </li>
-                    {% endfor %}
                     <li class="nav-item">
-                        <a href="#" class="drop-link">
-                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="sign-out-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-sign-out-alt fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M64 160v192a32 32 0 0 0 32 32h84a12 12 0 0 1 12 12v40a12 12 0 0 1-12 12H96a96 96 0 0 1-96-96V160a96 96 0 0 1 96-96h84a12 12 0 0 1 12 12v40a12 12 0 0 1-12 12H96a32 32 0 0 0-32 32z" class="fa-secondary"></path><path fill="currentColor" d="M288 424v-96H152a23.94 23.94 0 0 1-24-24v-96a23.94 23.94 0 0 1 24-24h136V88c0-21.4 25.9-32 41-17l168 168a24.2 24.2 0 0 1 0 34L329 441c-15 15-41 4.52-41-17z" class="fa-primary"></path></g></svg>
+                        <a href="{% url 'create-post' %}" class="drop-link">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="pen" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-pen fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M498 142.08l-56.6 56.55-128-128 56.55-56.55a48 48 0 0 1 67.91 0L498 74.17a48 48 0 0 1 0 67.91z" class="fa-secondary"></path><path fill="currentColor" d="M12.85 371.11L.15 485.33a24 24 0 0 0 26.49 26.51l114.14-12.6 278-278-128-128z" class="fa-primary"></path></g></svg>
                             <span class="link-text">Create Post</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="drop-link">
-                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="sign-out-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-sign-out-alt fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M64 160v192a32 32 0 0 0 32 32h84a12 12 0 0 1 12 12v40a12 12 0 0 1-12 12H96a96 96 0 0 1-96-96V160a96 96 0 0 1 96-96h84a12 12 0 0 1 12 12v40a12 12 0 0 1-12 12H96a32 32 0 0 0-32 32z" class="fa-secondary"></path><path fill="currentColor" d="M288 424v-96H152a23.94 23.94 0 0 1-24-24v-96a23.94 23.94 0 0 1 24-24h136V88c0-21.4 25.9-32 41-17l168 168a24.2 24.2 0 0 1 0 34L329 441c-15 15-41 4.52-41-17z" class="fa-primary"></path></g></svg>
+                        <a href="{% url 'create-community' %}" class="drop-link">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="pencil-paintbrush" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-pencil-paintbrush fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M21.08 133l99.11 100.33L216 137.52 146 33.11C84.06-55.29-52.15 52.53 21.08 133zm435.68 258.63a15.26 15.26 0 0 1-14.59-10c-18.13-47.78-48.4-65.38-82.65-70.71l-101.69 101.7C266.65 476 315.43 512 384 512c90.07 0 128-72.38 128-154.73-9.78 6.73-44.14 34.36-55.24 34.36z" class="fa-secondary"></path><path fill="currentColor" d="M19.08 379.68L.33 487.12a21.23 21.23 0 0 0 24.59 24.56l107.44-18.84 296.93-296.93L316.08 82.72zM497.94 59.32l-45.26-45.25a48 48 0 0 0-67.94 0l-46 46 113.2 113.2 46-46a48 48 0 0 0 0-67.95z" class="fa-primary"></path></g></svg>
                             <span class="link-text">Create Community</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="drop-link">
-                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="sign-out-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-sign-out-alt fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M64 160v192a32 32 0 0 0 32 32h84a12 12 0 0 1 12 12v40a12 12 0 0 1-12 12H96a96 96 0 0 1-96-96V160a96 96 0 0 1 96-96h84a12 12 0 0 1 12 12v40a12 12 0 0 1-12 12H96a32 32 0 0 0-32 32z" class="fa-secondary"></path><path fill="currentColor" d="M288 424v-96H152a23.94 23.94 0 0 1-24-24v-96a23.94 23.94 0 0 1 24-24h136V88c0-21.4 25.9-32 41-17l168 168a24.2 24.2 0 0 1 0 34L329 441c-15 15-41 4.52-41-17z" class="fa-primary"></path></g></svg>
+                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="comment-dots" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-comment-dots fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M256 32C114.6 32 0 125.1 0 240c0 49.6 21.4 95 57 130.7C44.5 421.1 2.7 466 2.2 466.5a8 8 0 0 0-1.5 8.7A7.83 7.83 0 0 0 8 480c66.3 0 116-31.8 140.6-51.4A305 305 0 0 0 256 448c141.4 0 256-93.1 256-208S397.4 32 256 32zM128 272a32 32 0 1 1 32-32 32 32 0 0 1-32 32zm128 0a32 32 0 1 1 32-32 32 32 0 0 1-32 32zm128 0a32 32 0 1 1 32-32 32 32 0 0 1-32 32z" class="fa-primary"></path><path fill="currentColor" d="M128 208a32 32 0 1 0 32 32 32 32 0 0 0-32-32zm128 0a32 32 0 1 0 32 32 32 32 0 0 0-32-32zm128 0a32 32 0 1 0 32 32 32 32 0 0 0-32-32z" class="fa-secondary"></path></g></svg>
                             <span class="link-text">Chat</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="drop-link">
-                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="sign-out-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-sign-out-alt fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M64 160v192a32 32 0 0 0 32 32h84a12 12 0 0 1 12 12v40a12 12 0 0 1-12 12H96a96 96 0 0 1-96-96V160a96 96 0 0 1 96-96h84a12 12 0 0 1 12 12v40a12 12 0 0 1-12 12H96a32 32 0 0 0-32 32z" class="fa-secondary"></path><path fill="currentColor" d="M288 424v-96H152a23.94 23.94 0 0 1-24-24v-96a23.94 23.94 0 0 1 24-24h136V88c0-21.4 25.9-32 41-17l168 168a24.2 24.2 0 0 1 0 34L329 441c-15 15-41 4.52-41-17z" class="fa-primary"></path></g></svg>
+                        <a href="{% url 'settings' %}" class="drop-link">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="user-cog" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="svg-inline--fa fa-user-cog fa-w-20 fa-9x"><g class="fa-group"><path fill="currentColor" d="M636.3 388.2l-25.8-14.9a117.31 117.31 0 0 0 0-42.6l25.8-14.9a7.24 7.24 0 0 0 3.3-8.5 150.07 150.07 0 0 0-33.2-57.4 7.29 7.29 0 0 0-9-1.4l-25.8 14.9a117.4 117.4 0 0 0-36.9-21.3v-29.8a7.28 7.28 0 0 0-5.7-7.1 150.88 150.88 0 0 0-66.2 0 7.28 7.28 0 0 0-5.7 7.1v29.8a117.4 117.4 0 0 0-36.9 21.3l-25.8-14.9a7.31 7.31 0 0 0-9 1.4 150.07 150.07 0 0 0-33.2 57.4 7.37 7.37 0 0 0 3.3 8.5l25.8 14.9a117.31 117.31 0 0 0 0 42.6l-25.8 14.9a7.24 7.24 0 0 0-3.3 8.5 150.82 150.82 0 0 0 33.2 57.4 7.29 7.29 0 0 0 9 1.4l25.8-14.9a117.4 117.4 0 0 0 36.9 21.3v29.8a7.28 7.28 0 0 0 5.7 7.1 150.88 150.88 0 0 0 66.2 0 7.28 7.28 0 0 0 5.7-7.1v-29.8a117.4 117.4 0 0 0 36.9-21.3l25.8 14.9a7.31 7.31 0 0 0 9-1.4 150.07 150.07 0 0 0 33.2-57.4 7.37 7.37 0 0 0-3.3-8.5zM496 400.5a48.5 48.5 0 1 1 48.5-48.5 48.55 48.55 0 0 1-48.5 48.5z" class="fa-secondary"></path><path fill="currentColor" d="M425.2 491.7v-9.2c-2.3-1.2-4.6-2.6-6.8-3.9l-7.9 4.6a39.23 39.23 0 0 1-48.5-7.3 182.34 182.34 0 0 1-40.2-69.6 39.11 39.11 0 0 1 17.9-45.7l7.9-4.6q-.15-3.9 0-7.8l-7.9-4.6a39.07 39.07 0 0 1-17.9-45.7c.9-2.9 2.2-5.8 3.2-8.7-3.8-.3-7.5-1.2-11.4-1.2h-16.7a174.08 174.08 0 0 1-145.8 0h-16.7A134.43 134.43 0 0 0 0 422.4V464a48 48 0 0 0 48 48h352a47.94 47.94 0 0 0 27.2-8.5 39 39 0 0 1-2-11.8zM224 256A128 128 0 1 0 96 128a128 128 0 0 0 128 128z" class="fa-primary"></path></g></svg>
                             <span class="link-text">User Settings</span>
                         </a>
                     </li>
@@ -320,9 +326,9 @@
             {% endif %}
 
 			<li class="nav-item search" {% if user.is_authenticated %} style="margin-left: none !important;" {% endif %}>
-				<a href="#" class="nav-link search-link">
+				<a class="nav-link search-link" style="cursor:text">
 
-                    <input class="searchbar" type="search" placeholder="Search"></input>
+                    <input class="searchbar" type="search" maxlength="100" placeholder="Search"></input>
 
                     <div class="search-clear">
                         <svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="times" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="svg-inline--fa fa-times fa-w-10 fa-9x"><path fill="currentColor" d="M193.94 256L296.5 153.44l21.15-21.15c3.12-3.12 3.12-8.19 0-11.31l-22.63-22.63c-3.12-3.12-8.19-3.12-11.31 0L160 222.06 36.29 98.34c-3.12-3.12-8.19-3.12-11.31 0L2.34 120.97c-3.12 3.12-3.12 8.19 0 11.31L126.06 256 2.34 379.71c-3.12 3.12-3.12 8.19 0 11.31l22.63 22.63c3.12 3.12 8.19 3.12 11.31 0L160 289.94 262.56 392.5l21.15 21.15c3.12 3.12 8.19 3.12 11.31 0l22.63-22.63c3.12-3.12 3.12-8.19 0-11.31L193.94 256z" class=""></path></svg>
@@ -336,9 +342,11 @@
             {% if user.is_authenticated %}
 
                 <li class="nav-tasks first">
-                    <a href="#" class="nav-link">
+                    {% if user.profile.email_verified %}
+                    <a href="{% url 'create-post' %}" class="nav-link">
                         <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="pen" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-pen fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M498 142.08l-56.6 56.55-128-128 56.55-56.55a48 48 0 0 1 67.91 0L498 74.17a48 48 0 0 1 0 67.91z" class="fa-secondary"></path><path fill="currentColor" d="M12.85 371.11L.15 485.33a24 24 0 0 0 26.49 26.51l114.14-12.6 278-278-128-128z" class="fa-primary"></path></g></svg>
                     </a>
+                    {% endif %}
                 </li>
 
                 <li class="nav-tasks">
@@ -349,12 +357,12 @@
 
                 <li class="nav-tasks">
                     <a href="#" class="nav-link">
-                        <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="comment-dots" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-comment-dots fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M256 32C114.6 32 0 125.1 0 240c0 49.6 21.4 95 57 130.7C44.5 421.1 2.7 466 2.2 466.5a8 8 0 0 0-1.5 8.7A7.83 7.83 0 0 0 8 480c66.3 0 116-31.8 140.6-51.4A305 305 0 0 0 256 448c141.4 0 256-93.1 256-208S397.4 32 256 32zM128 272a32 32 0 1 1 32-32 32 32 0 0 1-32 32zm128 0a32 32 0 1 1 32-32 32 32 0 0 1-32 32zm128 0a32 32 0 1 1 32-32 32 32 0 0 1-32 32z" class="fa-primary"></path><path fill="currentColor" d="M128 208a32 32 0 1 0 32 32 32 32 0 0 0-32-32zm128 0a32 32 0 1 0 32 32 32 32 0 0 0-32-32zm128 0a32 32 0 1 0 32 32 32 32 0 0 0-32-32z" class="fa-secondary"></path></g></svg>
+                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="comment-dots" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-comment-dots fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M256 32C114.6 32 0 125.1 0 240c0 49.6 21.4 95 57 130.7C44.5 421.1 2.7 466 2.2 466.5a8 8 0 0 0-1.5 8.7A7.83 7.83 0 0 0 8 480c66.3 0 116-31.8 140.6-51.4A305 305 0 0 0 256 448c141.4 0 256-93.1 256-208S397.4 32 256 32zM128 272a32 32 0 1 1 32-32 32 32 0 0 1-32 32zm128 0a32 32 0 1 1 32-32 32 32 0 0 1-32 32zm128 0a32 32 0 1 1 32-32 32 32 0 0 1-32 32z" class="fa-primary"></path><path fill="currentColor" d="M128 208a32 32 0 1 0 32 32 32 32 0 0 0-32-32zm128 0a32 32 0 1 0 32 32 32 32 0 0 0-32-32zm128 0a32 32 0 1 0 32 32 32 32 0 0 0-32-32z" class="fa-secondary"></path></g></svg>
                     </a>
                 </li>
             
                 <li class="nav-item user-box">
-                    <a href="#" class="nav-link">
+                    <a href="{% url 'profile' request.user %}" class="nav-link">
 
                         <div class="user-image-wrapper">
                             <img class="user-image" src="{{ user.profile.image.url }}" alt="User Image">
@@ -366,21 +374,21 @@
                     <ul class="dropdown user-options" id="dd-user-options">
 
                         <li class="nav-item">
-                            <a href="#" class="drop-link">
+                            <a href="{% url 'profile' request.user %}" class="drop-link">
                                 <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="user-circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" class="svg-inline--fa fa-user-circle fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M248,8C111,8,0,119,0,256S111,504,248,504,496,393,496,256,385,8,248,8Zm0,96a88,88,0,1,1-88,88A88,88,0,0,1,248,104Zm0,344a191.61,191.61,0,0,1-146.5-68.2C120.3,344.4,157.1,320,200,320a24.76,24.76,0,0,1,7.1,1.1,124.67,124.67,0,0,0,81.8,0A24.76,24.76,0,0,1,296,320c42.9,0,79.7,24.4,98.5,59.8A191.61,191.61,0,0,1,248,448Z" class="fa-secondary"></path><path fill="currentColor" d="M248,280a88,88,0,1,0-88-88A88,88,0,0,0,248,280Zm48,40a24.76,24.76,0,0,0-7.1,1.1,124.67,124.67,0,0,1-81.8,0A24.76,24.76,0,0,0,200,320c-42.9,0-79.7,24.4-98.5,59.8,68.07,80.91,188.84,91.32,269.75,23.25A192,192,0,0,0,394.5,379.8C375.7,344.4,338.9,320,296,320Z" class="fa-primary"></path></g></svg>
                                 <span class="link-text">Profile</span>
                             </a>
                         </li>
     
                         <li class="nav-item">
-                            <a href="#" class="drop-link">
+                            <a href="{% url 'settings' %}" class="drop-link">
                                 <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="user-cog" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="svg-inline--fa fa-user-cog fa-w-20 fa-9x"><g class="fa-group"><path fill="currentColor" d="M636.3 388.2l-25.8-14.9a117.31 117.31 0 0 0 0-42.6l25.8-14.9a7.24 7.24 0 0 0 3.3-8.5 150.07 150.07 0 0 0-33.2-57.4 7.29 7.29 0 0 0-9-1.4l-25.8 14.9a117.4 117.4 0 0 0-36.9-21.3v-29.8a7.28 7.28 0 0 0-5.7-7.1 150.88 150.88 0 0 0-66.2 0 7.28 7.28 0 0 0-5.7 7.1v29.8a117.4 117.4 0 0 0-36.9 21.3l-25.8-14.9a7.31 7.31 0 0 0-9 1.4 150.07 150.07 0 0 0-33.2 57.4 7.37 7.37 0 0 0 3.3 8.5l25.8 14.9a117.31 117.31 0 0 0 0 42.6l-25.8 14.9a7.24 7.24 0 0 0-3.3 8.5 150.82 150.82 0 0 0 33.2 57.4 7.29 7.29 0 0 0 9 1.4l25.8-14.9a117.4 117.4 0 0 0 36.9 21.3v29.8a7.28 7.28 0 0 0 5.7 7.1 150.88 150.88 0 0 0 66.2 0 7.28 7.28 0 0 0 5.7-7.1v-29.8a117.4 117.4 0 0 0 36.9-21.3l25.8 14.9a7.31 7.31 0 0 0 9-1.4 150.07 150.07 0 0 0 33.2-57.4 7.37 7.37 0 0 0-3.3-8.5zM496 400.5a48.5 48.5 0 1 1 48.5-48.5 48.55 48.55 0 0 1-48.5 48.5z" class="fa-secondary"></path><path fill="currentColor" d="M425.2 491.7v-9.2c-2.3-1.2-4.6-2.6-6.8-3.9l-7.9 4.6a39.23 39.23 0 0 1-48.5-7.3 182.34 182.34 0 0 1-40.2-69.6 39.11 39.11 0 0 1 17.9-45.7l7.9-4.6q-.15-3.9 0-7.8l-7.9-4.6a39.07 39.07 0 0 1-17.9-45.7c.9-2.9 2.2-5.8 3.2-8.7-3.8-.3-7.5-1.2-11.4-1.2h-16.7a174.08 174.08 0 0 1-145.8 0h-16.7A134.43 134.43 0 0 0 0 422.4V464a48 48 0 0 0 48 48h352a47.94 47.94 0 0 0 27.2-8.5 39 39 0 0 1-2-11.8zM224 256A128 128 0 1 0 96 128a128 128 0 0 0 128 128z" class="fa-primary"></path></g></svg>
                                 <span class="link-text">User Settings</span>
                             </a>
                         </li>
     
                         <li class="nav-item">
-                            <a href="#" class="drop-link">
+                            <a href="{% url 'logout' %}?next={{request.path}}" class="drop-link">
                                 <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="sign-out-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-sign-out-alt fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M64 160v192a32 32 0 0 0 32 32h84a12 12 0 0 1 12 12v40a12 12 0 0 1-12 12H96a96 96 0 0 1-96-96V160a96 96 0 0 1 96-96h84a12 12 0 0 1 12 12v40a12 12 0 0 1-12 12H96a32 32 0 0 0-32 32z" class="fa-secondary"></path><path fill="currentColor" d="M288 424v-96H152a23.94 23.94 0 0 1-24-24v-96a23.94 23.94 0 0 1 24-24h136V88c0-21.4 25.9-32 41-17l168 168a24.2 24.2 0 0 1 0 34L329 441c-15 15-41 4.52-41-17z" class="fa-primary"></path></g></svg>
                                 <span class="link-text">Logout</span>
                             </a>
@@ -392,7 +400,7 @@
                 </li>
             {% else %}
                 <li class="nav-item login">
-                    <a href="#" class="nav-link">
+                    <a href="{% url 'login' %}?next={{request.path}}" class="nav-link login-button">
 
                         <span class="link-text">Login</span>
                     </a>                    
@@ -400,15 +408,15 @@
 
                 <li class="nav-item signup">
                     
-                    <a href="#" class="nav-link">
+                    <a href="{% url 'register' %}" class="nav-link signup-button">
 
                         <span class="link-text">Signup</span>
                     </a>
                 </li>
             {% endif %}
 
-			<li class="nav-settings" id="themeButton">
-				<a href="#" class="nav-link">
+			<li class="nav-settings nav-item settings-box">
+				<a class="nav-link" {% block nav_settings_link %} style="cursor: pointer;" {% endblock %}>
 
 					<svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="cog" role="img"
 						xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
@@ -426,15 +434,71 @@
 					<span class="link-text">
 						<p></p>
                     </span>
-    
-
-				</a>
+                </a>
+                
+                <ul class="dropdown settings-options" id="dd-settings-options" {% if user.joined_communities.count == 0 %} style="overflow: hidden;" {% endif %}>
+                    <li class="nav-indicator">
+                        <a class="drop-link">
+                            <span class="link-text">General</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/preferences" class="drop-link">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="palette" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-palette fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M204.29 5c-99.4 19.4-179.5 99.29-199.1 198.4-37 187 131.7 326.39 258.8 306.69 41.2-6.4 61.4-54.59 42.5-91.69-23.1-45.4 9.9-98.4 60.9-98.4h79.7c35.8 0 64.8-29.6 64.9-65.31C511.49 97.13 368.09-26.87 204.29 5zM96 320a32 32 0 1 1 32-32 32 32 0 0 1-32 32zm32-128a32 32 0 1 1 32-32 32 32 0 0 1-32 32zm128-64a32 32 0 1 1 32-32 32 32 0 0 1-32 32zm128 64a32 32 0 1 1 32-32 32 32 0 0 1-32 32z" class="fa-primary"></path><path fill="currentColor" d="M96 256a32 32 0 1 0 32 32 32 32 0 0 0-32-32zm32-128a32 32 0 1 0 32 32 32 32 0 0 0-32-32zm128-64a32 32 0 1 0 32 32 32 32 0 0 0-32-32zm128 64a32 32 0 1 0 32 32 32 32 0 0 0-32-32z" class="fa-secondary"></path></g></svg>
+                            <span class="link-text">Theme</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/about" class="drop-link">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="info-circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-info-circle fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M256 8C119 8 8 119.08 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 110a42 42 0 1 1-42 42 42 42 0 0 1 42-42zm56 254a12 12 0 0 1-12 12h-88a12 12 0 0 1-12-12v-24a12 12 0 0 1 12-12h12v-64h-12a12 12 0 0 1-12-12v-24a12 12 0 0 1 12-12h64a12 12 0 0 1 12 12v100h12a12 12 0 0 1 12 12z" class="fa-secondary"></path><path fill="currentColor" d="M256 202a42 42 0 1 0-42-42 42 42 0 0 0 42 42zm44 134h-12V236a12 12 0 0 0-12-12h-64a12 12 0 0 0-12 12v24a12 12 0 0 0 12 12h12v64h-12a12 12 0 0 0-12 12v24a12 12 0 0 0 12 12h88a12 12 0 0 0 12-12v-24a12 12 0 0 0-12-12z" class="fa-primary"></path></g></svg>
+                            <span class="link-text">About</span>
+                        </a>
+                    </li>
+                    <li class="nav-indicator">
+                        <a class="drop-link">
+                            <span class="link-text">Other</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/help" class="drop-link">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="question-circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-question-circle fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M256 8C119 8 8 119.08 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 422a46 46 0 1 1 46-46 46.05 46.05 0 0 1-46 46zm40-131.33V300a12 12 0 0 1-12 12h-56a12 12 0 0 1-12-12v-4c0-41.06 31.13-57.47 54.65-70.66 20.17-11.31 32.54-19 32.54-34 0-19.82-25.27-33-45.7-33-27.19 0-39.44 13.14-57.3 35.79a12 12 0 0 1-16.67 2.13L148.82 170a12 12 0 0 1-2.71-16.26C173.4 113 208.16 90 262.66 90c56.34 0 116.53 44 116.53 102 0 77-83.19 78.21-83.19 106.67z" class="fa-secondary"></path><path fill="currentColor" d="M256 338a46 46 0 1 0 46 46 46 46 0 0 0-46-46zm6.66-248c-54.5 0-89.26 23-116.55 63.76a12 12 0 0 0 2.71 16.24l34.7 26.31a12 12 0 0 0 16.67-2.13c17.86-22.65 30.11-35.79 57.3-35.79 20.43 0 45.7 13.14 45.7 33 0 15-12.37 22.66-32.54 34C247.13 238.53 216 254.94 216 296v4a12 12 0 0 0 12 12h56a12 12 0 0 0 12-12v-1.33c0-28.46 83.19-29.67 83.19-106.67 0-58-60.19-102-116.53-102z" class="fa-primary"></path></g></svg>
+                            <span class="link-text">Help Center</span>
+                        </a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a href="{% url 'settings' %}" class="drop-link">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="user-cog" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="svg-inline--fa fa-user-cog fa-w-20 fa-9x"><g class="fa-group"><path fill="currentColor" d="M636.3 388.2l-25.8-14.9a117.31 117.31 0 0 0 0-42.6l25.8-14.9a7.24 7.24 0 0 0 3.3-8.5 150.07 150.07 0 0 0-33.2-57.4 7.29 7.29 0 0 0-9-1.4l-25.8 14.9a117.4 117.4 0 0 0-36.9-21.3v-29.8a7.28 7.28 0 0 0-5.7-7.1 150.88 150.88 0 0 0-66.2 0 7.28 7.28 0 0 0-5.7 7.1v29.8a117.4 117.4 0 0 0-36.9 21.3l-25.8-14.9a7.31 7.31 0 0 0-9 1.4 150.07 150.07 0 0 0-33.2 57.4 7.37 7.37 0 0 0 3.3 8.5l25.8 14.9a117.31 117.31 0 0 0 0 42.6l-25.8 14.9a7.24 7.24 0 0 0-3.3 8.5 150.82 150.82 0 0 0 33.2 57.4 7.29 7.29 0 0 0 9 1.4l25.8-14.9a117.4 117.4 0 0 0 36.9 21.3v29.8a7.28 7.28 0 0 0 5.7 7.1 150.88 150.88 0 0 0 66.2 0 7.28 7.28 0 0 0 5.7-7.1v-29.8a117.4 117.4 0 0 0 36.9-21.3l25.8 14.9a7.31 7.31 0 0 0 9-1.4 150.07 150.07 0 0 0 33.2-57.4 7.37 7.37 0 0 0-3.3-8.5zM496 400.5a48.5 48.5 0 1 1 48.5-48.5 48.55 48.55 0 0 1-48.5 48.5z" class="fa-secondary"></path><path fill="currentColor" d="M425.2 491.7v-9.2c-2.3-1.2-4.6-2.6-6.8-3.9l-7.9 4.6a39.23 39.23 0 0 1-48.5-7.3 182.34 182.34 0 0 1-40.2-69.6 39.11 39.11 0 0 1 17.9-45.7l7.9-4.6q-.15-3.9 0-7.8l-7.9-4.6a39.07 39.07 0 0 1-17.9-45.7c.9-2.9 2.2-5.8 3.2-8.7-3.8-.3-7.5-1.2-11.4-1.2h-16.7a174.08 174.08 0 0 1-145.8 0h-16.7A134.43 134.43 0 0 0 0 422.4V464a48 48 0 0 0 48 48h352a47.94 47.94 0 0 0 27.2-8.5 39 39 0 0 1-2-11.8zM224 256A128 128 0 1 0 96 128a128 128 0 0 0 128 128z" class="fa-primary"></path></g></svg>
+                            <span class="link-text">User Settings</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a href="{% url 'login' %}" class="drop-link">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="sign-in-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-sign-in-alt fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M512 160v192a96 96 0 0 1-96 96h-84a12 12 0 0 1-12-12v-40a12 12 0 0 1 12-12h84a32 32 0 0 0 32-32V160a32 32 0 0 0-32-32h-84a12 12 0 0 1-12-12V76a12 12 0 0 1 12-12h84a96 96 0 0 1 96 96z" class="fa-secondary"></path><path fill="currentColor" d="M369 273L201 441c-15 15-41 4.5-41-17v-96H24a23.94 23.94 0 0 1-24-24v-96a23.94 23.94 0 0 1 24-24h136V88c0-21.5 26-32 41-17l168 168a24.2 24.2 0 0 1 0 34z" class="fa-primary"></path></g></svg>
+                            <span class="link-text">Login / Signup</span>
+                        </a>
+                    </li>
+                    {% endif %}         
+                </ul>
 			</li>
 		</ul>
     </nav>
     
     {% endblock %}
 
+    <!-- NOTIFICATIONS -->
+    <div class="notifications" id="notifications" tabindex="-1" style="display: none;" onclick="hideNotifications();">
+        <div class="notification-container">
+            <span class="notification-inner">
+                <div class="notification-wrapper" id="notification-wrapper"></div>
+                <!-- <div class="notification notification-success">This is a Success Notification <div class="4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci reiciendis tempore voluptates ipsam culpa, repellat obcaecati ut modi sint vel animi atque numquam omnis reprehenderit. Nemo eaque fugiat a cumque.</div></div>
+                <div class="notification notification-warning">This is a Warning Notification</div>  -->
+                <div class="notification-btn" id="clear-notif-btn">Clear Notifications</div>
+            </div>
+        </div>
+            <!-- <div class="notification-wrapper">This is a Notification</div> -->
+    </div>
     {% block main %}
     <!-- <main role="main" class="container" style="min-height: 72.8vh;">
         <div class="row">
@@ -481,9 +545,49 @@
         </div>
     </footer> -->
     {% endblock %}
+    </section>
+
+    {% block modal %}
+
+
+
+    {% endblock %}
 
     {% block js %}
-        <script defer src="{% static 'common/js/base.js' %}" type="text/javascript"></script>    
+        <script type="text/javascript">
+            // define variables
+            var user_is_authenticated = '{{ user.is_authenticated }}'==='True'?true:false;
+        </script>
+
+        <script defer src="{% static 'common/js/base.js' %}" type="text/javascript"></script>   
+        <script src="{% static 'common/js/notification.js' %}" type="text/javascript"></script>   
+
+        <script type="text/javascript">
+
+            {% for message in messages %}
+                addNotification("{{ message }}", "{{ message.tags }}");
+            {% endfor %}
+
+            // addNotification("This is a success message", "success");
+            // addNotification("This is a warning message", "warning");
+            // addNotification("This is a error message", "error");
+            // addNotification("As it's an absolutely positioned element change float:right; for right: 0px If it was positioned relatively then you would need to float it to the right however absolute positioning removes the element from the flow of the DOM. One caveat however, make sure the parent element has it's position set either to relative or absolute as required, or the child element could position itself against the highest in the DOM tree that has a position set. ", "error");
+
+        </script>
+        
+        <script type="text/javascript">
+            // define base variables
+            var user_is_authenticated = '{{ user.is_authenticated }}'==='True'?true:false;
+            var request_path = '{{ request.path }}'
+        </script>
+        
+        {% if not user.is_authenticated %}
+            <!-- <script defer src="{% static 'common/js/modal.js' %}" type="text/javascript"></script>
+            <script src="{% static 'common/js/jquery-3.4.1.min.js' %}" type="text/javascript"></script>
+            <script defer src="{% static 'common/js/login.js' %}" type="text/javascript"></script>
+            <script defer src="{% static 'common/js/register.js' %}" type="text/javascript"></script> -->
+        {% endif %}
+
     {% endblock %}
 
     {% block extrajs %}

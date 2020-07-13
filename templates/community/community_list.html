@@ -1,0 +1,402 @@
+{% extends "common/base.html" %}
+{% load static %}
+{% load humanize %}
+{% load mptt_tags %}
+{% load extra_tags %}
+
+
+{% block title %}
+    Communities - wroovie
+{% endblock %}
+
+{% block browse_current_page_name %}
+    Communities
+{% endblock %}
+
+{% block browse_current_page_icon %}
+    <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="ball-pile" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="svg-inline--fa fa-ball-pile fa-w-18 fa-9x"><g class="fa-group"><path fill="currentColor" d="M176 168a80 80 0 1 0 80 80 80 80 0 0 0-80-80zm224 0a80 80 0 1 0 80 80 80 80 0 0 0-80-80z" class="fa-secondary"></path><path fill="currentColor" d="M80 352a80 80 0 1 0 80 80 80 80 0 0 0-80-80zM288 0a80 80 0 1 0 80 80 80 80 0 0 0-80-80zm0 352a80 80 0 1 0 80 80 80 80 0 0 0-80-80zm208 0a80 80 0 1 0 80 80 80 80 0 0 0-80-80z" class="fa-primary"></path></g></svg>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{% static 'community/css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'posts/css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'posts/css/scale.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'community/css/base.css' %}">
+        
+{% endblock %}
+
+{% block fonts %}
+    <link href="https://fonts.googleapis.com/css2?family=Nixie+One&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block main %}
+
+    <div class="wrapper">
+        {% block banner %}
+        {% endblock %}
+
+        <div class="comm-1 post-create">
+            <!-- TODO: Need styling and option to choose number of days, and method of sort -->
+            <!-- <div class="display-timeframe">
+                 days search data
+            </div> -->
+            <div class="comm-1-1">
+
+                
+                <span class="form-heading txt-brk">{{ heading }}</span> 
+
+
+                {% if communities %}
+                    
+                    {% include "community/community_list_big.html" %}
+
+                    <div class="div-gap medium"></div>
+                {% else %}
+
+                    <span class="form-subheading">{{ empty_text }}</span> 
+
+                {% endif %}
+
+            </div>
+
+
+
+            
+            <!-- sidebar -->
+            <div class="comm-1-2">
+                <div class="comm-sidebar">
+
+                    {% if user.is_authenticated %}
+                        <div class="comm-sidebar-box top">  
+                            <div class="comm-sidebar-box-heading">      
+                                <span> Communities</span>    <span class="wroovie-logo">wroovie</span>
+                            </div>
+
+                            <div class="comm-sidebar-box-content opt-list" >      
+                                <div class="community-button sdbr" onclick="window.location.href='{% url 'profile' request.user %}'">
+                                    <div class="community-button-text">My Profile</div>
+                                </div>
+                            </div>
+                            {% if user.administered_communities.all %}
+                            <div class="comm-sidebar-box-content opt-list" >      
+                                <div class="community-button sdbr" onclick="window.location.href='{% url 'modpanel' %}'">
+                                    <div class="community-button-text">Moderator Panel</div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="comm-sidebar-box-content opt-list" >      
+                                <div class="community-button sdbr" onclick="window.location.href='{% url 'create-post' %}'">
+                                    <div class="community-button-text">CREATE POST</div>
+                                </div>
+                            </div>
+                            <div class="comm-sidebar-box-content last-item" >      
+                                <div class="community-button sdbr" onclick="window.location.href='{% url 'create-community' %}'">
+                                    <div class="community-button-text">CREATE COMMUNITY</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {% if rec_memb %}
+                        <div class="comm-sidebar-box"> 
+                            <div class="comm-sidebar-box-heading">
+                                Recently Joined Communities 
+                            </div>
+                            {% for memb in rec_memb %}
+                            <div class="comm-sidebar-box-content list-item" onclick="event.stopPropagation(); window.location.href='{% url 'community-home' memb.community.name %}'">      
+                                <div class="post-community-image-wrapper">
+                                    <img class="post-community-image sdbr" src="{{ memb.community.icon.url }}" alt="Community Icon">
+                                </div>
+                                <div class="post-community-name sdbr">    
+                                    <a>c/{{ memb.community.name }}</a>
+                                </div>
+                            </div>
+                            <hr class="list-sep">
+                            {% endfor %}
+                            <div class="comm-sidebar-box-content" >      
+                                <div class="community-button sdbr" onclick="event.stopPropagation(); window.location.href='{% url 'joined-communities' user.username %}'">
+                                    <div class="community-button-text">VIEW ALL</div>
+                                </div>
+                            </div>
+
+                        </div>
+                        {% endif %}
+
+                        {% if sugg_comm %}
+                        <div class="comm-sidebar-box"> 
+                            <div class="comm-sidebar-box-heading">
+                                Suggested Communities 
+                            </div>
+                            {% for community in sugg_comm %}
+                            <div class="comm-sidebar-box-content list-item" onclick="event.stopPropagation(); window.location.href='{% url 'community-home' community.name %}'">      
+                                <div class="post-community-image-wrapper">
+                                    <img class="post-community-image sdbr" src="{{ community.icon.url }}" alt="Community Icon">
+                                </div>
+                                <div class="post-community-name sdbr">    
+                                    <a>c/{{ community.name }}</a>
+                                </div>
+                            </div>
+                            <hr class="list-sep">
+                            {% endfor %}
+                            <div class="comm-sidebar-box-content">      
+                                <div class="community-button sdbr" onclick="event.stopPropagation(); window.location.href='{% url 'suggested' %}'">
+                                    <div class="community-button-text">VIEW ALL</div>
+                                </div>
+                            </div>
+
+                        </div>
+                        {% endif %}
+
+                        <div class="comm-sidebar-box">             
+                        </div>
+
+                        {% if usr_posts %}
+                        <div class="comm-sidebar-box"> 
+                            <div class="comm-sidebar-box-heading">
+                                My Recent Posts
+                            </div>
+                            {% for post in usr_posts %}
+                            <div class="comm-sidebar-box-content list-item" onclick="event.stopPropagation(); window.location.href='{% url 'post-detail' post.slug %}'">      
+                                {% if post.is_article %}
+                                    {% if post.article.main_img_url %}
+                                        <div class="post-community-image-wrapper">
+                                            <img class="post-community-image post-main-img sdbr" src="{{ post.article.main_img_url }}" alt="Community Icon">
+                                        </div>
+                                        <div class="post-community-name sdbr">    
+                                            <a>{{ post.title | truncatechars:29 }}</a> | <small>Article | {{ post.get_reply_count | cool_number }} replies</small><br/>
+                                            <small>c/{{ post.community.name | truncatechars:10 }} | {{ post.get_timesince_minified }} | {{ post.get_score | cool_number }} pts</small>
+                                        </div>
+                                    {% else %}
+                                    <div class="post-community-name sdbr">    
+                                        <a>{{ post.title | truncatechars:38 }}</a> | <small>Article | {{ post.get_reply_count | cool_number }} replies</small><br/>
+                                        <small>c/{{ post.community.name | truncatechars:15 }} | {{ post.get_timesince_minified }} | {{ post.get_score | cool_number }} pts</small>
+                                    </div>
+                                    {% endif %}
+                                {% else %}
+                                <div class="post-community-name sdbr">    
+                                    <a>{{ post.title | truncatechars:38 }}</a> | <small>Thread | {{ post.get_reply_count | cool_number}} replies</small><br/>
+                                    <small>c/{{ post.community.name | truncatechars:15 }} | {{ post.get_timesince_minified }} | {{ post.get_score | cool_number }} pts</small>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <hr class="list-sep">
+                            {% endfor %}
+                            <div class="comm-sidebar-box-content">      
+                                <div class="community-button sdbr" onclick="event.stopPropagation(); window.location.href='{% url 'profile' user.username %}'">
+                                    <div class="community-button-text">VIEW ALL</div>
+                                </div>
+                            </div>
+
+                        </div>
+                        {% endif %}
+
+                        {% if sugg_posts %}
+                        <div class="comm-sidebar-box"> 
+                            <div class="comm-sidebar-box-heading">
+                                Suggested Posts
+                            </div>
+                            {% for post in sugg_posts %}
+                            <div class="comm-sidebar-box-content list-item" onclick="event.stopPropagation(); window.location.href='{% url 'post-detail' post.slug %}'">      
+                                {% if post.is_article %}
+                                    {% if post.article.main_img_url %}
+                                        <div class="post-community-image-wrapper">
+                                            <img class="post-community-image post-main-img sdbr" src="{{ post.article.main_img_url }}" alt="Community Icon">
+                                        </div>
+                                        <div class="post-community-name sdbr">    
+                                            <a>{{ post.title | truncatechars:29 }}</a> | <small>Article | {{ post.get_reply_count | cool_number }} replies</small><br/>
+                                            <small>c/{{ post.community.name | truncatechars:10 }} | {{ post.get_timesince_minified }} | {{ post.get_score | cool_number }} pts</small>
+                                        </div>
+                                    {% else %}
+                                    <div class="post-community-name sdbr">    
+                                        <a>{{ post.title | truncatechars:38 }}</a> | <small>Article | {{ post.get_reply_count | cool_number }} replies</small><br/>
+                                        <small>c/{{ post.community.name | truncatechars:15 }} | {{ post.get_timesince_minified }} | {{ post.get_score | cool_number }} pts</small>
+                                    </div>
+                                    {% endif %}
+                                {% else %}
+                                <div class="post-community-name sdbr">    
+                                    <a>{{ post.title | truncatechars:38 }}</a> | <small>Thread | {{ post.get_reply_count | cool_number}} replies</small><br/>
+                                    <small>c/{{ post.community.name | truncatechars:15 }} | {{ post.get_timesince_minified }} | {{ post.get_score | cool_number }} pts</small>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <hr class="list-sep">
+                            {% endfor %}
+                            <div class="comm-sidebar-box-content">      
+                                <div class="community-button sdbr" onclick="event.stopPropagation(); window.location.href='{% url 'suggested' %}'">
+                                    <div class="community-button-text">VIEW ALL</div>
+                                </div>
+                            </div>
+
+                        </div>
+                        {% endif %}
+
+                        {% if usr_posts or sugg_posts %}
+                        <div class="comm-sidebar-box">             
+                        </div>
+                        {% endif %}
+                    
+                    {% else %}
+                    <div class="comm-sidebar-box top">  
+                        <div class="comm-sidebar-box-heading">      
+                            <span>Home
+                            </span>    
+                            <span class="wroovie-logo">wroovie</span>
+                        </div>
+
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus pb-0">      
+                            <div class="post-community-name sdbr">    
+                                New to wroovie&nbsp?
+                            </div>
+                        </div>
+
+                        <!-- <hr class="list-sep"> -->
+
+                        <div class="comm-sidebar-box-content last-item" >      
+                            <div class="community-button sdbr" onclick="window.location.href='{% url 'register' %}'">
+                                <div class="community-button-text">JOIN NOW</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="comm-sidebar-box">             
+                    </div>
+
+                    {% endif %}
+
+
+                    {% if trnd_comm %}
+                    <div class="comm-sidebar-box"> 
+                        <div class="comm-sidebar-box-heading">
+                            Popular Communities 
+                        </div>
+                        {% for community in trnd_comm %}
+                        <div class="comm-sidebar-box-content list-item" onclick="event.stopPropagation(); window.location.href='{% url 'community-home' community.name %}'">      
+                            <div class="post-community-image-wrapper">
+                                <img class="post-community-image sdbr" src="{{ community.icon.url }}" alt="Community Icon">
+                            </div>
+                            <div class="post-community-name sdbr">    
+                                <a>c/{{ community.name }}</a>
+                            </div>
+                        </div>
+                        <hr class="list-sep">
+                        {% endfor %}
+                        <div class="comm-sidebar-box-content">      
+                            <div class="community-button sdbr"  onclick="event.stopPropagation(); window.location.href='{% url 'trending-communities' %}'">
+                                <div class="community-button-text">VIEW ALL</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    {% endif %}
+
+                    {% if top_comm %}
+                    <div class="comm-sidebar-box"> 
+                        <div class="comm-sidebar-box-heading">
+                            Top Communities 
+                        </div>
+                        {% for community in top_comm %}
+                        <div class="comm-sidebar-box-content list-item" onclick="event.stopPropagation(); window.location.href='{% url 'community-home' community.name %}'">      
+                            <div class="post-community-image-wrapper">
+                                <img class="post-community-image sdbr" src="{{ community.icon.url }}" alt="Community Icon">
+                            </div>
+                            <div class="post-community-name sdbr">    
+                                <a>c/{{ community.name }}</a>
+                            </div>
+                        </div>
+                        <hr class="list-sep">
+                        {% endfor %}
+                        <div class="comm-sidebar-box-content">      
+                            <div class="community-button sdbr"  onclick="event.stopPropagation(); window.location.href='{% url 'top-communities' %}'">
+                                <div class="community-button-text">VIEW ALL</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    {% endif %}
+                    
+                    <section class="site-footer">
+                        <div class="comm-sidebar-box">             
+                        </div>
+
+                        <div class="comm-sidebar-box comm-sidebar-footer">  
+                            <div class="comm-sidebar-box-content sidebox-footer">      
+                                <div class="sidebox-footer-1">
+                                    <a >Help</a>
+                                    <a >App</a>
+                                    <a href="{% url 'trending-communities' %}">Communities</a>
+                                    <a href="{% url 'top' %}">Top Posts</a>
+                                    <a >Topics</a>
+                                </div>
+                                <div class="sidebox-footer-2">
+                                    <a >About</a>
+                                    <a >Careers</a>
+                                    <a >Advertise</a>
+                                    <a >Blog</a>
+                                    <a >Terms</a>
+                                    <a >Policies</a>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="comm-sidebar-box-content wroovie-logo">      
+                                wroovie.com © 2020
+                            </div> 
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        
+
+    </div>
+
+    
+    <!-- {% if is_paginated %}
+    
+        {% if page_obj.has_previous %}
+            <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+        
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+        {% endif %}
+
+    {% endif %} -->
+
+{% endblock %}
+
+
+{% block extrajs %}
+    <script src="{% static 'common/js/jquery-3.4.1.min.js' %}" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        // define variables
+        var user_is_authenticated = '{{ user.is_authenticated }}'==='True'?true:false;
+        var user_is_member = '{{ user_is_member }}'==='True'?true:false;
+        var community_name = '{{ post.community.name }}'
+        var post_slug = '{{ post.slug }}'
+        var request_path = '{{ request.path }}'
+    </script>
+
+    <!-- <script src="{% static 'posts/js/base.js' %}" type="text/javascript"></script> -->
+    <!-- <script src="{% static 'posts/js/server.js' %}" type="text/javascript"></script> -->
+
+    <!-- <script src="{% static 'posts/js/post_create.js' %}" type="text/javascript"></script> -->
+
+    <!-- {% if post_type == 'Thread' %}
+        <script src="{% static 'common/js/trix.js' %}" type="text/javascript"></script>
+        <script src="{% static 'posts/js/thread_create.js' %}" type="text/javascript"></script>
+    {% else %}
+        <script src="{% static 'posts/js/article_create.js' %}" type="text/javascript"></script>
+    {% endif %} -->
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% load static %}
+{% load humanize %}
+{% load extra_tags %}
+
+<div class="" style="display:flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between;">
+{% for user in users %}
+<div class="comm-content-box" onclick=" location.href = '{% url 'profile' user %}'; event.stopPropagation();" style="min-width: 32%">
+    
+    <div class="comm-content-box-1" style="width: 1rem;">
+
+
+    </div>
+
+    <div class="comm-content-box-2" style="overflow:hidden; width: 100%">
+
+
+        <div class="post-title txt-brk" style="display:flex; align-items: center; margin-bottom: 10px;">
+
+            <div class="post-community-image-wrapper" style="float:right; margin-right: 22px; width: 40px; height: 40px; margin-top:3px;">
+                <img style="width: 40px; height: 40px; border-radius: 50%; border: 3px solid rgba(255, 255, 255, 0.123);" class="post-community-image post-main-img sdbr" src="{{ user.profile.image.url }}" alt="Community Icon">
+            </div>
+            <span style="font-size: 18px; display:flex; flex-direction:column; justify-content: center; margin-top: 10px;">
+            u/{{ user.username }}<br/>
+            <small style="color:#919394; margin-top: 2px; font-weight: normal;">
+                    {% with user.posts.count as post_count %}
+                        {% if post_count == 1 %}    
+                            <strong>1</strong> post
+                        {% else %}
+                            <strong>{{ post_count | cool_number }}</strong> posts
+                        {% endif %}
+                    {% endwith %}
+            </small>
+            </span>
+
+        </div>
+
+
+
+
+    </div>
+
+</div>
+
+{% endfor %}
+</div>

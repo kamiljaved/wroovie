@@ -1,0 +1,142 @@
+{% load static %}
+{% load humanize %}
+{% load mptt_tags %}
+{% load extra_tags %}
+
+{% if replies %}
+
+
+{% if user.is_authenticated %}
+<script src="{% static 'posts/js/vote.js' %}" type="text/javascript"></script>
+{% endif %}
+
+{% for reply in replies %}
+{% if reply.level < 5 %}
+<div class="comm-content-box" id='rply-container-{{reply.id}}' onclick="window.location.href = '{% url 'post-detail' reply.post.slug %}#rply-container-{{reply.id}}'; event.stopPropagation();">
+
+    <div class="comm-content-box-1">
+
+        {% if user.is_authenticated %}
+        <div class="post-vote-button upvote-button {% if user in reply.upvotes.all %} sel {% endif %}" id="rply-upvt-btn-{{ reply.id }}" onclick="event.stopPropagation(); replyUpvote(event, {{reply.id}});">
+        {% else %}    
+        <div class="post-vote-button upvote-button" onclick="event.stopPropagation();">
+        {% endif %}
+
+            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="arrow-alt-square-up" role="img"
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                class="svg-inline--fa fa-arrow-alt-square-up fa-w-14 fa-9x">
+                <g class="fa-group">
+                    <path fill="currentColor"
+                        d="M400 32H48A48 48 0 0 0 0 80v352a48 48 0 0 0 48 48h352a48 48 0 0 0 48-48V80a48 48 0 0 0-48-48zm-60.15 224h-71.49v116a12.07 12.07 0 0 1-12.1 12h-64.52a12.07 12.07 0 0 1-12.1-12V256h-71.49c-10.78 0-16.23-12.83-8.57-20.32l116-115.16a12.08 12.08 0 0 1 17 0l115.84 115.16c7.66 7.49 2.21 20.32-8.57 20.32z"
+                        class="fa-secondary"></path>
+                    <path fill="currentColor"
+                        d="M256.26 384h-64.52a12.07 12.07 0 0 1-12.1-12V256h-71.49c-10.78 0-16.23-12.83-8.57-20.32l116-115.16a12.08 12.08 0 0 1 17 0l115.84 115.16c7.66 7.49 2.21 20.32-8.57 20.32h-71.49v116a12.07 12.07 0 0 1-12.1 12z"
+                        class="fa-primary"></path>
+                </g>
+            </svg>
+        </div>
+
+        <div class="post-score" id="rply-score-div-{{reply.id}}">
+            {% subtract_and_cool_number reply.upvotes.count reply.downvotes.count %}
+        </div>
+
+        {% if user.is_authenticated %}
+        <div class="post-vote-button downvote-button {% if user in reply.downvotes.all %} sel {% endif %}" id="rply-dnvt-btn-{{ reply.id }}" onclick="event.stopPropagation(); replyDownvote(event, {{reply.id}});">
+        {% else %}    
+        <div class="post-vote-button downvote-button" onclick="event.stopPropagation();">
+        {% endif %}
+
+            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="arrow-alt-square-down" role="img"
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                class="svg-inline--fa fa-arrow-alt-square-down fa-w-14 fa-9x">
+                <g class="fa-group">
+                    <path fill="currentColor"
+                        d="M400 32H48A48 48 0 0 0 0 80v352a48 48 0 0 0 48 48h352a48 48 0 0 0 48-48V80a48 48 0 0 0-48-48zm-51.58 244.32l-116 115.16a12.08 12.08 0 0 1-17 0L99.58 276.32c-7.66-7.49-2.21-20.32 8.57-20.32h71.49V140a12.07 12.07 0 0 1 12.1-12h64.52a12.07 12.07 0 0 1 12.1 12v116h71.49c10.78 0 16.23 12.83 8.57 20.32z"
+                        class="fa-secondary"></path>
+                    <path fill="currentColor"
+                        d="M191.74 128h64.52a12.07 12.07 0 0 1 12.1 12v116h71.49c10.78 0 16.23 12.83 8.57 20.32l-116 115.16a12.08 12.08 0 0 1-17 0L99.58 276.32c-7.66-7.49-2.21-20.32 8.57-20.32h71.49V140a12.07 12.07 0 0 1 12.1-12z"
+                        class="fa-primary"></path>
+                </g>
+            </svg>
+        </div>
+
+    </div>
+
+    <div class="comm-content-box-2">
+        
+        <div class="post-info">
+            On&nbsp
+
+            
+
+            <strong class="post-community-name">    
+                <a href="{% url 'post-detail' reply.post.slug %}" onclick="event.stopPropagation();">{{ reply.post.title | truncatechars:35 }}</a>
+            </strong>
+            {% if reply.post.is_article %}
+                {% if reply.post.article.main_img_url %}
+                &nbsp&nbsp
+                <div class="post-community-image-wrapper">
+                    <img style="border-radius: 4px;" class="post-community-image" src="{{ reply.post.article.main_img_url }}" alt="Community Icon">
+                </div>
+                {% endif %}
+            {% else %}
+            &nbsp
+            {% endif %}
+            | 
+            {{ reply.post.get_type }}
+            in&nbsp
+            <strong class="post-community-name">    
+                <a href="{% url 'community-home' reply.post.community.name %}" onclick="event.stopPropagation();">c/{{ reply.post.community.name }}</a>
+            </strong>
+
+        </div>
+        
+        <div class="post-text" style="max-height: 500px; overflow:hidden;">
+            {{ reply.content|safe | truncatechars_html:300 | truncatewords_html:50 }}
+            <span class="post-overlay"></span>
+        </div>
+        
+        {% if user.is_authenticated %}
+        <div class="post-options">
+            <div class="post-options-button" onclick="event.stopPropagation();">
+                <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="share-alt" role="img"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                    class="svg-inline--fa fa-share-alt fa-w-14 fa-9x">
+                    <g class="fa-group">
+                        <path fill="currentColor"
+                            d="M155.79 180.9l102.49-64.06a95.93 95.93 0 0 0 33.93 54.26l-102.49 64.06a95.93 95.93 0 0 0-33.93-54.26zm136.42 160l-102.49-64.06a95.93 95.93 0 0 1-33.93 54.26l102.49 64.06a95.93 95.93 0 0 1 33.93-54.26z"
+                            class="fa-primary"></path>
+                        <path fill="currentColor"
+                            d="M96 160a96 96 0 1 0 96 96 96 96 0 0 0-96-96zm256 32a96 96 0 1 0-96-96 96 96 0 0 0 96 96zm0 128a96 96 0 1 0 96 96 96 96 0 0 0-96-96z"
+                            class="fa-secondary"></path>
+                    </g>
+                </svg>
+                <div class="post-options-button-text">Share</div>
+            </div>
+
+            <div class="post-info" style="padding: 0; margin-top: auto; margin-bottom: auto; display:flex; align-items: center;">
+                <div class="post-time">
+                    {{ reply.dt_creation | naturaltime }}
+                </div>
+                |                                        
+                {% with reply.children.count as reply_reply_count %}
+                    {% if reply_reply_count == 1 %}
+                        1 reply
+                    {% else %}
+                        {{ reply_reply_count }} replies
+                    {% endif %}
+                {% endwith %} 
+            </div>
+        </div>
+        {% endif %}
+
+
+    </div>
+
+</div>
+{% endif %}
+{% endfor %}
+
+{% elif empty_text %}
+<span class="form-heading txt-brk">{{ empty_text }}</span> 
+{% endif %}

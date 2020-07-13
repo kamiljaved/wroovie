@@ -123,9 +123,25 @@
       left: 0;
       transform: translateX(0);
     }
-    
+
     .browse-box:hover .dropdown .drop-link{
       height: calc(var(--nav-height) - 1rem) !important;
+    }
+    
+    .browse-box:hover .dropdown .nav-indicator .drop-link{
+      height: calc(var(--nav-height) - 1rem - 1px) !important;
+    }
+
+    .settings-box:hover .dropdown .drop-link{
+      height: calc(var(--nav-height) - 1rem) !important;
+    }
+    
+    .settings-box:hover .dropdown .nav-indicator .drop-link{
+      height: calc(var(--nav-height) - 1rem - 1px) !important;
+    }
+    
+    .settings-box:hover #dd-settings-options{
+      height: calc(6 * calc(var(--nav-height) - 1rem));
     }
 
     .nav-item:hover #dd-user-options{
@@ -133,7 +149,7 @@
     }
     
     .nav-item:hover #dd-browse-options{
-      height: calc(8 * calc(var(--nav-height) - 1rem));
+      height: calc(10 * calc(var(--nav-height) - 1rem));
     }
 
     .nav-item:hover #dd-more{

@@ -1,0 +1,71 @@
+.bg-tr
+{
+    background-color: transparent !important;
+}
+
+.feed-sel1 {
+    padding-top: 10px;
+
+    min-width: 45rem;
+
+    max-width: 65rem;
+
+    margin-top: 8px;
+
+    width: 100%;
+
+}
+
+.feed-sel2 {
+    width: 100%;
+}
+
+
+.feed-sel2 .comm-1-1
+{
+    width: 100%;
+}
+
+.feed-sel1 .comm-content-box
+{
+    margin-bottom: 0;
+    width: 100%;
+}
+
+
+
+.user-icon {
+    border-radius: 50%;
+    border: 5px solid rgba(255, 255, 255, 0.123);
+    width: calc(80px - 5px);
+    height: calc(80px - 5px);
+    top: -1rem;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.num-list .fix-width
+{
+    width: 100px;
+}
+
+.num-list a strong
+{
+    font-weight: bold;
+}
+
+div.comm-sidebar-box-heading.user-banner
+{
+    color: rgb(233, 237, 240);
+    font-size: 16px;
+}
+
+div.comm-sidebar-box:hover .user-banner
+{
+    color: rgb(233, 237, 240);
+}
+
+div.comm-sidebar-box-heading.user-banner a
+{
+    color: rgba(255, 255, 255, 0.486);
+}

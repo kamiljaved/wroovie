@@ -1,0 +1,48 @@
+{% load static %}
+{% load humanize %}
+{% load extra_tags %}
+
+<div class="" style="display:flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between;">
+{% for community in communities %}
+<div class="comm-content-box" onclick=" location.href = '{% url 'community-home' community.name %}'; event.stopPropagation();" style="min-width: 49%">
+    
+    <div class="comm-content-box-1" style="width: 1rem;">
+
+
+    </div>
+
+    <div class="comm-content-box-2" style="overflow:hidden; width: 100%">
+        <div class="post-info">
+            {% with community.members.count as memb_count %}
+                {% if memb_count == 1 %}    
+                    <strong>1</strong> &nbspmember
+                {% else %}
+                    <strong>{{ memb_count | cool_number }}</strong> &nbspmembers
+                {% endif %}
+            {% endwith %}
+            &nbsp| Created {{ community.dt_creation | date:"DATE_FORMAT" }}
+        </div>
+
+        <div class="post-title " style="display:flex; align-items: center; margin-bottom: 10px;">
+
+            <div class="post-community-image-wrapper" style="float:right; margin-right: 22px; width: 60px; height: 60px; margin-top:3px;">
+                <img style="width: 60px; height: 60px; border-radius: 50%; border: 5px solid rgba(255, 255, 255, 0.123);" class="post-community-image post-main-img sdbr" src="{{ community.icon.url }}" alt="Community Icon">
+            </div>
+            <span style="font-size: 18px; display:flex; flex-direction:column; justify-content: center; margin-top: 10px;">
+            c/{{ community.name }}<br/>
+            <small style="color:#919394; margin-top: 2px; text-overflow: ellipsis;">{{community.title|truncatechars:50}}</small>
+            </span>
+
+        </div>
+            
+        <div class="post-text" style="max-height:5px; overflow:hidden;">
+        </div>
+
+
+
+    </div>
+
+</div>
+
+{% endfor %}
+</div>

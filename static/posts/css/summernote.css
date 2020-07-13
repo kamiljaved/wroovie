@@ -1,0 +1,91 @@
+
+.note-editor.card {
+    background: transparent;
+
+    border: 1px solid #3a3a3acb !important;
+}
+
+
+
+.note-toolbar
+{
+    background: transparent !important;
+    background: #1A1A1B !important;
+}
+.note-resizebar
+{
+    background: #1A1A1B !important;
+}
+
+.note-editable.card-block
+{
+    background: transparent !important;
+    color: #FFFFFF !important;
+}
+.note-statusbar
+{
+    border-top: 1px solid #3a3a3acb !important;
+    background: #1A1A1B !important;
+}
+body {
+    background: transparent;
+}
+
+.note-btn-group i
+{
+    fill: white;
+    color: white;
+}
+
+.note-btn-group button:not(.note-color-reset):not(.note-color-select)
+{
+    background: rgb(40, 40, 41);
+
+    border: 1px solid #3a3a3acb !important;
+}
+
+.dropdown-toggle * 
+{
+    color: white;
+}
+
+.dropdown-toggle::after {
+    color: white;
+}
+
+.note-btn-group button:not(.note-color-reset):not(.note-color-select):hover
+{
+    background: rgb(73, 73, 75);
+}
+
+.dropdown-toggle:active
+{
+    background: rgb(73, 73, 75);
+}
+
+.dropdown-toggle:focus
+{
+    background: rgb(73, 73, 75);
+}
+
+.note-btn-group.show > button {
+    background: rgb(113, 113, 119) !important;
+}
+
+.note-btn-group > button.active {
+    background: rgb(113, 113, 119) !important;
+}
+
+.note-btn-group > button:focus {
+    background: rgb(113, 113, 119) !important;
+}
+.note-btn-group.btn-group.note-view, .note-btn-group.btn-group.note-help
+{
+    display: none;
+    pointer-events: none;
+}
+
+.note-btn-group .note-btn > *
+{
+    color: white;
+} 

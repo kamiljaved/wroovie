@@ -8,14 +8,23 @@
     {{ community.name }} - wroovie
 {% endblock %}
 
-{% block pageheader %}
-    <h1>{{ community.name }}</h1>
-    <br/>
+{% block browse_current_page_name %}
+    c/{{ community.name | truncatechars:15 }}
+{% endblock %}
+
+{% block browse_current_page_icon %}
+    <img class="" src="{{ community.icon.url }}" alt="Community Image">
 {% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{% static 'community/css/base.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'community/css/scale.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'feeds/css/home.css' %}">
+{% endblock %}
+
+
+{% block fonts %}
+    <link href="https://fonts.googleapis.com/css2?family=Nixie+One&display=swap" rel="stylesheet">
 {% endblock %}
 
 {% block main %}
@@ -44,6 +53,12 @@
                         <div class="comm-buttons">
 
                             {% if user.is_authenticated %}
+                                {% if user == community.creator or user in community.admins.all %}
+                                <div class="community-button comm-btn-manage" onclick="window.location.href = '{% url 'community-update' community.name %}' ">
+                                    <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="wrench" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-wrench fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M322 280.47l-.26.26a144.62 144.62 0 0 1-90.3-90.64L18.09 403.41a64 64 0 0 0 90.5 90.5L322 280.49zM63.35 472.65a24 24 0 1 1 24-24 24 24 0 0 1-24 24z" class="fa-secondary"></path><path fill="currentColor" d="M469.69 246.2c-40 40-97.48 51-147.72 34.27l-.26.26a144.64 144.64 0 0 1-90.41-90.94l.13-.13c-16.54-50.17-5.6-107.71 34.13-147.4a144.38 144.38 0 0 1 136.91-38 12 12 0 0 1 5.67 20.19l-74.53 74.48 11.33 68L413 178.28l74.53-74.52a12 12 0 0 1 20.17 5.52 144 144 0 0 1-38.01 136.92z" class="fa-primary"></path></g></svg>
+                                    <div class="community-button-text">MANAGE</div>
+                                </div>
+                                {% else %}
                                 <div class="community-button comm-btn-join">
                                     <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="user-check" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="svg-inline--fa fa-user-check fa-w-20 fa-9x"><g class="fa-group"><path fill="currentColor" d="M636.6 159.6a12 12 0 0 1-.1 16.8L495.2 316.6a11.86 11.86 0 0 1-16.8-.1l-81.7-82.3a11.86 11.86 0 0 1 .1-16.8l28.1-27.9a11.86 11.86 0 0 1 16.8.1l45.5 45.8 104.8-104a11.86 11.86 0 0 1 16.8.1z" class="join-tick {% if user_is_member %} fa-secondary {% endif %}"></path><path fill="currentColor" d="M224 256A128 128 0 1 0 96 128a128 128 0 0 0 128 128zm89.6 32h-16.7a174.08 174.08 0 0 1-145.8 0h-16.7A134.43 134.43 0 0 0 0 422.4V464a48 48 0 0 0 48 48h352a48 48 0 0 0 48-48v-41.6A134.43 134.43 0 0 0 313.6 288z" class="fa-primary"></path></g></svg>
                                     <div class="community-button-text">
@@ -58,8 +73,9 @@
                                     <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="exclamation-triangle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="svg-inline--fa fa-exclamation-triangle fa-w-18 fa-9x"><g class="fa-group"><path fill="currentColor" d="M569.52 440L329.58 24c-18.44-32-64.69-32-83.16 0L6.48 440c-18.42 31.94 4.64 72 41.57 72h479.89c36.87 0 60.06-40 41.58-72zM288 448a32 32 0 1 1 32-32 32 32 0 0 1-32 32zm38.24-238.41l-12.8 128A16 16 0 0 1 297.52 352h-19a16 16 0 0 1-15.92-14.41l-12.8-128A16 16 0 0 1 265.68 192h44.64a16 16 0 0 1 15.92 17.59z" class="fa-primary"></path><path fill="currentColor" d="M310.32 192h-44.64a16 16 0 0 0-15.92 17.59l12.8 128A16 16 0 0 0 278.48 352h19a16 16 0 0 0 15.92-14.41l12.8-128A16 16 0 0 0 310.32 192zM288 384a32 32 0 1 0 32 32 32 32 0 0 0-32-32z" class="fa-secondary"></path></g></svg>
                                     <div class="community-button-text">REPORT</div>
                                 </div>
+                                {% endif %}
                             {% else %}
-                                <a href="{% url 'login' %}">
+                                <a href="{% url 'login' %}?next={{request.path}}">
                                     <div class="community-button comm-btn-join">
                                         <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="user-check" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="svg-inline--fa fa-user-check fa-w-20 fa-9x"><g class="fa-group"><path fill="currentColor" d="M636.6 159.6a12 12 0 0 1-.1 16.8L495.2 316.6a11.86 11.86 0 0 1-16.8-.1l-81.7-82.3a11.86 11.86 0 0 1 .1-16.8l28.1-27.9a11.86 11.86 0 0 1 16.8.1l45.5 45.8 104.8-104a11.86 11.86 0 0 1 16.8.1z" class="join-tick"></path><path fill="currentColor" d="M224 256A128 128 0 1 0 96 128a128 128 0 0 0 128 128zm89.6 32h-16.7a174.08 174.08 0 0 1-145.8 0h-16.7A134.43 134.43 0 0 0 0 422.4V464a48 48 0 0 0 48 48h352a48 48 0 0 0 48-48v-41.6A134.43 134.43 0 0 0 313.6 288z" class="fa-primary"></path></g></svg>
                                         <div class="community-button-text">
@@ -78,11 +94,52 @@
                 </div>
             </div>
         {% endblock %}
+        
+        
+
 
         <div class="comm-1">
-
+            <!-- TODO: Need styling and option to choose number of days, and method of sort -->
+            <!-- <div class="display-timeframe">
+                 days search data
+            </div> -->
             <div class="comm-1-1">
-                {% for post in community.posts.all %}
+
+
+            <!-- feed select box -->
+            <div class="comm-content-box create-box">
+
+                <div class="comm-content-box-1">
+                    <div class="post-create-button" onclick="event.stopPropagation();">
+                        <svg class="fsvg-top {% if post_sorting == 'top' %} sel {% endif %} svg-inline--fa fa-sort-amount-up fa-w-16 fa-9x" aria-hidden="true" focusable="false" data-prefix="fad" data-icon="sort-amount-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><g class="fa-group"><path fill="currentColor" d="M304 416h-64a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h64a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm128-256H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h192a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm-64 128H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM496 32H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h256a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z" class="fa-secondary"></path><path fill="currentColor" d="M16 160h48v304a16 16 0 0 0 16 16h32a16 16 0 0 0 16-16V160h48c14.21 0 21.38-17.24 11.31-27.31l-80-96a16 16 0 0 0-22.62 0l-80 96C-5.35 142.74 1.77 160 16 160z" class="fa-primary"></path></g></svg>
+                        <svg class="fsvg-all {% if post_sorting == 'latest' %} sel {% endif %} svg-inline--fa fa-asterisk fa-w-16 fa-9x" aria-hidden="true" focusable="false" data-prefix="fad" data-icon="asterisk" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><g class="fa-group"><path fill="currentColor" d="M479 177.64l-.41.23-182.5 100.45 3.45 209.17A24 24 0 0 1 276.06 512h-39.55a24 24 0 0 1-24-24v-.52L216 278 33.47 177.91A24 24 0 0 1 24 145.32l.25-.45 19.5-33.74a24.07 24.07 0 0 1 32.89-8.75l.38.23L256 208l179-105.39a24.07 24.07 0 0 1 33.05 8.12l.23.4 19.5 33.74a24 24 0 0 1-8.78 32.77z" class="fa-secondary"></path><path fill="currentColor" d="M488 366.68l-.25.45-19.5 33.74a24.07 24.07 0 0 1-32.89 8.75l-.38-.23L256 304 77 409.39a24.07 24.07 0 0 1-33-8.12l-.23-.4-19.5-33.74a24 24 0 0 1 8.83-32.77l.41-.23 182.4-100.45-3.45-209.17A24 24 0 0 1 235.94 0h39.55a24 24 0 0 1 24 24v.52L296 234l182.53 100.09a24 24 0 0 1 9.47 32.59z" class="fa-primary"></path></g></svg>
+                    </div>
+            
+                </div>
+            
+                <div class="comm-content-box-2">
+                    
+                    <div class="post-options post-create-opt feed-sort">
+                        
+                        <div class="post-options-button {% if post_sorting == 'top' %} sel {% else %} nosel {% endif %} nosvg feed-top" onclick="event.stopPropagation(); {% if post_sorting == 'latest' %} window.location.href='{% url 'community-home' community.name %}' {% endif %}">
+                            <div class="post-options-button-text">
+                                TOP
+                            </div>
+                        </div>
+                    <div class="post-options-button {% if post_sorting == 'latest' %} sel {% else %} nosel {% endif %} nosvg feed-all" onclick="event.stopPropagation(); {% if post_sorting == 'top' %} window.location.href='{% url 'community-latest' community.name %}' {% endif %}">
+                            <div class="post-options-button-text">
+                                LATEST
+                            </div>
+                        </div>
+                    </div>
+            
+                </div>
+            
+            </div>
+
+
+                {% include "posts/posts_list.html" %}
+                <!-- {% for post in posts %}
 
                     <div class="comm-content-box">
                         
@@ -148,39 +205,131 @@
                         </div>
 
                     </div>
-                {% endfor %}
+                {% endfor %} -->
             </div>
 
             <div class="comm-1-2">
                 <div class="comm-sidebar">
 
-                    <div class="comm-sidebar-box">  
-                        <div class="comm-sidebar-box-content">      
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi eum nam facilis, excepturi voluptates odit, at qui, rerum 
-                            aboriosam iusto totam a quasi exercitationem? Repellat, optio. Veniam nemo voluptatem deserunt.
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Deserunt, omnis! Lorem ipsum, dolor sit amet consectetur adipisicing 
-                            elit. Nam aut iure iusto consequatur, ex corrupti vitae ipsa assumenda architecto neque tempore 
+
+                    <div class="comm-sidebar-box top"> 
+                        <div class="comm-sidebar-box-heading">
+                            About Community  
                         </div>
-                        <hr>
+
                         <div class="comm-sidebar-box-content">      
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi eum nam facilis, excepturi voluptates odit, at qui, rerum 
-                            aboriosam iusto totam a quasi exercitationem? Repellat, optio. Veniam nemo voluptatem deserunt.
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Deserunt, omnis! Lorem ipsum, dolor sit amet consectetur adipisicing 
-                            elit. Nam aut iure iusto consequatur, ex corrupti vitae ipsa assumenda architecto neque tempore 
-                        </div> 
-                    </div>
-                    
-                    <div class="comm-sidebar-box">             
+                            <div class="post-community-name">    
+                                <a>{{ community.about }}</a>
+                            </div>
+                        </div>
+                        <hr class="list-sep">
+
+                        <div class="comm-sidebar-box-content">      
+                            <div class="post-community-name comm-abt">
+                                {% with community.members.count as memb_count %}
+                                    {% if memb_count == 1 %}    
+                                        <a><strong>1</strong> member</a>
+                                    {% else %}
+                                        <a><strong>{{ memb_count | cool_number }}</strong> members</a>
+                                    {% endif %}
+                                {% endwith %}
+                            </div>
+                        </div>
+                        <hr class="list-sep">
+                        
+
+                        <div class="comm-sidebar-box-content">  
+                            <div class="post-community-name comm-create">   
+                                <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="birthday-cake" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-birthday-cake fa-w-14 fa-9x"><g class="fa-group"><path fill="currentColor" d="M373.5 384c-28 0-31.39 32-74.75 32-43.55 0-46.6-32-74.75-32-27.28 0-31.66 32-74.5 32-43.5 0-46.8-32-74.75-32S43.36 416 0 416v96h448v-96c-43.25 0-47-32-74.5-32zM96 96c17.75 0 32-13.5 32-40S108 0 96 0c0 41-32 33-32 64a31.9 31.9 0 0 0 32 32zm128 0c17.75 0 32-13.5 32-40S236 0 224 0c0 41-32 33-32 64a31.9 31.9 0 0 0 32 32zm128 0c17.75 0 32-13.5 32-40S364 0 352 0c0 41-32 33-32 64a31.9 31.9 0 0 0 32 32z" class="fa-secondary"></path><path fill="currentColor" d="M448 384c-28 0-31.26-32-74.5-32-43.43 0-46.83 32-74.75 32-27.7 0-31.45-32-74.75-32-42.84 0-47.22 32-74.5 32-28.15 0-31.2-32-74.75-32S28.1 384 0 384v-80a48 48 0 0 1 48-48h16V112h64v144h64V112h64v144h64V112h64v144h16a48 48 0 0 1 48 48z" class="fa-primary"></path></g></svg>   
+ 
+                                <a>Created {{ community.dt_creation | date:"DATE_FORMAT" }}</a>
+                            </div>
+                        </div>
+
+                        {% if user_is_member %}
+                        <hr class="list-sep">
+
+                        <div class="comm-sidebar-box-content">      
+                            <div class="community-button sdbr" onclick="window.location.href='{% url 'create-post'  %}?comm={{community.name}}'">
+                                <div class="community-button-text">CREATE POST</div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="div-gap xsmall"></div>
+                        {% endif %}
                     </div>
 
-                    <div class="comm-sidebar-box">  
-                        <div class="comm-sidebar-box-content">      
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi eum nam facilis, excepturi voluptates odit, at qui, rerum 
-                            aboriosam iusto totam a quasi exercitationem? Repellat, optio. Veniam nemo voluptatem deserunt.
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Deserunt, omnis! Lorem ipsum, dolor sit amet consectetur adipisicing 
-                            elit. Nam aut iure iusto consequatur, ex corrupti vitae ipsa assumenda architecto neque tempore 
-                        </div>
+                    {% if sugg_comm or sugg_posts %}
+                    <div class="comm-sidebar-box">             
                     </div>
+                    {% endif %}
+
+                    {% if sugg_comm %}
+                    <div class="comm-sidebar-box"> 
+                        <div class="comm-sidebar-box-heading">
+                            Suggested Communities 
+                        </div>
+                        {% for community in sugg_comm %}
+                        <div class="comm-sidebar-box-content list-item" onclick="event.stopPropagation(); window.location.href='{% url 'community-home' community.name %}'">      
+                            <div class="post-community-image-wrapper">
+                                <img class="post-community-image sdbr" src="{{ community.icon.url }}" alt="Community Icon">
+                            </div>
+                            <div class="post-community-name sdbr">    
+                                <a>c/{{ community.name }}</a>
+                            </div>
+                        </div>
+                        <hr class="list-sep">
+                        {% endfor %}
+                        <div class="comm-sidebar-box-content">      
+                            <div class="community-button sdbr" onclick="event.stopPropagation(); window.location.href='{% url 'suggested' %}'">
+                                <div class="community-button-text">VIEW ALL</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    {% endif %}
+
+                    {% if sugg_posts %}
+                    <div class="comm-sidebar-box"> 
+                        <div class="comm-sidebar-box-heading">
+                            Suggested Posts
+                        </div>
+                        {% for post in sugg_posts %}
+                        <div class="comm-sidebar-box-content list-item" onclick="event.stopPropagation(); window.location.href='{% url 'post-detail' post.slug %}'">      
+                            {% if post.is_article %}
+                                {% if post.article.main_img_url %}
+                                    <div class="post-community-image-wrapper">
+                                        <img class="post-community-image post-main-img sdbr" src="{{ post.article.main_img_url }}" alt="Community Icon">
+                                    </div>
+                                    <div class="post-community-name sdbr">    
+                                        <a>{{ post.title | truncatechars:29 }}</a> | <small>Article | {{ post.get_reply_count | cool_number }} replies</small><br/>
+                                        <small>c/{{ post.community.name | truncatechars:10 }} | {{ post.get_timesince_minified }} | {{ post.get_score | cool_number }} pts</small>
+                                    </div>
+                                {% else %}
+                                <div class="post-community-name sdbr">    
+                                    <a>{{ post.title | truncatechars:38 }}</a> | <small>Article | {{ post.get_reply_count | cool_number }} replies</small><br/>
+                                    <small>c/{{ post.community.name | truncatechars:15 }} | {{ post.get_timesince_minified }} | {{ post.get_score | cool_number }} pts</small>
+                                </div>
+                                {% endif %}
+                            {% else %}
+                            <div class="post-community-name sdbr">    
+                                <a>{{ post.title | truncatechars:38 }}</a> | <small>Thread | {{ post.get_reply_count | cool_number}} replies</small><br/>
+                                <small>c/{{ post.community.name | truncatechars:15 }} | {{ post.get_timesince_minified }} | {{ post.get_score | cool_number }} pts</small>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <hr class="list-sep">
+                        {% endfor %}
+                        <div class="comm-sidebar-box-content">      
+                            <div class="community-button sdbr" onclick="event.stopPropagation(); window.location.href='{% url 'suggested' %}'">
+                                <div class="community-button-text">VIEW ALL</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    {% endif %}
+                    
+
                     
                     <section class="site-footer">
                         <div class="comm-sidebar-box">             
@@ -189,23 +338,23 @@
                         <div class="comm-sidebar-box comm-sidebar-footer">  
                             <div class="comm-sidebar-box-content sidebox-footer">      
                                 <div class="sidebox-footer-1">
-                                    <a href="#">Help</a>
-                                    <a href="#">App</a>
-                                    <a href="#">Communities</a>
-                                    <a href="#">Top Posts</a>
-                                    <a href="#">Topics</a>
+                                    <a >Help</a>
+                                    <a >App</a>
+                                    <a href="{% url 'trending-communities' %}">Communities</a>
+                                    <a href="{% url 'top' %}">Top Posts</a>
+                                    <a >Topics</a>
                                 </div>
                                 <div class="sidebox-footer-2">
-                                    <a href="#">About</a>
-                                    <a href="#">Careers</a>
-                                    <a href="#">Advertise</a>
-                                    <a href="#">Blog</a>
-                                    <a href="#">Terms</a>
-                                    <a href="#">Policies</a>
+                                    <a >About</a>
+                                    <a >Careers</a>
+                                    <a >Advertise</a>
+                                    <a >Blog</a>
+                                    <a >Terms</a>
+                                    <a >Policies</a>
                                 </div>
                             </div>
                             <hr>
-                            <div class="comm-sidebar-box-content">      
+                            <div class="comm-sidebar-box-content wroovie-logo">      
                                 wroovie.com © 2020
                             </div> 
                         </div>
@@ -218,7 +367,7 @@
     </div>
 
     
-    {% if is_paginated %}
+    <!-- {% if is_paginated %}
     
         {% if page_obj.has_previous %}
             <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
@@ -238,7 +387,7 @@
             <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
         {% endif %}
 
-    {% endif %}
+    {% endif %} -->
 
 {% endblock %}
 
@@ -251,6 +400,7 @@
         var user_is_authenticated = '{{ user.is_authenticated }}'==='True'?true:false;
         var user_is_member = '{{ user_is_member }}'==='True'?true:false;
         var community_name = '{{ community.name }}'
+        var curr_feed = {% if post_sorting == 'top' %} 0 {% elif post_sorting == 'latest' %} 1 {% endif %}
     </script>
 
     <script src="{% static 'community/js/base.js' %}" type="text/javascript"></script>

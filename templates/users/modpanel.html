@@ -1,0 +1,21 @@
+<div class="comm-1-1">
+                
+
+    {% if not communities %}
+    <span class="form-heading txt-brk">YOU DON'T MODERATE ANY COMMUNITIES</span> 
+    {% else %}
+
+    <span class="form-heading txt-brk">MODERATOR PANEL</span> 
+
+        {% if communities %}
+            <span class="form-subheading">COMMUNITIES YOU MODERATE</span> 
+            
+            {% include "community/community_list_min_mod.html" %}
+        {% endif %}
+
+        <div class="div-gap medium"></div>
+    
+    {% endif %}
+
+
+</div>

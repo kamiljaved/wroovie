@@ -1,0 +1,8 @@
+<div class="post-title">
+{{ post.thread.title }}
+</div>
+
+<div class="post-text" style="margin-top: 6px; max-height: 500px; overflow:hidden;">
+    {{ post.thread.content | safe | truncatechars_html:300 | truncatewords_html:50 }}
+    <span class="post-overlay"></span>
+</div>

@@ -1,30 +1,481 @@
 {% extends "common/base.html" %}
 {% load static %}
+{% load humanize %}
+{% load extra_tags %}
 
-{% block pagetitle %}
-    <h1>thisBlog Home</h1>
-    <br/>
+
+{% block title %}
+    Home - wroovie
 {% endblock %}
 
-{% block content %}
+{% block browse_current_page_name %}
+    Home
+{% endblock %}
 
-    {% for post in posts %}
-        <article class="media content-section">
-            <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}" alt="Author Image">
-            <div class="media-body">
-                <div class="article-metadata">
-                    <a class="mr-2" href="{% url 'profile' post.author.username %}">{{ post.author }}</a>
-                    <small class="text-muted">{{ post.dtop|date:"F d, Y" }}</small>
+{% block browse_current_page_icon %}
+    <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="home-lg-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="svg-inline--fa fa-home-lg-alt fa-w-18 fa-9x"><g class="fa-group"><path fill="currentColor" d="M352 496V368a16 16 0 0 0-16-16h-96a16 16 0 0 0-16 16v128a16 16 0 0 1-16 16H80a16 16 0 0 1-16-16V311.07c1.78-1.21 3.85-1.89 5.47-3.35L288 115l218.74 192.9c1.54 1.38 3.56 2 5.26 3.2V496a16 16 0 0 1-16 16H368a16 16 0 0 1-16-16z" class="fa-secondary"></path><path fill="currentColor" d="M527.92 283.91L298.6 81.64a16 16 0 0 0-21.17 0L48.11 283.92a16 16 0 0 1-22.59-1.21L4.1 258.89a16 16 0 0 1 1.21-22.59l256-226a39.85 39.85 0 0 1 53.45 0l255.94 226a16 16 0 0 1 1.22 22.59l-21.4 23.82a16 16 0 0 1-22.6 1.2z" class="fa-primary"></path></g></svg>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{% static 'community/css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'community/css/scale.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'feeds/css/home.css' %}">
+    
+{% endblock %}
+
+{% block fonts %}
+    <link href="https://fonts.googleapis.com/css2?family=Nixie+One&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block main %}
+
+    <div class="wrapper">
+
+        
+        
+
+
+        <div class="comm-1 feed-wrap">
+            <!-- TODO: Need styling and option to choose number of days, and method of sort -->
+            <!-- <div class="display-timeframe">
+                 days search data
+            </div> -->
+            <div class="comm-1-1">
+
+                {% if user.is_authenticated %}
+                <!-- post create box -->
+                <div class="comm-content-box create-box">
+    
+                    <div class="comm-content-box-1">
+                        <div class="post-create-button" onclick="event.stopPropagation();">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="pen" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="sel svg-inline--fa fa-pen fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M498 142.08l-56.6 56.55-128-128 56.55-56.55a48 48 0 0 1 67.91 0L498 74.17a48 48 0 0 1 0 67.91z" class="fa-secondary"></path><path fill="currentColor" d="M12.85 371.11L.15 485.33a24 24 0 0 0 26.49 26.51l114.14-12.6 278-278-128-128z" class="fa-primary"></path></g></svg>
+                        </div>
+                
+                    </div>
+                
+                    <div class="comm-content-box-2">
+                        
+                        <div class="post-options post-create-opt">
+                            
+                            <div class="post-options-button post-options-info selperm nosvg" onclick="event.stopPropagation();">
+                                <div class="post-options-button-text">
+                                    CREATE
+                                </div>
+                            </div>
+
+                        <div class="post-options-button" onclick="event.stopPropagation(); window.location.href='{% url 'create-thread' %}'">
+                                <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="grip-lines" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-grip-lines fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M512 304v32a16 16 0 0 1-16 16H16a16 16 0 0 1-16-16v-32a16 16 0 0 1 16-16h480a16 16 0 0 1 16 16z" class="fa-secondary"></path><path fill="currentColor" d="M512 176v32a16 16 0 0 1-16 16H16a16 16 0 0 1-16-16v-32a16 16 0 0 1 16-16h480a16 16 0 0 1 16 16z" class="fa-primary"></path></g></svg>
+                                <div class="post-options-button-text">
+                                    Thread
+                                </div>
+                            </div>
+                            
+                            <div class="post-options-button" onclick="event.stopPropagation(); window.location.href='{% url 'create-article' %}'">
+                                <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="line-columns" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-line-columns fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M496 288H304a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h192a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0 128H304a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h192a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-256H304a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h192a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-128H304a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h192a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z" class="fa-secondary"></path><path fill="currentColor" d="M208 288H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h192a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0 128H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h192a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-384H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h192a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zm0 128H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h192a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z" class="fa-primary"></path></g></svg>                                
+                                <div class="post-options-button-text">
+                                    Article
+                                </div>
+                            </div>
+
+                            <div class="post-options-button" onclick="event.stopPropagation(); window.location.href='{% url 'create-community' %}'">
+                                <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="ball-pile" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="svg-inline--fa fa-ball-pile fa-w-18 fa-9x"><g class="fa-group"><path fill="currentColor" d="M176 168a80 80 0 1 0 80 80 80 80 0 0 0-80-80zm224 0a80 80 0 1 0 80 80 80 80 0 0 0-80-80z" class="fa-secondary"></path><path fill="currentColor" d="M80 352a80 80 0 1 0 80 80 80 80 0 0 0-80-80zM288 0a80 80 0 1 0 80 80 80 80 0 0 0-80-80zm0 352a80 80 0 1 0 80 80 80 80 0 0 0-80-80zm208 0a80 80 0 1 0 80 80 80 80 0 0 0-80-80z" class="fa-primary"></path></g></svg>
+                                <div class="post-options-button-text">
+                                    Community
+                                </div>
+                            </div>
+
+                            <div class="post-options-button" onclick="event.stopPropagation(); window.location.href='{% url 'profile' request.user %}'">
+                                <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="feather-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-feather-alt fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M458.38 234.79L351.83 288H433a396.85 396.85 0 0 1-30.46 47.12L255.73 384h101c-35.57 30.07-79.11 51.1-132.59 56.54a1130.32 1130.32 0 0 1-125.99 7.36h-.06L305 241a24 24 0 0 0-34-34L64 414c.08-62.81 4-100.05 7-126.44C96.44 38.2 460.21 3.56 512 0c-1.81 26.26-11.71 132.86-53.62 234.79z" class="fa-primary"></path><path fill="currentColor" d="M24 512a24 24 0 0 1-17-41l264-264a24 24 0 0 1 34 34L41 505a23.92 23.92 0 0 1-17 7z" class="fa-secondary"></path></g></svg>
+                                <div class="post-options-button-text">
+                                    My Posts
+                                </div>
+                            </div>
+
+                        </div>
+                
+                    </div>
+                
                 </div>
-                <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
-                <p class="article-content">
-                    {{ post.content | truncatewords:30 }}
-                </p>
-            </div>
-        </article>
-    {% endfor %}
+                {% endif %}
 
-    {% if is_paginated %}
+                <!-- feed select box -->
+                <div class="comm-content-box create-box">
+    
+                    <div class="comm-content-box-1">
+                        <div class="post-create-button" onclick="event.stopPropagation();">
+                            <svg id="0" class="{% if feed == 'home' %} sel {% endif %} feed-tsvg svg-inline--fa fa-home-lg-alt fa-w-18 fa-9x" aria-hidden="true" focusable="false" data-prefix="fad" data-icon="home-lg-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><g class="fa-group"><path fill="currentColor" d="M352 496V368a16 16 0 0 0-16-16h-96a16 16 0 0 0-16 16v128a16 16 0 0 1-16 16H80a16 16 0 0 1-16-16V311.07c1.78-1.21 3.85-1.89 5.47-3.35L288 115l218.74 192.9c1.54 1.38 3.56 2 5.26 3.2V496a16 16 0 0 1-16 16H368a16 16 0 0 1-16-16z" class="fa-secondary"></path><path fill="currentColor" d="M527.92 283.91L298.6 81.64a16 16 0 0 0-21.17 0L48.11 283.92a16 16 0 0 1-22.59-1.21L4.1 258.89a16 16 0 0 1 1.21-22.59l256-226a39.85 39.85 0 0 1 53.45 0l255.94 226a16 16 0 0 1 1.22 22.59l-21.4 23.82a16 16 0 0 1-22.6 1.2z" class="fa-primary"></path></g></svg>
+                            <svg id="1" class="{% if feed == 'suggested' %} sel {% endif %} feed-tsvg svg-inline--fa fa-star-shooting fa-w-16 fa-9x" aria-hidden="true" focusable="false" data-prefix="fad" data-icon="star-shooting" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><g class="fa-group"><path fill="currentColor" d="M507.31241,15.99591,496.0036,4.68584a16.00342,16.00342,0,0,0-22.62935,0L308.68356,169.36841a15.99752,15.99752,0,0,0,0,22.628l11.30881,11.30812a15.99989,15.99989,0,0,0,22.62935,0L507.31241,38.62192A15.99517,15.99517,0,0,0,507.31241,15.99591Zm-192.00372,0L303.99987,4.68584a16.00341,16.00341,0,0,0-22.62934,0L228.682,57.37309a15.99752,15.99752,0,0,0,0,22.628l11.30881,11.30812a15.99987,15.99987,0,0,0,22.62934,0l52.68853-52.68725A15.99517,15.99517,0,0,0,315.30869,15.99591ZM496.0036,196.67782a16.00342,16.00342,0,0,0-22.62935,0l-52.68852,52.68725a15.99752,15.99752,0,0,0,0,22.628l11.30881,11.30812a15.99989,15.99989,0,0,0,22.62935,0l52.68852-52.68725a15.99517,15.99517,0,0,0,0-22.626Z" class="fa-primary"></path><path fill="currentColor" d="M82.89793,380.48459,64.89758,485.074c-3.20319,18.90546,16.68782,33.108,33.29752,24.20211l93.7987-49.38856,93.79869,49.38856A22.95375,22.95375,0,0,0,319.09,485.074L301.199,380.48459l75.89209-73.99691c13.60964-13.29632,6.00012-36.49847-12.79712-39.20149L259.4951,251.99l-46.90716-95.19915c-8.39078-16.99929-32.68813-17.20241-41.18829,0L124.49249,251.99,19.69358,267.28619c-18.79724,2.703-26.40676,25.90517-12.70337,39.20149Z" class="fa-secondary"></path></g></svg>
+                            <svg id="2" class="{% if feed == 'popular' %} sel {% endif %} feed-tsvg svg-inline--fa fa-fire-alt fa-w-14 fa-9x" aria-hidden="true" focusable="false" data-prefix="fad" data-icon="fire-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><g class="fa-group"><path fill="currentColor" d="M323.56 51.2a597.38 597.38 0 0 0-56.22 60C240.08 73.62 206.28 35.53 168 0 69.74 91.17 0 210 0 281.6 0 408.85 100.29 512 224 512s224-103.15 224-230.4c0-53.27-52-163.14-124.44-230.4zm-1.12 366.87A165.81 165.81 0 0 1 226.86 448c-43.93 0-84.43-14.89-114.06-41.92a146.18 146.18 0 0 1-35.88-50.39C68.35 335.82 64 314 64 290.75c0-59.43 42.8-106.39 104.3-180.12 30 34.59 18.49 19.78 100.7 124.59l62-70.74c24.32 40.25 27.78 45.59 34.84 59.1a157.93 157.93 0 0 1 15 104.62c-7.49 36.85-28.24 68.8-58.4 89.87z" class="fa-secondary"></path><path fill="currentColor" d="M304.09 391.85A134.39 134.39 0 0 1 226.86 416C154.71 416 96 368.26 96 290.75c0-38.61 24.31-72.63 72.79-130.75 6.93 8 98.83 125.34 98.83 125.34l58.63-66.88c4.14 6.85 7.91 13.55 11.27 20 27.35 52.19 15.81 119-33.43 153.42z" class="fa-primary"></path></g></svg>
+                            <svg id="3" class="{% if feed == 'top' %} sel {% endif %} feed-tsvg svg-inline--fa fa-sort-amount-up fa-w-16 fa-9x" aria-hidden="true" focusable="false" data-prefix="fad" data-icon="sort-amount-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><g class="fa-group"><path fill="currentColor" d="M304 416h-64a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h64a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm128-256H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h192a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm-64 128H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM496 32H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h256a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z" class="fa-secondary"></path><path fill="currentColor" d="M16 160h48v304a16 16 0 0 0 16 16h32a16 16 0 0 0 16-16V160h48c14.21 0 21.38-17.24 11.31-27.31l-80-96a16 16 0 0 0-22.62 0l-80 96C-5.35 142.74 1.77 160 16 160z" class="fa-primary"></path></g></svg>
+                            <svg id="4" class="{% if feed == 'all' %} sel {% endif %} feed-tsvg svg-inline--fa fa-asterisk fa-w-16 fa-9x" aria-hidden="true" focusable="false" data-prefix="fad" data-icon="asterisk" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><g class="fa-group"><path fill="currentColor" d="M479 177.64l-.41.23-182.5 100.45 3.45 209.17A24 24 0 0 1 276.06 512h-39.55a24 24 0 0 1-24-24v-.52L216 278 33.47 177.91A24 24 0 0 1 24 145.32l.25-.45 19.5-33.74a24.07 24.07 0 0 1 32.89-8.75l.38.23L256 208l179-105.39a24.07 24.07 0 0 1 33.05 8.12l.23.4 19.5 33.74a24 24 0 0 1-8.78 32.77z" class="fa-secondary"></path><path fill="currentColor" d="M488 366.68l-.25.45-19.5 33.74a24.07 24.07 0 0 1-32.89 8.75l-.38-.23L256 304 77 409.39a24.07 24.07 0 0 1-33-8.12l-.23-.4-19.5-33.74a24 24 0 0 1 8.83-32.77l.41-.23 182.4-100.45-3.45-209.17A24 24 0 0 1 235.94 0h39.55a24 24 0 0 1 24 24v.52L296 234l182.53 100.09a24 24 0 0 1 9.47 32.59z" class="fa-primary"></path></g></svg>
+                        </div>
+                
+                    </div>
+                
+                    <div class="comm-content-box-2">
+                        
+                        <div class="post-options post-create-opt">
+                            
+                            {% if user.is_authenticated %}
+                            <div class="post-options-button {% if feed == 'home' %} sel {% else %} nosel {% endif %} nosvg feed-tab" id="0" onclick="event.stopPropagation(); {% if feed != 'home' %} window.location.href='{% url 'home' %}' {% endif %}">
+                                <div class="post-options-button-text">
+                                    HOME
+                                </div>
+                            </div>
+                            <div class="post-options-button {% if feed == 'suggested' %} sel {% else %} nosel {% endif %} nosvg feed-tab" id="1" onclick="event.stopPropagation(); {% if feed != 'suggested' %} window.location.href='{% url 'suggested' %}' {% endif %}">
+                                <div class="post-options-button-text">
+                                    SUGGESTED
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="post-options-button {% if feed == 'popular' %} sel {% else %} nosel {% endif %} nosvg feed-tab" id="2" onclick="event.stopPropagation(); {% if feed != 'popular' %} window.location.href='{% url 'popular' %}' {% endif %}">
+                                <div class="post-options-button-text">
+                                    POPULAR
+                                </div>
+                            </div>
+                            <div class="post-options-button {% if feed == 'top' %} sel {% else %} nosel {% endif %} nosvg feed-tab" id="3" onclick="event.stopPropagation(); {% if feed != 'top' %} window.location.href='{% url 'top' %}' {% endif %}">
+                                <div class="post-options-button-text">
+                                    TOP
+                                </div>
+                            </div>
+                            <div class="post-options-button {% if feed == 'all' %} sel {% else %} nosel {% endif %} nosvg feed-tab" id="4" onclick="event.stopPropagation(); {% if feed != 'all' %} window.location.href='{% url 'latest' %}' {% endif %}">
+                                <div class="post-options-button-text">
+                                    ALL
+                                </div>
+                            </div>
+                        </div>
+                
+                    </div>
+                
+                </div>
+
+                {% if feed == 'suggested' %}
+                <!-- login required -->
+                    {% if not communities and not posts_top and not posts_latest %}
+                        <span class="form-heading txt-brk">{{empty_text}}</span> 
+                    {% else %}
+                        <div class="div-gap small"></div>
+
+                        {% if communities %}
+                            <span class="form-subheading">SUGGESTED COMMUNITIES</span> 
+                            {% include "community/community_list_min.html" %}
+                            <div class="div-gap medium"></div>
+                        {% endif %}
+
+                        {% if posts_latest %}
+                            <span class="form-subheading">SUGGESTED POSTS - LATEST</span> 
+                            {% with posts_latest as posts %}
+                                {% include "posts/posts_list_min.html" %}
+                            {% endwith %}
+                            <div class="div-gap medium"></div>
+                        {% endif %}
+
+                        {% if posts_top %}
+                            <span class="form-subheading">SUGGESTED POSTS - TOP</span> 
+                            {% with posts_top as posts %}
+                                {% include "posts/posts_list_min.html" %}
+                            {% endwith %}
+                            <div class="div-gap medium"></div>
+                        {% endif %}
+
+                    {% endif %}
+                {% else %}
+                    {% include "posts/posts_list.html" %}
+                {% endif %}
+            </div>
+
+            <!-- sidebar -->
+            <div class="comm-1-2">
+                <div class="comm-sidebar">
+
+                    {% if user.is_authenticated %}
+                        <div class="comm-sidebar-box top">  
+                            <div class="comm-sidebar-box-heading">      
+                                <span> {% if feed == "home" or feed is None or feed == "" %} Home {% elif feed == "suggested" %} Suggested {% elif feed == "popular" %} Popular {% elif feed == "top" %} Top {% elif feed == "all" %} All {% endif %}</span>    <span class="wroovie-logo">wroovie</span>
+                            </div>
+
+                            <div class="comm-sidebar-box-content opt-list" >      
+                                <div class="community-button sdbr" onclick="window.location.href='{% url 'profile' request.user %}'">
+                                    <div class="community-button-text">My Profile</div>
+                                </div>
+                            </div>
+                            {% if user.administered_communities.all %}
+                            <div class="comm-sidebar-box-content opt-list" >      
+                                <div class="community-button sdbr" onclick="window.location.href='{% url 'modpanel' %}'">
+                                    <div class="community-button-text">Moderator Panel</div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="comm-sidebar-box-content opt-list" >      
+                                <div class="community-button sdbr" onclick="window.location.href='{% url 'create-post' %}'">
+                                    <div class="community-button-text">CREATE POST</div>
+                                </div>
+                            </div>
+                            <div class="comm-sidebar-box-content last-item" >      
+                                <div class="community-button sdbr" onclick="window.location.href='{% url 'create-community' %}'">
+                                    <div class="community-button-text">CREATE COMMUNITY</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {% if rec_memb %}
+                        <div class="comm-sidebar-box"> 
+                            <div class="comm-sidebar-box-heading">
+                                Recently Joined Communities 
+                            </div>
+                            {% for memb in rec_memb %}
+                            <div class="comm-sidebar-box-content list-item" onclick="event.stopPropagation(); window.location.href='{% url 'community-home' memb.community.name %}'">      
+                                <div class="post-community-image-wrapper">
+                                    <img class="post-community-image sdbr" src="{{ memb.community.icon.url }}" alt="Community Icon">
+                                </div>
+                                <div class="post-community-name sdbr">    
+                                    <a>c/{{ memb.community.name }}</a>
+                                </div>
+                            </div>
+                            <hr class="list-sep">
+                            {% endfor %}
+                            <div class="comm-sidebar-box-content">      
+                                <div class="community-button sdbr" onclick="event.stopPropagation(); window.location.href='{% url 'joined-communities' user.username %}'">
+                                    <div class="community-button-text">VIEW ALL</div>
+                                </div>
+                            </div>
+
+                        </div>
+                        {% endif %}
+
+                        {% if sugg_comm %}
+                        <div class="comm-sidebar-box"> 
+                            <div class="comm-sidebar-box-heading">
+                                Suggested Communities 
+                            </div>
+                            {% for community in sugg_comm %}
+                            <div class="comm-sidebar-box-content list-item" onclick="event.stopPropagation(); window.location.href='{% url 'community-home' community.name %}'">      
+                                <div class="post-community-image-wrapper">
+                                    <img class="post-community-image sdbr" src="{{ community.icon.url }}" alt="Community Icon">
+                                </div>
+                                <div class="post-community-name sdbr">    
+                                    <a>c/{{ community.name }}</a>
+                                </div>
+                            </div>
+                            <hr class="list-sep">
+                            {% endfor %}
+                            <div class="comm-sidebar-box-content">      
+                                <div class="community-button sdbr" onclick="event.stopPropagation(); window.location.href='{% url 'suggested' %}'">
+                                    <div class="community-button-text">VIEW ALL</div>
+                                </div>
+                            </div>
+
+                        </div>
+                        {% endif %}
+
+                        <div class="comm-sidebar-box">             
+                        </div>
+
+                        {% if usr_posts %}
+                        <div class="comm-sidebar-box"> 
+                            <div class="comm-sidebar-box-heading">
+                                My Recent Posts
+                            </div>
+                            {% for post in usr_posts %}
+                            <div class="comm-sidebar-box-content list-item" onclick="event.stopPropagation(); window.location.href='{% url 'post-detail' post.slug %}'">      
+                                {% if post.is_article %}
+                                    {% if post.article.main_img_url %}
+                                        <div class="post-community-image-wrapper">
+                                            <img class="post-community-image post-main-img sdbr" src="{{ post.article.main_img_url }}" alt="Community Icon">
+                                        </div>
+                                        <div class="post-community-name sdbr">    
+                                            <a>{{ post.title | truncatechars:29 }}</a> | <small>Article | {{ post.get_reply_count | cool_number }} replies</small><br/>
+                                            <small>c/{{ post.community.name | truncatechars:10 }} | {{ post.get_timesince_minified }} | {{ post.get_score | cool_number }} pts</small>
+                                        </div>
+                                    {% else %}
+                                    <div class="post-community-name sdbr">    
+                                        <a>{{ post.title | truncatechars:38 }}</a> | <small>Article | {{ post.get_reply_count | cool_number }} replies</small><br/>
+                                        <small>c/{{ post.community.name | truncatechars:15 }} | {{ post.get_timesince_minified }} | {{ post.get_score | cool_number }} pts</small>
+                                    </div>
+                                    {% endif %}
+                                {% else %}
+                                <div class="post-community-name sdbr">    
+                                    <a>{{ post.title | truncatechars:38 }}</a> | <small>Thread | {{ post.get_reply_count | cool_number}} replies</small><br/>
+                                    <small>c/{{ post.community.name | truncatechars:15 }} | {{ post.get_timesince_minified }} | {{ post.get_score | cool_number }} pts</small>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <hr class="list-sep">
+                            {% endfor %}
+                            <div class="comm-sidebar-box-content">      
+                                <div class="community-button sdbr" onclick="event.stopPropagation(); window.location.href='{% url 'profile' user.username %}'">
+                                    <div class="community-button-text">VIEW ALL</div>
+                                </div>
+                            </div>
+
+                        </div>
+                        {% endif %}
+
+                        {% if sugg_posts %}
+                        <div class="comm-sidebar-box"> 
+                            <div class="comm-sidebar-box-heading">
+                                Suggested Posts
+                            </div>
+                            {% for post in sugg_posts %}
+                            <div class="comm-sidebar-box-content list-item" onclick="event.stopPropagation(); window.location.href='{% url 'post-detail' post.slug %}'">      
+                                {% if post.is_article %}
+                                    {% if post.article.main_img_url %}
+                                        <div class="post-community-image-wrapper">
+                                            <img class="post-community-image post-main-img sdbr" src="{{ post.article.main_img_url }}" alt="Community Icon">
+                                        </div>
+                                        <div class="post-community-name sdbr">    
+                                            <a>{{ post.title | truncatechars:29 }}</a> | <small>Article | {{ post.get_reply_count | cool_number }} replies</small><br/>
+                                            <small>c/{{ post.community.name | truncatechars:10 }} | {{ post.get_timesince_minified }} | {{ post.get_score | cool_number }} pts</small>
+                                        </div>
+                                    {% else %}
+                                    <div class="post-community-name sdbr">    
+                                        <a>{{ post.title | truncatechars:38 }}</a> | <small>Article | {{ post.get_reply_count | cool_number }} replies</small><br/>
+                                        <small>c/{{ post.community.name | truncatechars:15 }} | {{ post.get_timesince_minified }} | {{ post.get_score | cool_number }} pts</small>
+                                    </div>
+                                    {% endif %}
+                                {% else %}
+                                <div class="post-community-name sdbr">    
+                                    <a>{{ post.title | truncatechars:38 }}</a> | <small>Thread | {{ post.get_reply_count | cool_number}} replies</small><br/>
+                                    <small>c/{{ post.community.name | truncatechars:15 }} | {{ post.get_timesince_minified }} | {{ post.get_score | cool_number }} pts</small>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <hr class="list-sep">
+                            {% endfor %}
+                            <div class="comm-sidebar-box-content">      
+                                <div class="community-button sdbr" onclick="event.stopPropagation(); window.location.href='{% url 'suggested' %}'">
+                                    <div class="community-button-text">VIEW ALL</div>
+                                </div>
+                            </div>
+
+                        </div>
+                        {% endif %}
+
+                        {% if usr_posts or sugg_posts %}
+                        <div class="comm-sidebar-box">             
+                        </div>
+                        {% endif %}
+                    
+                    {% else %}
+                    <div class="comm-sidebar-box top">  
+                        <div class="comm-sidebar-box-heading">      
+                            <span>Home
+                            </span>    
+                            <span class="wroovie-logo">wroovie</span>
+                        </div>
+
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus pb-0">      
+                            <div class="post-community-name sdbr">    
+                                New to wroovie&nbsp?
+                            </div>
+                        </div>
+
+                        <!-- <hr class="list-sep"> -->
+
+                        <div class="comm-sidebar-box-content last-item">      
+                            <div class="community-button sdbr" onclick="window.location.href='{% url 'register' %}'">
+                                <div class="community-button-text">JOIN NOW</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="comm-sidebar-box">             
+                    </div>
+
+                    {% endif %}
+
+
+                    {% if trnd_comm %}
+                    <div class="comm-sidebar-box"> 
+                        <div class="comm-sidebar-box-heading">
+                            Popular Communities 
+                        </div>
+                        {% for community in trnd_comm %}
+                        <div class="comm-sidebar-box-content list-item" onclick="event.stopPropagation(); window.location.href='{% url 'community-home' community.name %}'">      
+                            <div class="post-community-image-wrapper">
+                                <img class="post-community-image sdbr" src="{{ community.icon.url }}" alt="Community Icon">
+                            </div>
+                            <div class="post-community-name sdbr">    
+                                <a>c/{{ community.name }}</a>
+                            </div>
+                        </div>
+                        <hr class="list-sep">
+                        {% endfor %}
+                        <div class="comm-sidebar-box-content">      
+                            <div class="community-button sdbr" onclick="event.stopPropagation(); window.location.href='{% url 'trending-communities' %}'">
+                                <div class="community-button-text">VIEW ALL</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    {% endif %}
+
+                    {% if top_comm %}
+                    <div class="comm-sidebar-box"> 
+                        <div class="comm-sidebar-box-heading">
+                            Top Communities 
+                        </div>
+                        {% for community in top_comm %}
+                        <div class="comm-sidebar-box-content list-item" onclick="event.stopPropagation(); window.location.href='{% url 'community-home' community.name %}'">      
+                            <div class="post-community-image-wrapper">
+                                <img class="post-community-image sdbr" src="{{ community.icon.url }}" alt="Community Icon">
+                            </div>
+                            <div class="post-community-name sdbr">    
+                                <a>c/{{ community.name }}</a>
+                            </div>
+                        </div>
+                        <hr class="list-sep">
+                        {% endfor %}
+                        <div class="comm-sidebar-box-content">      
+                            <div class="community-button sdbr" onclick="event.stopPropagation(); window.location.href='{% url 'top-communities' %}'">
+                                <div class="community-button-text">VIEW ALL</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    {% endif %}
+
+
+                    
+                    <section class="site-footer">
+                        <div class="comm-sidebar-box">             
+                        </div>
+
+                        <div class="comm-sidebar-box comm-sidebar-footer">  
+                            <div class="comm-sidebar-box-content sidebox-footer">      
+                                <div class="sidebox-footer-1">
+                                    <a >Help</a>
+                                    <a >App</a>
+                                    <a href="{% url 'trending-communities' %}">Communities</a>
+                                    <a href="{% url 'top' %}">Top Posts</a>
+                                    <a >Topics</a>
+                                </div>
+                                <div class="sidebox-footer-2">
+                                    <a >About</a>
+                                    <a >Careers</a>
+                                    <a >Advertise</a>
+                                    <a >Blog</a>
+                                    <a >Terms</a>
+                                    <a >Policies</a>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="comm-sidebar-box-content wroovie-logo">      
+                                wroovie.com © 2020
+                            </div> 
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        
+
+    </div>
+
+    
+    <!-- {% if is_paginated %}
     
         {% if page_obj.has_previous %}
             <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
@@ -44,16 +495,33 @@
             <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
         {% endif %}
 
-    {% endif %}
+    {% endif %} -->
+
+{% endblock %}
 
 
-    <script>
-        $(".sidebarHome").addClass('sel');
-        $(".sidebarLatest").removeClass('sel');
-        $(".sidebarSuggested").removeClass('sel');
-        $(".sidebarTrending").removeClass('sel');
-        $(".sidebarCircle").removeClass('sel');
-        $(".sidebarFAQ").removeClass('sel');
+{% block extrajs %}
+    <script src="{% static 'common/js/jquery-3.4.1.min.js' %}" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        // define variables
+        var user_is_authenticated = '{{ user.is_authenticated }}'==='True'?true:false;
+        var user_is_member = '{{ user_is_member }}'==='True'?true:false;
+        var community_name = '{{ community.name }}'
     </script>
 
-{% endblock content %}
+
+    <script type="text/javascript">
+        var curr_feed = {% if feed == "home" or feed is None or feed == "" %} '0' {% elif feed == "suggested" %} '1' {% elif feed == "popular" %} '2' {% elif feed == "top" %} '3' {% elif feed == "all" %} '4' {% endif %}
+    </script>
+
+    <script src="{% static 'feeds/js/home.js' %}" type="text/javascript"></script>
+    <script src="{% static 'feeds/js/server.js' %}" type="text/javascript"></script>
+
+    <script src="{% static 'feeds/js/feed.js' %}" type="text/javascript"></script>
+
+{% endblock %}
+
+
+
+

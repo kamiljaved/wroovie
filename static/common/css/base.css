@@ -18,20 +18,30 @@ body {
   padding: 0;
   min-height: 100vh;
   overflow: hidden;
+
+  min-height: 100%;
+  position: absolute;
 }
 
-body::-webkit-scrollbar {
-  width: 0.25rem;
+::-webkit-scrollbar {
+  width: 10px;
 }
 
-body::-webkit-scrollbar-track {
-  background: #1e1e24;
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  background: transparent;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
 }
 
-body::-webkit-scrollbar-thumb {
-  background: #6649b8;
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
 }
-
 
 
 .navbar {
@@ -84,7 +94,7 @@ body::-webkit-scrollbar-thumb {
 .nav-item.user-box {
 
   max-width: 12rem;
-  min-width: 8rem;
+  min-width: 10rem;
 }
 .nav-item.user-box .nav-link {
   padding-left: 1rem;
@@ -119,7 +129,57 @@ body::-webkit-scrollbar-thumb {
   filter: grayscale(0%) opacity(1) !important;
 }
 
+.browse-image-comms {
+  width: 1.3rem;
+  height: 1.3rem;
+  margin-top: 5px;
+  margin-right: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(66, 66, 66, 0.534);
 
+  object-fit: cover;
+
+  margin-left: 0.8rem;
+}
+
+.browse-current-page {
+  padding-right: 0 !important;
+}
+
+.browse-current-page svg {
+  left: none !important;
+  right: 0 !important;
+  transform: translateX(0%) !important;
+  margin-right: 0.3rem !important;
+  padding-right: 0 !important;
+
+  width: 1rem !important;
+  height: 1.1rem !important;
+
+  filter: grayscale(100%) opacity(0.7);
+}
+
+.browse-box:hover .browse-current-page svg {
+  filter: grayscale(0%) opacity(1);
+}
+.browse-box:hover .browse-current-page .link-text {
+  filter: grayscale(0%) opacity(1);
+}
+
+
+.browse-current-page .browse-image-wrapper svg {
+  
+  position: relative;
+  width: 1.7rem;
+  height: 1.7rem;
+  margin-top: 3px;
+  margin-right: 12px;
+  margin-left: -6px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+
+  object-fit: cover;
+}
 
 .nav-item.browse-box {
 
@@ -130,18 +190,29 @@ body::-webkit-scrollbar-thumb {
   padding-left: 0.8rem;
   padding-right: 0.8rem;
 }
-.browse-image {
+
+
+.nav-settings.settings-box .nav-link {
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
+}
+
+.browse-image-wrapper img {
   width: 1.3rem;
   height: 1.3rem;
   margin-top: 5px;
-  margin-right: 8px;
-
+  margin-right: 12px;
   border-radius: 50%;
   border: 1px solid rgba(66, 66, 66, 0.534);
 
   object-fit: cover;
 }
 .nav-item.browse-box .link-text {
+  position: relative;
+  margin: 0;
+  font-size: 14px;
+}
+.settings-item.settings-box .link-text {
   position: relative;
   margin: 0;
   font-size: 14px;
@@ -160,6 +231,49 @@ body::-webkit-scrollbar-thumb {
   filter: grayscale(0%) opacity(1) !important;
 }
 
+.nav-item.browse-box .drop-link {
+  filter: grayscale(0%) opacity(1) !important;
+}
+.nav-item.browse-box .drop-link .link-text{
+  filter: grayscale(100%) opacity(0.7);
+}
+.nav-item.browse-box .drop-link svg{
+  filter: grayscale(100%) opacity(0.7);
+}
+.nav-item.browse-box .drop-link:hover svg{
+  filter: grayscale(0%) opacity(1) !important;
+}
+.nav-item.browse-box .drop-link:hover .link-text{
+  filter: grayscale(0%) opacity(1);
+}
+.nav-indicator .drop-link .link-text{
+  filter: grayscale(0%) opacity(1) !important;
+}
+.nav-indicator .drop-link:hover .link-text{
+  filter: grayscale(0%) opacity(1) !important;
+}
+
+.nav-settings.settings-box .drop-link {
+  filter: grayscale(0%) opacity(1) !important;
+}
+.nav-settings.settings-box .drop-link .link-text{
+  filter: grayscale(100%) opacity(0.7);
+}
+.nav-settings.settings-box .drop-link svg{
+  filter: grayscale(100%) opacity(0.7);
+}
+.nav-settings.settings-box .drop-link:hover svg{
+  filter: grayscale(0%) opacity(1) !important;
+}
+.nav-settings.settings-box .drop-link:hover .link-text{
+  filter: grayscale(0%) opacity(1);
+}
+
+
+.user-comms .link-text {
+  margin-left: 0 !important;
+}
+
 .browse-options {
   position: absolute; 
   top: var(--nav-height);
@@ -169,6 +283,7 @@ body::-webkit-scrollbar-thumb {
   min-width: 8rem;
 
   overflow-y: auto;
+
 }
 
 .browse-options .link-text {
@@ -176,6 +291,31 @@ body::-webkit-scrollbar-thumb {
 }
 
 .browse-options svg {
+  width: 1.4rem;
+  height: 1.4rem;
+  min-width: 1rem;
+}
+
+
+.settings-options {
+
+  position: absolute; 
+  top: var(--nav-height);
+
+  right: calc(12rem - var(--nav-height));
+
+  min-width: 12rem;
+  max-width: 12rem;
+
+  overflow-y: hidden;
+  z-index: 0;
+}
+
+.settings-options .link-text {
+  font-size: 14px;
+}
+
+.settings-options svg {
   width: 1.4rem;
   height: 1.4rem;
   min-width: 1rem;
@@ -378,9 +518,13 @@ body::-webkit-scrollbar-thumb {
   align-items: top;
   height: 0%;
   transition: all var(--transition-speed);
-
-
 }
+
+.dropdown > * > *
+{
+  overflow: hidden;
+}
+
 
 .dropdown .nav-item {
   width: 100%;
@@ -401,6 +545,47 @@ body::-webkit-scrollbar-thumb {
   filter: grayscale(0%) opacity(1);
   background: var(--bg-secondary);
   color: var(--text-secondary);
+}
+
+.nav-indicator .drop-link:hover {
+  filter: none !important;
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+}
+
+.browse-box:hover .nav-indicator .drop-link {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.151);
+}
+
+.settings-box:hover .nav-indicator .drop-link {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.151);
+}
+
+
+.nav-indicator .drop-link {
+  filter: none !important;
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  border-bottom: 1px solid  transparent;
+  cursor: default;
+  height: 0 !important;
+}
+
+.nav-indicator .link-text {
+  font-size: 12px !important;
+  top: 2px;
+}
+
+.browse-box:hover .nav-indicator .link-text {
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  margin: 0 !important;
+}
+
+.settings-box:hover .nav-indicator .link-text {
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  margin: 0 !important;
 }
 
 .drop-text {
@@ -441,6 +626,29 @@ body::-webkit-scrollbar-thumb {
   margin: 0rem 2rem;
 }
 
+.nav-settings .drop-link svg {
+  position: absolute;
+  right: 0;
+  transform: translateX(0);
+  transition: all var(--transition-speed);
+
+  width: 2rem;
+  min-width: 2rem;
+  margin: 0 0rem;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.nav-settings .nav-item .drop-link .link-text{
+  position: absolute;
+  left: 100%;
+  transform: translateX(-100%);
+  transition: all var(--transition-speed);
+
+  width: auto;
+  min-width: 2rem;
+  margin: 0 0rem;
+}
 
 .dropdown .link-text{
   position: relative;
@@ -458,7 +666,7 @@ body::-webkit-scrollbar-thumb {
   right: var(--nav-height); 
   top: var(--nav-height);
 
-  min-width: 8rem;
+  min-width: 10rem;
 }
 
 .user-options .link-text {
@@ -513,7 +721,3 @@ body::-webkit-scrollbar-thumb {
 .navbar:hover .logo svg {
   transform: rotate(-180deg);
 }
-
-
-
-

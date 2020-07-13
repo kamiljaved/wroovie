@@ -1,0 +1,259 @@
+{% extends "common/base.html" %}
+{% load static %}
+{% load humanize %}
+{% load mptt_tags %}
+{% load extra_tags %}
+
+
+{% block title %}
+    Search - wroovie
+{% endblock %}
+
+{% block browse_current_page_name %}
+    Search Results
+{% endblock %}
+
+{% block browse_current_page_icon %}
+    <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="search" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="search-svg svg-inline--fa fa-search fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M208 80a128 128 0 1 1-90.51 37.49A127.15 127.15 0 0 1 208 80m0-80C93.12 0 0 93.12 0 208s93.12 208 208 208 208-93.12 208-208S322.88 0 208 0z" class="fa-secondary"></path><path fill="currentColor" d="M504.9 476.7L476.6 505a23.9 23.9 0 0 1-33.9 0L343 405.3a24 24 0 0 1-7-17V372l36-36h16.3a24 24 0 0 1 17 7l99.7 99.7a24.11 24.11 0 0 1-.1 34z" class="fa-primary"></path></g></svg>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{% static 'community/css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'posts/css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'posts/css/scale.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'community/css/base.css' %}">
+        
+{% endblock %}
+
+{% block fonts %}
+    <link href="https://fonts.googleapis.com/css2?family=Nixie+One&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block main %}
+
+    <div class="wrapper">
+        {% block banner %}
+        {% endblock %}
+
+        <div class="comm-1 post-create">
+            <!-- TODO: Need styling and option to choose number of days, and method of sort -->
+            <!-- <div class="display-timeframe">
+                 days search data
+            </div> -->
+            <div class="comm-1-1">
+
+                
+                {% if not communities and not posts and not users %}
+                    <span class="form-heading txt-brk">NO RESULTS FOUND FOR "{{ search_qry | truncatechars:100 }}"</span> 
+                {% else %}
+
+                <span class="form-heading txt-brk">SEARCH RESULTS FOR "{{ search_qry | truncatechars:100 }}"</span> 
+
+                {% if communities %}
+                    <span class="form-subheading">COMMUNITIES</span> 
+                    
+                    {% include "community/community_list_min.html" %}
+                    
+                    {% if more_comm %}
+                    <div class="community-button sdbr main">
+                        <div class="community-button-text">VIEW ALL</div>
+                    </div>
+                    {% endif %}
+
+                    <div class="div-gap medium"></div>
+                {% endif %}
+
+                {% if posts %}
+                    <span class="form-subheading">POSTS</span> 
+
+                    {% include "posts/posts_list_min.html" %}
+                    
+                    {% if more_posts %}
+                    <div class="community-button sdbr main">
+                        <div class="community-button-text">VIEW ALL</div>
+                    </div>
+                    {% endif %}
+
+                    <div class="div-gap medium"></div>
+                {% endif %}
+
+                {% if users %}
+                    <span class="form-subheading">USERS</span> 
+
+                    {% include "users/users_list_min.html" %}
+                    
+                    {% if more_users %}
+                    <div class="community-button sdbr main">
+                        <div class="community-button-text">VIEW ALL</div>
+                    </div>
+                    {% endif %}
+
+                    <div class="div-gap medium"></div>
+                {% endif %}
+
+                {% endif %}
+
+            </div>
+
+
+
+            
+            <!-- sidebar -->
+            <div class="comm-1-2">
+                <div class="comm-sidebar">
+
+                    {% if user.is_authenticated %}
+                    <div class="comm-sidebar-box top">  
+                        <div class="comm-sidebar-box-heading">      
+                            <span> Search</span>    <span class="wroovie-logo">wroovie</span>
+                        </div>
+
+                        <div class="comm-sidebar-box-content opt-list">      
+                            <div class="community-button sdbr" onclick="window.location.href='{% url 'profile' request.user %}'">
+                                <div class="community-button-text">My Profile</div>
+                            </div>
+                        </div>
+                        {% if user.administered_communities %}
+                        <div class="comm-sidebar-box-content opt-list">      
+                            <div class="community-button sdbr" onclick="window.location.href='{% url 'modpanel'  %}'">
+                                <div class="community-button-text">Moderator Panel</div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="comm-sidebar-box-content opt-list" >      
+                            <div class="community-button sdbr" onclick="window.location.href='{% url 'create-post'  %}'">
+                                <div class="community-button-text">CREATE POST</div>
+                            </div>
+                        </div>
+                        <div class="comm-sidebar-box-content last-item" >      
+                            <div class="community-button sdbr" onclick="window.location.href='{% url 'create-community'  %}'">
+                                <div class="community-button-text">CREATE COMMUNITY</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="comm-sidebar-box">             
+                    </div>
+
+                    {% endif %}
+
+
+
+                    <div class="comm-sidebar-box"> 
+                        <div class="comm-sidebar-box-heading with-image focus">
+                            <div class="heading-image h2">
+                                <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="alien-monster" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="svg-inline--fa fa-alien-monster fa-w-18 fa-9x"><g class="fa-group"><path fill="currentColor" d="M560,128H528a15.99954,15.99954,0,0,0-16,16v80H480V176a15.99954,15.99954,0,0,0-16-16H416V96h48a16.00079,16.00079,0,0,0,16-16V48a15.99954,15.99954,0,0,0-16-16H432a15.99954,15.99954,0,0,0-16,16V64H368a15.99954,15.99954,0,0,0-16,16v48H224V80a15.99954,15.99954,0,0,0-16-16H160V48a15.99954,15.99954,0,0,0-16-16H112A15.99954,15.99954,0,0,0,96,48V80a16.00079,16.00079,0,0,0,16,16h48v64H112a15.99954,15.99954,0,0,0-16,16v48H64V144a15.99954,15.99954,0,0,0-16-16H16A15.99954,15.99954,0,0,0,0,144V272a16.00079,16.00079,0,0,0,16,16H64v80a16.00079,16.00079,0,0,0,16,16h48v80a16.00079,16.00079,0,0,0,16,16h96a16.00079,16.00079,0,0,0,16-16V432a15.99954,15.99954,0,0,0-16-16H192V384H384v32H336a15.99954,15.99954,0,0,0-16,16v32a16.00079,16.00079,0,0,0,16,16h96a16.00079,16.00079,0,0,0,16-16V384h48a16.00079,16.00079,0,0,0,16-16V288h48a16.00079,16.00079,0,0,0,16-16V144A15.99954,15.99954,0,0,0,560,128ZM224,320H160V224h64Zm192,0H352V224h64Z" class="fa-secondary"></path><path fill="currentColor" d="M160,320h64V224H160Zm192-96v96h64V224Z" class="fa-primary"></path></g></svg>                            
+                            </div>
+                            Explore More Content
+                        </div>
+                        
+                        <div class="comm-sidebar-box-content opt-list" >      
+                            <div class="community-button sdbr" onclick="window.location.href='{% url 'popular'  %}'">
+                                <div class="community-button-text">POPOLAR POSTS</div>
+                            </div>
+                        </div>
+                        <div class="comm-sidebar-box-content opt-list" >      
+                            <div class="community-button sdbr" onclick="window.location.href='{% url 'trending-communities'  %}'">
+                                <div class="community-button-text">TRENDING COMMUNITIES</div>
+                            </div>
+                        </div>
+                        <div class="comm-sidebar-box-content opt-list" >      
+                            <div class="community-button sdbr" onclick="window.location.href='{% url 'top'  %}'">
+                                <div class="community-button-text">TOP POSTS</div>
+                            </div>
+                        </div>
+                        <div class="comm-sidebar-box-content last-item" >      
+                            <div class="community-button sdbr" onclick="window.location.href='{% url 'top-communities'  %}'">
+                                <div class="community-button-text">TOP COMMUNITIES</div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    
+                    <section class="site-footer">
+                        <div class="comm-sidebar-box">             
+                        </div>
+
+                        <div class="comm-sidebar-box comm-sidebar-footer">  
+                            <div class="comm-sidebar-box-content sidebox-footer">      
+                                <div class="sidebox-footer-1">
+                                    <a >Help</a>
+                                    <a >App</a>
+                                    <a href="{% url 'trending-communities' %}">Communities</a>
+                                    <a href="{% url 'top' %}">Top Posts</a>
+                                    <a >Topics</a>
+                                </div>
+                                <div class="sidebox-footer-2">
+                                    <a >About</a>
+                                    <a >Careers</a>
+                                    <a >Advertise</a>
+                                    <a >Blog</a>
+                                    <a >Terms</a>
+                                    <a >Policies</a>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="comm-sidebar-box-content wroovie-logo">      
+                                wroovie.com © 2020
+                            </div> 
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        
+
+    </div>
+
+    
+    <!-- {% if is_paginated %}
+    
+        {% if page_obj.has_previous %}
+            <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+        
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+        {% endif %}
+
+    {% endif %} -->
+
+{% endblock %}
+
+
+{% block extrajs %}
+    <script src="{% static 'common/js/jquery-3.4.1.min.js' %}" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        // define variables
+        var user_is_authenticated = '{{ user.is_authenticated }}'==='True'?true:false;
+        var user_is_member = '{{ user_is_member }}'==='True'?true:false;
+        var community_name = '{{ post.community.name }}'
+        var post_slug = '{{ post.slug }}'
+        var request_path = '{{ request.path }}'
+    </script>
+
+    <!-- <script src="{% static 'posts/js/base.js' %}" type="text/javascript"></script> -->
+    <!-- <script src="{% static 'posts/js/server.js' %}" type="text/javascript"></script> -->
+
+    <!-- <script src="{% static 'posts/js/post_create.js' %}" type="text/javascript"></script> -->
+
+    <!-- {% if post_type == 'Thread' %}
+        <script src="{% static 'common/js/trix.js' %}" type="text/javascript"></script>
+        <script src="{% static 'posts/js/thread_create.js' %}" type="text/javascript"></script>
+    {% else %}
+        <script src="{% static 'posts/js/article_create.js' %}" type="text/javascript"></script>
+    {% endif %} -->
+
+{% endblock %}

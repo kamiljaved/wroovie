@@ -1,3 +1,41 @@
+
+
+// feed selection hover actions
+var feeds = [
+    document.querySelector('.feed-top'),
+    document.querySelector('.feed-all')
+]
+
+var fsvgs = [
+    document.querySelector(".fsvg-top"),
+    document.querySelector(".fsvg-all"),
+]
+
+
+for (let index = 0; index < feeds.length; ++index) {
+    if (index!=curr_feed)
+    {
+        feeds[index].addEventListener('mouseenter', function(e) {
+            showFeedSvg(index);
+        });
+        feeds[index].addEventListener('mouseleave', function(e) {
+            showFeedSvg(curr_feed);
+        });
+    }
+}
+
+function showFeedSvg(i=0)
+{
+    Array.from(fsvgs, function(element) {
+        element.classList.remove('sel')
+    });
+    
+    fsvgs[i].classList.add('sel')
+}
+
+
+
+
 var wrapper = document.querySelector(".wrapper");
 
 var sidebar = document.querySelector(".comm-sidebar");
@@ -45,7 +83,7 @@ var btnJoinText = document.querySelector('.community-button-text')
 
 var joinTick = document.querySelector('.join-tick')
 
-if (user_is_authenticated)
+if (user_is_authenticated && btnJoin !== null)
 {
     btnJoin.addEventListener("mouseenter", listener_mouseenter_btnJoin);
     btnJoin.addEventListener("mouseleave", listener_mouseleave_btnJoin);
@@ -66,5 +104,8 @@ function listener_mouseleave_btnJoin(e)
         btnJoinText.innerHTML = 'JOINED';
     }
 } 
+
+
+// post buttons handling
 
 

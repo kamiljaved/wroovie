@@ -1,0 +1,130 @@
+
+.notifications {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  background-color: #f1f1f155;
+
+  z-index: 100000;
+}
+
+.notification-container {
+  position: absolute;
+
+  /* width: 60%; */
+  width: 50%;
+  /* height: 80%; */
+  height: 60%;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  padding: 20px;
+  border: 1px solid #141418;
+  border-radius: 12px;
+  /* background: #000000d3; */
+  background: #000000df;
+
+  overflow: auto;
+}
+
+.notification {
+
+  position: relative;
+
+  /* text-align: center; */
+  /* line-break: auto; */
+
+  font-size: small;
+
+  margin-bottom: 15px;
+  padding: 8px;
+
+  letter-spacing: 1.8px;
+
+  color: white;
+  background-color: #f1f1f100;
+
+  border-style: solid;
+
+}
+
+.notification-btn {
+    
+    border: none;
+    box-shadow: none;
+    padding: 10px 25px;
+    background: #333;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+
+    /* height: 4rem; */
+    /* width: 100%; */
+
+    position: relative;
+}
+
+.notification-inner
+{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.notification-wrapper
+{
+  height: 100%;
+  overflow: auto;
+  transition: opacity 300ms ease-out;
+}
+
+.notification-btn:hover {
+    background: #ff006a;
+}
+
+.notification-btn:focus {
+    outline: none;
+}
+
+
+.notification-success {
+  border: 1px solid rgba(12, 201, 0, 0.5);
+  background-color: rgba(12, 201, 12, 0.02);
+}
+.notification-error {
+  border: 1px solid rgba(255, 0, 0, 0.5);
+  background-color: rgba(255, 0, 0, 0.02);
+}
+.notification-warning {
+  border: 1px solid rgba(255, 255, 0, 0.5);
+  background-color: rgba(255, 255, 0, 0.02);
+}
+
+.notification-success .timestamp {
+  color: rgba(12, 201, 0, 0.5);
+}
+
+.notification-warning .timestamp {
+  color: rgba(255, 255, 0, 0.5);
+}
+
+.notification-error .timestamp {
+  color: rgba(255, 0, 0, 0.5);
+}
+
+.timestamp{
+  margin-right: 10px;
+  float:left;
+}

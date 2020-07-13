@@ -1,0 +1,276 @@
+{% extends "common/base.html" %}
+{% load static %}
+{% load humanize %}
+{% load mptt_tags %}
+{% load extra_tags %}
+
+
+{% block title %}
+    Create Post - wroovie
+{% endblock %}
+
+{% block browse_current_page_name %}
+    Create Post
+{% endblock %}
+
+{% block browse_current_page_icon %}
+    <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="pen" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-pen fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M498 142.08l-56.6 56.55-128-128 56.55-56.55a48 48 0 0 1 67.91 0L498 74.17a48 48 0 0 1 0 67.91z" class="fa-secondary"></path><path fill="currentColor" d="M12.85 371.11L.15 485.33a24 24 0 0 0 26.49 26.51l114.14-12.6 278-278-128-128z" class="fa-primary"></path></g></svg>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{% static 'community/css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'posts/css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'posts/css/scale.css' %}">
+
+        {% if post_type == 'Thread' %}
+            <link rel="stylesheet" type="text/css" href="{% static 'common/css/trix.css' %}">
+        {% else %}
+            <!-- TODO: Include Summernote stylesheet  -->
+        {% endif %}
+        
+{% endblock %}
+
+{% block fonts %}
+    <link href="https://fonts.googleapis.com/css2?family=Nixie+One&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block main %}
+
+    <div class="wrapper">
+        {% block banner %}
+        {% endblock %}
+
+        <div class="comm-1 post-create">
+            <!-- TODO: Need styling and option to choose number of days, and method of sort -->
+            <!-- <div class="display-timeframe">
+                 days search data
+            </div> -->
+            <div class="comm-1-1">
+                
+                <form action="{% if post_type == 'Thread' %} {% url 'create-thread' %} {% else %} {% url 'create-article' %} {% endif %}" class="post-create-form" id="post-create" method="POST">
+                    <span class="form-heading">CREATE POST</span>
+
+                    
+
+                    {% csrf_token %}
+
+                    <span>
+                        <!-- <label>Choose a Community</label> -->
+                        {{ form.community }}
+                    </span>
+
+                    <!-- post type choice -->
+                    <div class="opt-post-type">
+                        <div class="community-button {% if post_type == 'Thread' %} sel {% endif %} sdbr" onclick="event.stopPropagation(); redirectToCreateThread();">
+                            <div class="community-button-text">Thread</div>
+                        </div>
+                    <div class="community-button {% if post_type == 'Article' %} sel {% endif %} sdbr" onclick="event.stopPropagation(); redirectToCreateArticle();">
+                            <div class="community-button-text">Article</div>
+                        </div>
+                    </div>
+
+                    {{ form.title }}
+                    <span class="post-create-editor-wrap">
+                        {{ form.content }}
+                        <button class="community-button p-comm-btn-submit post-btn-submit disabled" type="submit" form="post-create">
+                            <div class="community-button-text">SUBMIT POST</div>
+                        </button>
+                    </span>
+
+                    <div class="error-list">
+                        <div class="hidden post-content-error">Please add some content to the post.</div>
+                        {{ form.non_field_errors }}
+                        <div class="fieldWrapper">
+                            {{ form.community.errors }}
+                            {{ form.message }}
+                        </div>
+                        <div class="fieldWrapper">
+                            {{ form.title.errors }}
+                            {{ form.message }}
+                        </div>
+                        <div class="fieldWrapper">
+                            {% if post_type == 'Article' %}
+                                {% for error in form.content.errors %}
+                                    {% if error.strip == "This field is required." %}
+                                        Please add some content to the post.
+                                    {% else %}
+                                        {{ error }}
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                {{ form.content.errors }}
+                            {% endif %}
+                            {{ form.message }}
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+
+
+            <!-- sidebar -->
+            <div class="comm-1-2">
+                <div class="comm-sidebar">
+
+                    <div class="comm-sidebar-box top">  
+                        <div class="comm-sidebar-box-heading">      
+                            <span> Create</span>    <span class="wroovie-logo">wroovie</span>
+                        </div>
+
+                        <div class="comm-sidebar-box-content opt-list" >      
+                            <div class="community-button sdbr" onclick="window.location.href='{% url 'profile' request.user %}'">
+                                <div class="community-button-text">My Profile</div>
+                            </div>
+                        </div>
+                        {% if user.administered_communities.all %}
+                        <div class="comm-sidebar-box-content opt-list" >      
+                            <div class="community-button sdbr" onclick="window.location.href='{% url 'modpanel' %}'">
+                                <div class="community-button-text">Moderator Panel</div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="comm-sidebar-box-content last-item" >      
+                            <div class="community-button sdbr" onclick="window.location.href='{% url 'create-community' %}'">
+                                <div class="community-button-text">CREATE COMMUNITY</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="comm-sidebar-box">             
+                    </div>
+
+                    <div class="comm-sidebar-box"> 
+                        <div class="comm-sidebar-box-heading with-image focus">
+                            <div class="heading-image">
+                                <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="alien-monster" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="svg-inline--fa fa-alien-monster fa-w-18 fa-9x"><g class="fa-group"><path fill="currentColor" d="M560,128H528a15.99954,15.99954,0,0,0-16,16v80H480V176a15.99954,15.99954,0,0,0-16-16H416V96h48a16.00079,16.00079,0,0,0,16-16V48a15.99954,15.99954,0,0,0-16-16H432a15.99954,15.99954,0,0,0-16,16V64H368a15.99954,15.99954,0,0,0-16,16v48H224V80a15.99954,15.99954,0,0,0-16-16H160V48a15.99954,15.99954,0,0,0-16-16H112A15.99954,15.99954,0,0,0,96,48V80a16.00079,16.00079,0,0,0,16,16h48v64H112a15.99954,15.99954,0,0,0-16,16v48H64V144a15.99954,15.99954,0,0,0-16-16H16A15.99954,15.99954,0,0,0,0,144V272a16.00079,16.00079,0,0,0,16,16H64v80a16.00079,16.00079,0,0,0,16,16h48v80a16.00079,16.00079,0,0,0,16,16h96a16.00079,16.00079,0,0,0,16-16V432a15.99954,15.99954,0,0,0-16-16H192V384H384v32H336a15.99954,15.99954,0,0,0-16,16v32a16.00079,16.00079,0,0,0,16,16h96a16.00079,16.00079,0,0,0,16-16V384h48a16.00079,16.00079,0,0,0,16-16V288h48a16.00079,16.00079,0,0,0,16-16V144A15.99954,15.99954,0,0,0,560,128ZM224,320H160V224h64Zm192,0H352V224h64Z" class="fa-secondary"></path><path fill="currentColor" d="M160,320h64V224H160Zm192-96v96h64V224Z" class="fa-primary"></path></g></svg>                            
+                            </div>
+                            Posting Guidelines
+                        </div>
+                        
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus">      
+                            <div class="post-community-name sdbr">    
+                                1.&nbsp&nbsp <a>Be respectful to others</a>
+                            </div>
+                        </div>
+
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus">      
+                            <div class="post-community-name sdbr">    
+                                2.&nbsp&nbsp <a>Behave like you would in real life</a>
+                            </div>
+                        </div>
+
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus">      
+                            <div class="post-community-name sdbr">    
+                                3.&nbsp&nbsp <a>Look for the original source of content</a>
+                            </div>
+                        </div>
+
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus">      
+                            <div class="post-community-name sdbr">    
+                                4.&nbsp&nbsp <a>Search for duplicates before posting</a>
+                            </div>
+                        </div>
+
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus">      
+                            <div class="post-community-name sdbr">    
+                                5.&nbsp&nbsp <a>Read the community’s guidelines</a>
+                            </div>
+                        </div>
+
+                        <hr class="list-sep">
+                        <div class="comm-sidebar-box-content">      
+                            <div class="community-button sdbr">
+                                <div class="community-button-text">CONTENT POLICIES</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <section class="site-footer">
+                        <div class="comm-sidebar-box">             
+                        </div>
+
+                        <div class="comm-sidebar-box comm-sidebar-footer">  
+                            <div class="comm-sidebar-box-content sidebox-footer">      
+                                <div class="sidebox-footer-1">
+                                    <a >Help</a>
+                                    <a >App</a>
+                                    <a href="{% url 'trending-communities' %}">Communities</a>
+                                    <a href="{% url 'top' %}">Top Posts</a>
+                                    <a >Topics</a>
+                                </div>
+                                <div class="sidebox-footer-2">
+                                    <a >About</a>
+                                    <a >Careers</a>
+                                    <a >Advertise</a>
+                                    <a >Blog</a>
+                                    <a >Terms</a>
+                                    <a >Policies</a>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="comm-sidebar-box-content wroovie-logo">      
+                                wroovie.com © 2020
+                            </div> 
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        
+
+    </div>
+
+    
+    <!-- {% if is_paginated %}
+    
+        {% if page_obj.has_previous %}
+            <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+        
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+        {% endif %}
+
+    {% endif %} -->
+
+{% endblock %}
+
+
+{% block extrajs %}
+    <script src="{% static 'common/js/jquery-3.4.1.min.js' %}" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        // define variables
+        var user_is_authenticated = '{{ user.is_authenticated }}'==='True'?true:false;
+        var user_is_member = '{{ user_is_member }}'==='True'?true:false;
+        var community_name = '{{ post.community.name }}'
+        var post_slug = '{{ post.slug }}'
+        var request_path = '{{ request.path }}'
+    </script>
+
+    <script src="{% static 'posts/js/base.js' %}" type="text/javascript"></script>
+    <script src="{% static 'posts/js/server.js' %}" type="text/javascript"></script>
+
+    <script src="{% static 'posts/js/post_create.js' %}" type="text/javascript"></script>
+
+    {% if post_type == 'Thread' %}
+        <script src="{% static 'common/js/trix.js' %}" type="text/javascript"></script>
+        <script src="{% static 'posts/js/thread_create.js' %}" type="text/javascript"></script>
+    {% else %}
+        <script defer src="{% static 'posts/js/article_create.js' %}" type="text/javascript"></script>
+    {% endif %}
+
+{% endblock %}

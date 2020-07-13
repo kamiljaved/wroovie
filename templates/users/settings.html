@@ -1,0 +1,43 @@
+<div class="comm-1-1">
+                
+    <form action="{% url 'settings' %}" class="form-settings-user community-create-form" id="community-create" method="POST" enctype="multipart/form-data">
+        <span class="form-heading">CUSTOMIZE YOUR PROFILE</span> 
+
+        <div class="form-gap small"></div>
+        {% csrf_token %}
+
+        <span style="display: flex;" class="form-settings-user">
+            <label class="create-community-label edit-profile-label" for="id_icon">Profile Picture: </label>
+            <div class="user-image-sel">{{ form.image }}</div>
+        </span>
+        <div class="form-gap small"></div>
+
+        <span style="display: flex;" class="form-settings-user">
+            <label class="create-community-label edit-profile-label" for="id_icon">Profile Banner: </label>
+            <div class="user-banner-sel">{{ form.banner }}</div>
+        </span>
+        <div class="form-gap small"></div>
+
+        <span>
+            <button class="community-button p-comm-btn-submit post-btn-submit" type="submit" form="community-create">
+                <div class="community-button-text">UPDATE PROFILE</div>
+            </button>
+        </span>
+        
+        <div class="error-list">
+            {{ form.non_field_errors }}
+            <div class="fieldWrapper">
+                {{ form.image.errors }}
+                {{ form.message }}
+            </div>
+            <div class="fieldWrapper">
+                {{ form.banner.errors }}
+                {{ form.message }}
+            </div>
+            <div class="fieldWrapper">
+                {{ form.highlight_color_hex.errors }}
+                {{ form.message }}
+            </div>
+        </div>
+    </form>
+</div>

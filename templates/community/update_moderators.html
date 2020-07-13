@@ -1,0 +1,437 @@
+{% extends "common/base.html" %}
+{% load static %}
+{% load humanize %}
+{% load mptt_tags %}
+{% load extra_tags %}
+
+
+{% block title %}
+    Update c/{{ name }} - wroovie
+{% endblock %}
+
+{% block browse_current_page_name %}
+    c/{{ name }}
+{% endblock %}
+
+{% block browse_current_page_icon %}
+    <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="pencil-paintbrush" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-pencil-paintbrush fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M21.08 133l99.11 100.33L216 137.52 146 33.11C84.06-55.29-52.15 52.53 21.08 133zm435.68 258.63a15.26 15.26 0 0 1-14.59-10c-18.13-47.78-48.4-65.38-82.65-70.71l-101.69 101.7C266.65 476 315.43 512 384 512c90.07 0 128-72.38 128-154.73-9.78 6.73-44.14 34.36-55.24 34.36z" class="fa-secondary"></path><path fill="currentColor" d="M19.08 379.68L.33 487.12a21.23 21.23 0 0 0 24.59 24.56l107.44-18.84 296.93-296.93L316.08 82.72zM497.94 59.32l-45.26-45.25a48 48 0 0 0-67.94 0l-46 46 113.2 113.2 46-46a48 48 0 0 0 0-67.95z" class="fa-primary"></path></g></svg>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{% static 'community/css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'posts/css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'posts/css/scale.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'community/css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'community/css/update.css' %}">
+ 
+{% endblock %}
+
+{% block fonts %}
+    <link href="https://fonts.googleapis.com/css2?family=Nixie+One&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block main %}
+
+    <div class="wrapper">
+        {% block banner %}
+        {% endblock %}
+
+        <div class="comm-1 post-create">
+            <!-- TODO: Need styling and option to choose number of days, and method of sort -->
+            <!-- <div class="display-timeframe">
+                 days search data
+            </div> -->
+            <div class="comm-1-1">
+                
+                <div class="community-create-form" id="community-create" >
+                    <span class="form-heading">UPDATE COMMUNITY <span style="float:right;">c/{{ name }}</span></span> 
+                    
+                    <!-- update type choice -->
+                    <div class="opt-post-type">
+                        <div class="community-button sdbr" onclick="event.stopPropagation(); window.location.href='{% url 'community-update' name %}';">
+                            <div class="community-button-text">UPDATE INFO</div>
+                        </div>
+                    <div class="community-button sel sdbr" onclick="event.stopPropagation(); ">
+                            <div class="community-button-text">EDIT MODERATORS</div>
+                        </div>
+                    </div>
+
+                    <div class="div-gap medium"></div>
+                    <div class="div-gap xsmall"></div>
+
+ 
+                    <span class="form-subheading" style="font-size: 18px;">CURRENT MODERATORS</span> 
+                    
+
+                    <div id="modify_url" url="{% url 'community-admin-edit' name %}"></div>
+                    <div id="search_url" url="{% url 'search-member' name %}"></div>
+
+                    <div id="id_remove_moderators" style="display: flex; flex-direction:column; padding-bottom: 10px; width:60%; margin-left: 10%;">
+
+                        <!-- cant change status of these admins -->
+                        {% if user == community.creator %}
+                        <div id="" style="margin-bottom: 10px" class="mods-list">
+                            <a href="{% url 'profile' user.username %}">u/{{ user.username }}</a>
+                            <div class="community-button p-comm-btn-submit post-btn-submit disabled" id="" style="cursor: default;"> 
+                                <div class="community-button-text">
+                                    Creator (You)
+                                </div> 
+                            </div>
+                        </div>
+                        {% else %}
+                        <div id="" style="margin-bottom: 10px" class="mods-list">
+                            <a href="{% url 'profile' community.creator.username %}">u/{{ community.creator.username }}</a>
+                            <div class="community-button p-comm-btn-submit post-btn-submit disabled" id="" style="cursor: default;"> 
+                                <div class="community-button-text">
+                                    Creator
+                                </div> 
+                            </div>
+                        </div>
+                        <div id="" style="margin-bottom: 10px" class="mods-list">
+                            <a href="{% url 'profile' user.username %}">u/{{ user.username }}</a>
+                            <div class="community-button p-comm-btn-submit post-btn-submit disabled" id="" style="cursor: default;"> 
+                                <div class="community-button-text">
+                                    You
+                                </div> 
+                            </div>
+                        </div>
+                        {% endif %}
+
+                    </div>
+
+                    <div class="div-gap small"></div>
+                    
+                    <span class="form-subheading" style="font-size: 18px;">ADD MODERATORS</span> 
+                    
+                    <div class="div-gap medium"></div>
+
+                    <span style="display: flex;">
+                        
+                        <!-- <label class="create-community-label" for="id_icon">Add Moderator: </label> -->
+                        <input type="text" id="id_member_search_input" style="width: 60%;" placeholder="Community Member Username">
+                        <div class="community-button p-comm-btn-submit post-btn-submit" id="id_member_search_button" url="{% url 'search-member' name %}">
+                            <div class="community-button-text">Search</div>
+                        </div>
+
+                    </span>
+
+                    <div class="div-gap xmall"></div>
+                    <div class="div-gap xmall"></div>
+                    
+                    <div class="" id="id_search_results" style="display: flex; flex-direction:column; padding-bottom: 10px; width:60%; margin-left: 10%;">
+
+                    </div>
+
+                    <div class="div-gap medium"></div>
+
+                    {% if user.administered_communities.all %}
+                    <span style="display: flex; width: 99%;">
+                        
+                        <div class="community-button p-comm-btn-submit post-btn-submit" style="margin-left: 0;" onclick= "window.location.href='{% url 'modpanel' %}'">
+                            <div class="community-button-text">TO MODERATOR PANEL</div>
+                        </div>
+                    </span>
+                    {% endif %}
+
+                    <div class="error-list">
+                        {{ form.non_field_errors }}
+                        <div class="fieldWrapper">
+                            {{ form.name.errors }}
+                            {{ form.message }}
+                        </div>
+                        <div class="fieldWrapper">
+                            {{ form.title.errors }}
+                            {{ form.message }}
+                        </div>
+                        <div class="fieldWrapper">
+                            {{ form.about.errors }}
+                            {{ form.message }}
+                        </div>
+                        <div class="fieldWrapper">
+                            {{ form.icon.errors }}
+                            {{ form.message }}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <!-- sidebar -->
+            <div class="comm-1-2">
+                <div class="comm-sidebar">
+
+                    <div class="comm-sidebar-box top">  
+                        <div class="comm-sidebar-box-heading">      
+                            <span> Moderation</span>    <span class="wroovie-logo">wroovie</span>
+                        </div>
+
+                        <div class="comm-sidebar-box-content opt-list" >      
+                            <div class="community-button sdbr" onclick="window.location.href='{% url 'profile' request.user %}'">
+                                <div class="community-button-text">My Profile</div>
+                            </div>
+                        </div>
+                        {% if user.administered_communities.all %}
+                        <div class="comm-sidebar-box-content opt-list" >      
+                            <div class="community-button sdbr" onclick="window.location.href='{% url 'modpanel' %}'">
+                                <div class="community-button-text">Moderator Panel</div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="comm-sidebar-box-content last-item" >      
+                            <div class="community-button sdbr" onclick="window.location.href='{% url 'home'  %}'">
+                                <div class="community-button-text">HOME</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="comm-sidebar-box"> 
+
+                        <div class="comm-sidebar-box-heading comm-sidebar-box-content list-item" onclick="event.stopPropagation(); window.location.href='{% url 'community-home' community.name %}'">      
+                            <div class="post-community-image-wrapper">
+                                <img class="post-community-image sdbr p" src="{{ community.icon.url }}" alt="Community Icon">
+                            </div>
+                            <div class="post-community-name sdbr p">    
+                                <a>c/{{ community.name }}</a>
+                            </div>
+                        </div>
+
+                        <div class="comm-sidebar-box-content">      
+                            <div class="post-community-name">    
+                                <a>{{ community.about | truncatechars:50 }}</a>
+                            </div>
+                        </div>
+                        <hr class="list-sep">
+
+                        <div class="comm-sidebar-box-content">      
+                            <div class="post-community-name comm-abt">
+                                {% with community.members.count as memb_count %}
+                                    {% if memb_count == 1 %}    
+                                        <a><strong>1</strong> member</a>
+                                    {% else %}
+                                        <a><strong>{{ memb_count | cool_number }}</strong> members</a>
+                                    {% endif %}
+                                {% endwith %}
+                            </div>
+                        </div>
+                        <hr class="list-sep">
+                        
+
+                        <div class="comm-sidebar-box-content">  
+                            <div class="post-community-name comm-create">   
+                                <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="birthday-cake" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-birthday-cake fa-w-14 fa-9x"><g class="fa-group"><path fill="currentColor" d="M373.5 384c-28 0-31.39 32-74.75 32-43.55 0-46.6-32-74.75-32-27.28 0-31.66 32-74.5 32-43.5 0-46.8-32-74.75-32S43.36 416 0 416v96h448v-96c-43.25 0-47-32-74.5-32zM96 96c17.75 0 32-13.5 32-40S108 0 96 0c0 41-32 33-32 64a31.9 31.9 0 0 0 32 32zm128 0c17.75 0 32-13.5 32-40S236 0 224 0c0 41-32 33-32 64a31.9 31.9 0 0 0 32 32zm128 0c17.75 0 32-13.5 32-40S364 0 352 0c0 41-32 33-32 64a31.9 31.9 0 0 0 32 32z" class="fa-secondary"></path><path fill="currentColor" d="M448 384c-28 0-31.26-32-74.5-32-43.43 0-46.83 32-74.75 32-27.7 0-31.45-32-74.75-32-42.84 0-47.22 32-74.5 32-28.15 0-31.2-32-74.75-32S28.1 384 0 384v-80a48 48 0 0 1 48-48h16V112h64v144h64V112h64v144h64V112h64v144h16a48 48 0 0 1 48 48z" class="fa-primary"></path></g></svg>   
+ 
+                                <a>Created {{ community.dt_creation | date:"DATE_FORMAT" }}</a>
+                            </div>
+                        </div>
+
+                        <div class="div-gap xsmall"></div>
+
+
+                    </div>
+
+                    <div class="comm-sidebar-box">             
+                    </div>
+
+                    <div class="comm-sidebar-box"> 
+                        <div class="comm-sidebar-box-heading with-image focus">
+                            <div class="heading-image h2">
+                                <svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="alien-monster" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="svg-inline--fa fa-alien-monster fa-w-18 fa-9x"><path fill="currentColor" d="M192,320h32V224H192Zm160,0h32V224H352ZM544,112H512a32.03165,32.03165,0,0,0-32,32v16H416V128h32a32.03165,32.03165,0,0,0,32-32V64a32.03165,32.03165,0,0,0-32-32H416a32.03165,32.03165,0,0,0-32,32H352a32.03165,32.03165,0,0,0-32,32v32H256V96a32.03165,32.03165,0,0,0-32-32H192a32.03165,32.03165,0,0,0-32-32H128A32.03165,32.03165,0,0,0,96,64V96a32.03165,32.03165,0,0,0,32,32h32v32H96V144a32.03165,32.03165,0,0,0-32-32H32A32.03165,32.03165,0,0,0,0,144V288a32.03165,32.03165,0,0,0,32,32H64v32a32.03165,32.03165,0,0,0,32,32h32v64a32.03165,32.03165,0,0,0,32,32h80a32.03165,32.03165,0,0,0,32-32V416a32.03165,32.03165,0,0,0-32-32h96a32.03165,32.03165,0,0,0-32,32v32a32.03165,32.03165,0,0,0,32,32h80a32.03165,32.03165,0,0,0,32-32V384h32a32.03165,32.03165,0,0,0,32-32V320h32a32.03165,32.03165,0,0,0,32-32V144A32.03165,32.03165,0,0,0,544,112ZM416,64h32V96H416ZM128,96V64h32V96ZM240,448H160V384h32v32h48Zm176,0H336V416h48V384h32ZM544,288H480v64H96V288H32V144H64V256H96V192h96V96h32v64H352V96h32v96h96v64h32V144h32Z" class="fa-secondary" style="color:rgb(253, 62, 62)"></path></svg>
+                            </div>
+                            Editing Moderators
+                        </div>
+                        
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus">      
+                            <div class="post-community-name sdbr">    
+                                1.&nbsp&nbsp <a>You can't change your own status</a>
+                            </div>
+                        </div>
+
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus">      
+                            <div class="post-community-name sdbr">    
+                                2.&nbsp&nbsp <a>You can't change the status of the community creator</a>
+                            </div>
+                        </div>
+
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus">      
+                            <div class="post-community-name sdbr">    
+                                3.&nbsp&nbsp <a>You can only add members of the community in its moderator list</a>
+                            </div>
+                        </div>
+
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus">      
+                            <div class="post-community-name sdbr">    
+                                4.&nbsp&nbsp <a>To add a new moderator, search for their username in provided search input</a>
+                            </div>
+                        </div>
+
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus">      
+                            <div class="post-community-name sdbr">    
+                                5.&nbsp&nbsp <a>Be specific with the username if user doesn't show up in search</a>
+                            </div>
+                        </div>
+
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus">      
+                            <div class="post-community-name sdbr">    
+                                5.&nbsp&nbsp <a>You cannot leave a community if you are its moderator</a>
+                            </div>
+                        </div>
+
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus">      
+                            <div class="post-community-name sdbr">    
+                                5.&nbsp&nbsp <a>To modify your moderator status, please contact the community creator or a fellow moderator</a>
+                            </div>
+                        </div>
+
+                        <div class="div-gap xsmall"></div>
+
+
+                    </div>
+
+                    <div class="comm-sidebar-box"> 
+                        <div class="comm-sidebar-box-heading with-image focus">
+                            <div class="heading-image h2">
+                                <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="alien-monster" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="svg-inline--fa fa-alien-monster fa-w-18 fa-9x"><g class="fa-group"><path fill="currentColor" d="M560,128H528a15.99954,15.99954,0,0,0-16,16v80H480V176a15.99954,15.99954,0,0,0-16-16H416V96h48a16.00079,16.00079,0,0,0,16-16V48a15.99954,15.99954,0,0,0-16-16H432a15.99954,15.99954,0,0,0-16,16V64H368a15.99954,15.99954,0,0,0-16,16v48H224V80a15.99954,15.99954,0,0,0-16-16H160V48a15.99954,15.99954,0,0,0-16-16H112A15.99954,15.99954,0,0,0,96,48V80a16.00079,16.00079,0,0,0,16,16h48v64H112a15.99954,15.99954,0,0,0-16,16v48H64V144a15.99954,15.99954,0,0,0-16-16H16A15.99954,15.99954,0,0,0,0,144V272a16.00079,16.00079,0,0,0,16,16H64v80a16.00079,16.00079,0,0,0,16,16h48v80a16.00079,16.00079,0,0,0,16,16h96a16.00079,16.00079,0,0,0,16-16V432a15.99954,15.99954,0,0,0-16-16H192V384H384v32H336a15.99954,15.99954,0,0,0-16,16v32a16.00079,16.00079,0,0,0,16,16h96a16.00079,16.00079,0,0,0,16-16V384h48a16.00079,16.00079,0,0,0,16-16V288h48a16.00079,16.00079,0,0,0,16-16V144A15.99954,15.99954,0,0,0,560,128ZM224,320H160V224h64Zm192,0H352V224h64Z" class="fa-secondary"></path><path fill="currentColor" d="M160,320h64V224H160Zm192-96v96h64V224Z" class="fa-primary"></path></g></svg>                            
+                            </div>
+                            Moderation Guidelines
+                        </div>
+                        
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus">      
+                            <div class="post-community-name sdbr">    
+                                1.&nbsp&nbsp <a>Respect other people</a>
+                            </div>
+                        </div>
+
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus">      
+                            <div class="post-community-name sdbr">    
+                                2.&nbsp&nbsp <a>Behave like you would in real life</a>
+                            </div>
+                        </div>
+
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus">      
+                            <div class="post-community-name sdbr">    
+                                3.&nbsp&nbsp <a>Cut down on spam</a>
+                            </div>
+                        </div>
+
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus">      
+                            <div class="post-community-name sdbr">    
+                                4.&nbsp&nbsp <a>Do your best at being fair</a>
+                            </div>
+                        </div>
+
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus">      
+                            <div class="post-community-name sdbr">    
+                                5.&nbsp&nbsp <a>Enforce community guidelines</a>
+                            </div>
+                        </div>
+
+                        <hr class="list-sep">
+                        <div class="comm-sidebar-box-content">      
+                            <div class="community-button sdbr">
+                                <div class="community-button-text">CONTENT POLICIES</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <section class="site-footer">
+                        <div class="comm-sidebar-box">             
+                        </div>
+
+
+                        <div class="comm-sidebar-box comm-sidebar-footer">  
+                            <div class="comm-sidebar-box-content sidebox-footer">      
+                                <div class="sidebox-footer-1">
+                                    <a >Help</a>
+                                    <a >App</a>
+                                    <a href="{% url 'trending-communities' %}">Communities</a>
+                                    <a href="{% url 'top' %}">Top Posts</a>
+                                    <a >Topics</a>
+                                </div>
+                                <div class="sidebox-footer-2">
+                                    <a >About</a>
+                                    <a >Careers</a>
+                                    <a >Advertise</a>
+                                    <a >Blog</a>
+                                    <a >Terms</a>
+                                    <a >Policies</a>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="comm-sidebar-box-content wroovie-logo">      
+                                wroovie.com © 2020
+                            </div> 
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        
+
+    </div>
+
+    
+    <!-- {% if is_paginated %}
+    
+        {% if page_obj.has_previous %}
+            <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+        
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+        {% endif %}
+
+    {% endif %} -->
+
+{% endblock %}
+
+
+{% block extrajs %}
+    <script src="{% static 'common/js/jquery-3.4.1.min.js' %}" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        // define variables
+        var user_is_authenticated = '{{ user.is_authenticated }}'==='True'?true:false;
+        var user_is_member = '{{ user_is_member }}'==='True'?true:false;
+        var community_name = '{{ post.community.name }}'
+        var post_slug = '{{ post.slug }}'
+        var request_path = '{{ request.path }}'
+    </script>
+
+    <script src="{% static 'community/js/server.js' %}" type="text/javascript"></script>
+    <script src="{% static 'community/js/update.js' %}" type="text/javascript"></script>
+
+    <script>
+
+        {% for moderator in moderators %}
+
+        removeModeratorHTML( "{{ moderator.username }}", modify_url)
+
+        {% endfor %}
+    </script>
+    <!-- <script src="{% static 'posts/js/base.js' %}" type="text/javascript"></script> -->
+    <!-- <script src="{% static 'posts/js/server.js' %}" type="text/javascript"></script> -->
+
+    <!-- <script src="{% static 'posts/js/post_create.js' %}" type="text/javascript"></script> -->
+
+    <!-- {% if post_type == 'Thread' %}
+        <script src="{% static 'common/js/trix.js' %}" type="text/javascript"></script>
+        <script src="{% static 'posts/js/thread_create.js' %}" type="text/javascript"></script>
+    {% else %}
+        <script src="{% static 'posts/js/article_create.js' %}" type="text/javascript"></script>
+    {% endif %} -->
+
+{% endblock %}

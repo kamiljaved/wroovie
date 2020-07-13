@@ -1,0 +1,58 @@
+.form-settings-user .user-image-sel a
+{
+    float: right;
+
+}
+
+.form-settings-user .user-image-sel
+{
+    align-items: center;
+}
+.form-settings-user .user-image-sel a:hover
+{
+    text-decoration: underline;
+}
+
+.form-settings-user .user-banner-sel a:hover
+{
+    text-decoration: underline;
+}
+
+.form-settings-user .user-image-sel input[name='image']
+{
+    margin-left: 25px;
+    float: right;
+    margin-top: 5px;
+
+    cursor: pointer;
+}
+
+.form-settings-user .user-banner-sel a
+{
+    float: right;
+}
+
+.form-settings-user .user-banner-sel input[name='banner']
+{
+    margin-left: 25px;
+    float: right;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.form-settings-user .user-banner-sel input[name='banner-clear']
+{
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.form-settings-user .user-banner-sel label[for=banner-clear_id]
+{
+    cursor: pointer;
+}
+
+.form-settings-user .edit-profile-label
+{
+    margin-right: 3rem;
+}
+

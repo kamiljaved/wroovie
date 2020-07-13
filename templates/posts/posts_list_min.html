@@ -1,0 +1,71 @@
+{% load static %}
+{% load humanize %}
+{% load extra_tags %}
+
+{% for post in posts %}
+<div class="comm-content-box" onclick=" location.href = '{% url 'post-detail' post.slug %}'; event.stopPropagation();">
+    
+    <div class="comm-content-box-1" style="width: 1rem;">
+
+
+    </div>
+
+    <div class="comm-content-box-2" style="overflow:hidden; width: 100%">
+        <div class="post-info">
+            {% if show_comm_info %} 
+                <div class="post-community-image-wrapper">
+                    <img class="post-community-image" src="{{ post.community.icon.url }}" alt="Community Icon">
+                </div>
+                <strong class="post-community-name">    
+                    <a href="{% url 'community-home' post.community.name %}" onclick="event.stopPropagation();">c/{{ post.community.name }}</a>
+                </strong>
+                &nbsp | 
+            {% endif %}
+            
+             
+            {{ post.get_type }} | Posted by
+            <div class="post-author-image-wrapper">
+                <img class="post-author-image" src="{{ post.author.profile.image.url }}" alt="Author Image">
+            </div>
+            <a href = "{% url 'profile' post.author %}" onclick="event.stopPropagation();">u/{{ post.author }}</a>
+            <div class="post-time">
+                | {{ post.get_timesince_minified }}
+            </div>
+            |
+            {% if post.get_reply_count == 1 %}
+                1 reply
+            {% else %}
+                {{ post.get_reply_count }} replies
+            {% endif %}
+            |
+            {% with post.get_score as post_score %} 
+                {{ post_score | cool_number }} 
+                {% if post_score == 1 %}
+                    point
+                {% else %}
+                    points
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <div class="post-title txt-brk" style="display:flex; align-items: center; margin-bottom: 0; font-size: 18px;">
+            {% if post.article.main_img_url %}
+            <div class="post-community-image-wrapper" style="float:right; margin-right: 12px; width: 60px; height: 50px;">
+                <img style="width: 60px; height: 50px;" class="post-community-image post-main-img sdbr" src="{{ post.article.main_img_url }}" alt="Community Icon">
+            </div>
+            {% endif %}
+            
+            {{ post.title }}
+
+        </div>
+            
+        <div class="post-text" style="max-height:5px; overflow:hidden;">
+        </div>
+
+
+
+    </div>
+
+</div>
+
+{% endfor %}

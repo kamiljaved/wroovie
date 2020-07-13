@@ -1,0 +1,107 @@
+.comm-form-item
+{
+    display: flex;
+}
+
+.comm-form-item label{
+    width: 175px !important;
+    margin-right: 0;
+    
+}
+.community-update-form .comm-icon-sel a
+{
+    float: right;
+}
+
+.community-update-form .comm-icon-sel a:hover
+{
+    text-decoration: underline;
+}
+
+.community-update-form .comm-about > *
+{
+    margin-top: 0;
+    width: 97%;
+}
+.community-update-form .comm-about
+{
+    width: 99%;
+    font-family: 'Open Sans' !important;
+}
+
+.community-update-form .comm-title > input[name='title']
+{
+    width: 97% !important;
+    margin-right: 20px;
+}
+
+.community-update-form .comm-title
+{
+    width: 99% !important;
+}
+
+.community-update-form .comm-icon-sel input[name='icon']
+{
+    margin-left: 25px;
+    float: right;
+    margin-top: 5px;
+
+    cursor: pointer;
+}
+
+
+.community-update-form .comm-banner-sel a
+{
+    float: right;
+}
+
+.community-update-form .comm-banner-sel a:hover
+{
+    text-decoration: underline;
+}
+
+.community-update-form .comm-banner-sel input[name='banner']
+{
+    margin-left: 25px;
+    float: right;
+    margin-top: 5px;
+
+    cursor: pointer;
+}
+
+.community-update-form .comm-banner-sel input[name='banner-clear']
+{
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.community-update-form .comm-banner-sel label[for=banner-clear_id]
+{
+    cursor: pointer;
+}
+
+
+
+.community-update-form input[name='title']
+{
+    width: auto;
+}
+
+
+.search-results a:hover 
+{
+    text-decoration: underline;
+}
+
+
+.mods-list 
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mods-list a:hover 
+{
+    text-decoration: underline;
+}

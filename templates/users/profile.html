@@ -1,60 +1,424 @@
-{% extends "blog/base.html" %}
-{% load crispy_forms_tags  %}
+{% extends "common/base.html" %}
+{% load static %}
+{% load humanize %}
+{% load extra_tags %}
 
-{% block content %}
 
-    <h1>thisBlog Profile</h1>
-    <br />
+{% block title %}
+    u/{{profile_user.username}} - wroovie
+{% endblock %}
 
-    <div class="content-section">
-        <div class="media">
-            <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
-            <div class="media-body">
-                <h2 class="account-heading">
-                    {{ user.username }}
-                </h2>
-                <p class="text-secondary">{{ user.email }}</p>
-                <a class="btn btn-info disabled btn-lg mt-1 mb-1" style="color: white;"> 
-                        {% with user.profile.user_status as status %}
-                            {% if status == 1 %} Student
-                            {% elif status == 2 %} Instructor
-                            {% elif status == 3 %} Admin
+{% block browse_current_page_name %}
+    u/{{profile_user.username|truncatechars:15}}
+{% endblock %}
+
+{% block browse_current_page_icon %}
+    <img class="" src="{{ profile_user.profile.image.url }}" alt="Community Image">
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{% static 'community/css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'community/css/scale.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'feeds/css/home.css' %}">
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'users/css/profile.css' %}">
+
+
+
+    {% if page == 'editprofile' %}
+        <link rel="stylesheet" type="text/css" href="{% static 'posts/css/base.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'posts/css/scale.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'users/css/settings.css' %}">
+    {% endif %}
+
+{% endblock %}
+
+
+{% block fonts %}
+    <link href="https://fonts.googleapis.com/css2?family=Nixie+One&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block main %}
+
+    <div class="wrapper">
+
+        <div class="comm-1 feed-wrap feed-sel1">
+
+            <!-- feed select box -->
+            <div class="comm-content-box create-box">
+
+                <div class="comm-content-box-1">
+                    <div class="post-create-button" onclick="event.stopPropagation();">
+
+                        <svg id='0' class="{% if page == 'posts' %} sel {% endif %} tsvg-posts prof-tsvg   svg-inline--fa fa-stream fa-w-16 fa-9x"         aria-hidden="true" focusable="false" data-prefix="fad" data-icon="stream" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><g class="fa-group"><path fill="currentColor" d="M512 224v64a16 16 0 0 1-16 16H80a16 16 0 0 1-16-16v-64a16 16 0 0 1 16-16h416a16 16 0 0 1 16 16z" class="fa-secondary"></path><path fill="currentColor" d="M432 32H16A16 16 0 0 0 0 48v64a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zm0 352H16a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-64a16 16 0 0 0-16-16z" class="fa-primary"></path></g></svg>
+                        <svg id='1' class="{% if page == 'comments' %} sel {% endif %} tsvg-comments prof-tsvg   svg-inline--fa fa-comments-alt fa-w-18 fa-9x"   aria-hidden="true" focusable="false" data-prefix="fad" data-icon="comments-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><g class="fa-group"><path fill="currentColor" d="M352 287.9H162.3L79.5 350a9.7 9.7 0 0 1-15.5-7.8V288a64.06 64.06 0 0 1-64-64V64A64.06 64.06 0 0 1 64 0h288a64.06 64.06 0 0 1 64 64v160a63.91 63.91 0 0 1-64 63.9z" class="fa-secondary"></path><path fill="currentColor" d="M576 224v160a64.06 64.06 0 0 1-64 64h-32v54.3a9.7 9.7 0 0 1-15.5 7.8L381.7 448H256a64.06 64.06 0 0 1-64-64v-64h160a96.15 96.15 0 0 0 96-96v-64h64a64.06 64.06 0 0 1 64 64z" class="fa-primary"></path></g></svg>
+                        <svg id='2' class="{% if page == 'saved' %} sel {% endif %} tsvg-saved prof-tsvg   svg-inline--fa fa-bookmark fa-w-12 fa-9x"       aria-hidden="true" focusable="false" data-prefix="fad" data-icon="bookmark" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><g class="fa-group"><path fill="currentColor" d="M384 48v464L192 400 0 512V48A48 48 0 0 1 48 0h32v326.11a16 16 0 0 0 23.16 14.31L192 296l88.84 44.42A16 16 0 0 0 304 326.11V0h32a48 48 0 0 1 48 48z" class="fa-secondary"></path><path fill="currentColor" d="M304 0v326.11a16 16 0 0 1-23.16 14.31L192 296l-88.84 44.42A16 16 0 0 1 80 326.11V0z" class="fa-primary"></path></g></svg>
+                        <svg id='3' class="{% if page == 'upvoted' %} sel {% endif %} tsvg-upvoted prof-tsvg   svg-inline--fa fa-arrow-alt-up fa-w-14 fa-9x"   aria-hidden="true" focusable="false" data-prefix="fad" data-icon="arrow-alt-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><g class="fa-group"><path fill="currentColor" d="M160,456V256H288.11V456a24,24,0,0,1-24,24H184A24,24,0,0,1,160,456Z" class="fa-secondary"></path><path fill="currentColor" d="M39.05,215,207,39a24.08,24.08,0,0,1,34,0L408.92,215c15.11,15.09,4.4,41-17,41H56.05C34.63,256,24,230.3,39.05,215Z" class="fa-primary"></path></g></svg>
+                        <svg id='4' class="{% if page == 'downvoted' %} sel {% endif %} tsvg-downvoted prof-tsvg   svg-inline--fa fa-arrow-alt-down fa-w-14 fa-9x" aria-hidden="true" focusable="false" data-prefix="fad" data-icon="arrow-alt-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><g class="fa-group"><path fill="currentColor" d="M288,56V256H159.88V56a24,24,0,0,1,24-24H264A24,24,0,0,1,288,56Z" class="fa-secondary"></path><path fill="currentColor" d="M408.93,297,241,473a24.09,24.09,0,0,1-34,0L39.07,297c-15.11-15.09-4.4-41,17-41H391.93C413.35,256,424,281.76,408.93,297Z" class="fa-primary"></path></g></svg>
+                        <svg id='5' class="{% if page == 'editprofile' %} sel {% endif %} tsvg-editprofile prof-tsvg   svg-inline--fa fa-user-edit fa-w-20 fa-9x"      aria-hidden="true" focusable="false" data-prefix="fad" data-icon="user-edit" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><g class="fa-group"><path fill="currentColor" d="M358.9 433.3l-6.8 61a15.92 15.92 0 0 0 17.6 17.6l60.9-6.8 137.9-137.9-71.7-71.7zM633 268.9L595.1 231a24 24 0 0 0-33.8 0l-37.8 37.8-4.1 4.1 71.8 71.7 41.8-41.8a24.08 24.08 0 0 0 0-33.9z" class="fa-secondary"></path><path fill="currentColor" d="M313.6 288h-16.7a174.08 174.08 0 0 1-145.8 0h-16.7A134.43 134.43 0 0 0 0 422.4V464a48 48 0 0 0 48 48h274.9a48 48 0 0 1-2.6-21.3l6.8-60.9 1.2-11.1 85.2-85.2c-24.5-27.7-60-45.5-99.9-45.5zM224 256A128 128 0 1 0 96 128a128 128 0 0 0 128 128z" class="fa-primary"></path></g></svg>
+                        <svg id='6' class="{% if page == 'modpanel' %} sel {% endif %} tsvg-modpanel prof-tsvg   svg-inline--fa fa-user-shield fa-w-20 fa-9x"    aria-hidden="true" focusable="false" data-prefix="fad" data-icon="user-shield" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><g class="fa-group"><path fill="currentColor" d="M622.3 271.1l-115.2-45a31 31 0 0 0-22.2 0l-115.2 45c-10.7 4.2-17.7 14-17.7 24.9 0 111.6 68.7 188.8 132.9 213.9a31 31 0 0 0 22.2 0C558.4 489.9 640 420.5 640 296c0-10.9-7-20.7-17.7-24.9zM496 462.4V273.3l95.5 37.3c-5.6 87.1-60.9 135.4-95.5 151.8z" class="fa-secondary"></path><path fill="currentColor" d="M224 256A128 128 0 1 0 96 128a128 128 0 0 0 128 128zm96 40c0-2.5.8-4.8 1.1-7.2-2.5-.1-4.9-.8-7.5-.8h-16.7a174.08 174.08 0 0 1-145.8 0h-16.7A134.43 134.43 0 0 0 0 422.4V464a48 48 0 0 0 48 48h352a49.22 49.22 0 0 0 19.2-4c-54-42.9-99.2-116.7-99.2-212z" class="fa-primary"></path></g></svg>
+
+                    </div>
+            
+                </div>
+                <div class="comm-content-box-2">
+                    
+                    <div class="post-options post-create-opt">
+                        
+                        <div class="post-options-button {% if page == 'posts' %} sel {% else %} nosel {% endif%} nosvg prof-tab tab-posts" id='0' onclick="event.stopPropagation(); {% if page != 'posts' %} window.location.href='{% url 'profile' profile_user %}{% if sort == 'latest'%}?sort=latest{% endif %}' {% endif %}">
+                            <div class="post-options-button-text">
+                                POSTS
+                            </div>
+                        </div>
+                        <div class="post-options-button {% if page == 'comments' %} sel {% else %} nosel {% endif%} nosvg prof-tab tab-comments" id='1' onclick="event.stopPropagation(); {% if page != 'comments' %} window.location.href='{% url 'profile' profile_user %}?page=comments{% if sort == 'latest'%}&sort=latest{% endif %}' {% endif %}">
+                            <div class="post-options-button-text">
+                                COMMENTS
+                            </div>
+                        </div>
+                        {% if user.is_authenticated %}
+                            {% if profile_user == user %}
+                                <div class="post-options-button {% if page == 'saved' %} sel {% else %} nosel {% endif%} nosvg prof-tab tab-saved" id='2' onclick="event.stopPropagation(); {% if page != 'saved' %} window.location.href='{% url 'profile' profile_user %}?page=saved{% if sort == 'latest'%}&sort=latest{% endif %}' {% endif %}">
+                                    <div class="post-options-button-text">
+                                        SAVED
+                                    </div>
+                                </div>
                             {% endif %}
+                            <div class="post-options-button {% if page == 'upvoted' %} sel {% else %} nosel {% endif%} nosvg prof-tab tab-upvoted" id='3' onclick="event.stopPropagation(); {% if page != 'upvoted' %} window.location.href='{% url 'profile' profile_user %}?page=upvoted{% if sort == 'latest'%}&sort=latest{% endif %}' {% endif %}">
+                                <div class="post-options-button-text">
+                                    UPVOTED
+                                </div>
+                            </div>
+                            <div class="post-options-button {% if page == 'downvoted' %} sel {% else %} nosel {% endif%} nosvg prof-tab tab-downvoted" id='4' onclick="event.stopPropagation(); {% if page != 'downvoted' %} window.location.href='{% url 'profile' profile_user %}?page=downvoted{% if sort == 'latest'%}&sort=latest{% endif %}' {% endif %}">
+                                <div class="post-options-button-text">
+                                    DOWNVOTED
+                                </div>
+                            </div>
+                            {% if profile_user == user %}
+                                <div class="post-options-button {% if page == 'editprofile' %} sel {% else %} nosel {% endif%} nosvg prof-tab tab-editprofile" id='5' onclick="event.stopPropagation(); {% if page != 'editprofile' %} window.location.href='{% url 'settings' %}' {% endif %}">
+                                    <div class="post-options-button-text">
+                                        EDIT PROFILE
+                                    </div>
+                                </div>
+                                {% if user.administered_communities.all %}
+                                <div class="post-options-button {% if page == 'modpanel' %} sel {% else %} nosel {% endif%} nosvg prof-tab tab-modpanel" id='6' onclick="event.stopPropagation(); {% if page != 'modpanel' %} window.location.href='{% url 'modpanel' %}' {% endif %}">
+                                    <div class="post-options-button-text">
+                                        MODERATOR PANEL
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </div>
+            
+                </div>
+            
+            </div>
+
+        </div>
+
+        <div class="comm-1 feed-wrap feed-sel2">
+            <!-- TODO: Need styling and option to choose number of days, and method of sort -->
+            <!-- <div class="display-timeframe">
+                 days search data
+            </div> -->
+
+
+
+            
+            <div class="comm-1-1">
+
+                <!-- post sort box -->
+                {% if page == "posts" or page == "comments" or page == "saved" or page == "upvoted" or page == "downvoted" %}
+                <div class="comm-content-box create-box">
+
+                    <div class="comm-content-box-1">
+                        <div class="post-create-button" onclick="event.stopPropagation();">
+                            <svg class="fssvg-top {% if sort == 'top' %} sel {% endif %} svg-inline--fa fa-sort-amount-up fa-w-16 fa-9x" aria-hidden="true" focusable="false" data-prefix="fad" data-icon="sort-amount-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><g class="fa-group"><path fill="currentColor" d="M304 416h-64a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h64a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm128-256H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h192a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm-64 128H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM496 32H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h256a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z" class="fa-secondary"></path><path fill="currentColor" d="M16 160h48v304a16 16 0 0 0 16 16h32a16 16 0 0 0 16-16V160h48c14.21 0 21.38-17.24 11.31-27.31l-80-96a16 16 0 0 0-22.62 0l-80 96C-5.35 142.74 1.77 160 16 160z" class="fa-primary"></path></g></svg>
+                            <svg class="fssvg-all {% if sort == 'latest' %} sel {% endif %} svg-inline--fa fa-asterisk fa-w-16 fa-9x" aria-hidden="true" focusable="false" data-prefix="fad" data-icon="asterisk" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><g class="fa-group"><path fill="currentColor" d="M479 177.64l-.41.23-182.5 100.45 3.45 209.17A24 24 0 0 1 276.06 512h-39.55a24 24 0 0 1-24-24v-.52L216 278 33.47 177.91A24 24 0 0 1 24 145.32l.25-.45 19.5-33.74a24.07 24.07 0 0 1 32.89-8.75l.38.23L256 208l179-105.39a24.07 24.07 0 0 1 33.05 8.12l.23.4 19.5 33.74a24 24 0 0 1-8.78 32.77z" class="fa-secondary"></path><path fill="currentColor" d="M488 366.68l-.25.45-19.5 33.74a24.07 24.07 0 0 1-32.89 8.75l-.38-.23L256 304 77 409.39a24.07 24.07 0 0 1-33-8.12l-.23-.4-19.5-33.74a24 24 0 0 1 8.83-32.77l.41-.23 182.4-100.45-3.45-209.17A24 24 0 0 1 235.94 0h39.55a24 24 0 0 1 24 24v.52L296 234l182.53 100.09a24 24 0 0 1 9.47 32.59z" class="fa-primary"></path></g></svg>
+                        </div>
+                
+                    </div>
+                
+                    <div class="comm-content-box-2">
+                        <div class="post-options post-create-opt feed-sort">
+                            
+                            <div class="post-options-button {% if sort == 'top' %} sel {% else %} nosel {% endif %} nosvg sort-top" onclick="event.stopPropagation(); {% if sort == 'latest' %} window.location.href='{% url 'profile' profile_user.username %}?page={{page}}&sort=top' {% endif %}">
+                                <div class="post-options-button-text">
+                                    TOP
+                                </div>
+                            </div>
+                        <div class="post-options-button {% if sort == 'latest' %} sel {% else %} nosel {% endif %} nosvg sort-all" onclick="event.stopPropagation(); {% if sort == 'top' %} window.location.href='{% url 'profile' profile_user.username %}?page={{page}}&sort=latest' {% endif %}">
+                                <div class="post-options-button-text">
+                                    LATEST
+                                </div>
+                            </div>
+                        </div>
+                
+                    </div>
+                
+                </div>
+                {% endif %}
+
+                {% if page == 'posts' %}
+                    {% if sort == 'latest' %}
+                        {% with profile_user.profile.get_latest_posts as posts and 'No Posts Yet' as empty_text %}
+                            {% include "posts/posts_list.html" %}
                         {% endwith %}
-                </a>
+                    {% else %}
+                        {% with profile_user.profile.get_top_posts as posts and 'No Posts Yet' as empty_text %}
+                            {% include "posts/posts_list.html" %}
+                        {% endwith %}
+                    {% endif %}
+
+                {% elif page == 'comments' %}
+
+                    {% if sort == 'latest' %}
+                        {% with profile_user.profile.get_latest_comments as replies and 'No Comments Yet' as empty_text %}
+                            {% include "posts/reply_list_user.html" %}
+                        {% endwith %}
+                    {% else %}
+                        {% with profile_user.profile.get_top_comments as replies and 'No Comments Yet' as empty_text %}
+                            {% include "posts/reply_list_user.html" %}
+                        {% endwith %}
+                    {% endif %}
+                
+                {% elif page == 'saved' and profile_user == user %}
+                    {% if sort == 'latest' %}
+                        {% with profile_user.profile.get_latest_saved_posts as posts and 'No Saved Posts' as empty_text %}
+                            {% include "posts/posts_list.html" %}
+                        {% endwith %}
+                    {% else %}
+                        {% with profile_user.profile.get_top_saved_posts as posts and 'No Saved Posts' as empty_text %}
+                            {% include "posts/posts_list.html" %}
+                        {% endwith %}
+                    {% endif %}
+
+                {% elif page == 'upvoted' %}
+                    {% if sort == 'latest' %}
+                        {% with profile_user.profile.get_latest_upvoted_posts as posts and 'No Upvoted Posts' as empty_text %}
+                            {% include "posts/posts_list.html" %}
+                        {% endwith %}
+                    {% else %}
+                        {% with profile_user.profile.get_top_upvoted_posts as posts and 'No Upvoted Posts' as empty_text %}
+                            {% include "posts/posts_list.html" %}
+                        {% endwith %}
+                    {% endif %}
+                
+                {% elif page == 'downvoted' %}
+                    {% if sort == 'latest' %}
+                        {% with profile_user.profile.get_latest_downvoted_posts as posts and 'No Downvoted Posts' as empty_text %}
+                            {% include "posts/posts_list.html" %}
+                        {% endwith %}
+                    {% else %}
+                        {% with profile_user.profile.get_top_downvoted_posts as posts and 'No Downvoted Posts' as empty_text %}
+                            {% include "posts/posts_list.html" %}
+                        {% endwith %}
+                    {% endif %}
+
+                {% elif page == 'editprofile' and profile_user == user %}
+                    {% include "users/settings.html" %}
+                
+                {% elif page == 'modpanel' and user.administered_communities.all %}
+                    {% include "users/modpanel.html" %}
+                {% endif %}
+
+            </div>
+
+            <!-- sidebar -->
+            <div class="comm-1-2">
+                <div class="comm-sidebar">
+
+                    <div class="comm-sidebar-box"> 
+                    <div class="comm-sidebar-box-heading with-image focus txt-brk user-banner" style="background-color: #{{ profile_user.profile.highlight_color_hex }}; {% if profile_user.profile.banner %} background: url('{{ profile_user.profile.banner.url }}'); {% endif %}">
+                            <div class="heading-image">
+                                <img class="user-icon" src="{{ profile_user.profile.image.url }}" alt="Community Icon">
+                            </div>
+                            <span><a>u/</a>{{ profile_user.username }}</span>
+                        </div>
+                        
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus">      
+                            <div class="post-community-name sdbr">    
+                                <span class="fix-width">Joined</span><a><strong>{{ profile_user.date_joined | date:"DATE_FORMAT" }}</strong></a>
+                            </div>
+                        </div>
+
+                        {% if profile_user.joined_communities %}
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus">      
+                            <div class="post-community-name sdbr"> 
+                                {% with profile_user.joined_communities.count as comm_memb_count %}   
+                                <span class="fix-width">Member of</span> <a><strong>{{ comm_memb_count | cool_number }}</strong> &nbsp{% if comm_memb_count == 1 %}community{% else %}communities{% endif %}</a>
+                                {% endwith %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if profile_user.administered_communities %}
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus">      
+                            <div class="post-community-name sdbr"> 
+                                {% with profile_user.administered_communities.count as comm_admin_count %}   
+                                <span class="fix-width">Admin of</span> <a><strong>{{ comm_admin_count | cool_number }}</strong> &nbsp{% if comm_admin_count == 1 %}community{% else %}communities{% endif %}</a>
+                                {% endwith %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus">      
+                            <div class="post-community-name sdbr">    
+                                <span class="fix-width">Posts</span><a><strong>{{ profile_user.posts.count | cool_number }}</strong></a>
+                            </div>
+                        </div>
+
+                        <div class="comm-sidebar-box-content nolink list-item num-list focus">      
+                            <div class="post-community-name sdbr">    
+                                <span class="fix-width">Comments</span><a><strong>{{ profile_user.replies.count | cool_number }}</strong></a>
+                            </div>
+                        </div>
+
+                        {% if profile_user == user and page != 'editprofile' and page != 'modpanel' %}
+                            <hr class="list-sep">
+                            <div class="comm-sidebar-box-content opt-list" >      
+                                <div class="community-button sdbr" onclick="window.location.href='{% url 'settings' %}'">
+                                    <div class="community-button-text">EDIT PROFILE</div>
+                                </div>
+                            </div>
+                            <div class="comm-sidebar-box-content last-item" >      
+                                <div class="community-button sdbr">
+                                    <div class="community-button-text" onclick="window.location.href='{% url 'create-post' %}'">CREATE POST</div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="div-gap xsmall"></div>
+                        {% endif %}
+
+                    </div>
+
+                    {% if profile_user == user %}
+                    {% if rec_memb %}
+                    <div class="comm-sidebar-box">             
+                    </div>
+
+                    <div class="comm-sidebar-box"> 
+                        <div class="comm-sidebar-box-heading">
+                            Recently Joined Communities 
+                        </div>
+                        {% for memb in rec_memb %}
+                        <div class="comm-sidebar-box-content list-item" onclick="event.stopPropagation(); window.location.href='{% url 'community-home' memb.community.name %}'">      
+                            <div class="post-community-image-wrapper">
+                                <img class="post-community-image sdbr" src="{{ memb.community.icon.url }}" alt="Community Icon">
+                            </div>
+                            <div class="post-community-name sdbr">    
+                                <a>c/{{ memb.community.name }}</a>
+                            </div>
+                        </div>
+                        <hr class="list-sep">
+                        {% endfor %}
+                        <div class="comm-sidebar-box-content" >      
+                            <div class="community-button sdbr" onclick="event.stopPropagation(); window.location.href='{% url 'joined-communities' user.username %}'">
+                                <div class="community-button-text">VIEW ALL</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                    
+                    <section class="site-footer">
+                        <div class="comm-sidebar-box">             
+                        </div>
+
+                        <div class="comm-sidebar-box comm-sidebar-footer">  
+                            <div class="comm-sidebar-box-content sidebox-footer">      
+                                <div class="sidebox-footer-1">
+                                    <a >Help</a>
+                                    <a >App</a>
+                                    <a href="{% url 'trending-communities' %}">Communities</a>
+                                    <a href="{% url 'top' %}">Top Posts</a>
+                                    <a >Topics</a>
+                                </div>
+                                <div class="sidebox-footer-2">
+                                    <a >About</a>
+                                    <a >Careers</a>
+                                    <a >Advertise</a>
+                                    <a >Blog</a>
+                                    <a >Terms</a>
+                                    <a >Policies</a>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="comm-sidebar-box-content wroovie-logo">      
+                                wroovie.com © 2020
+                            </div> 
+                        </div>
+                    </section>
+                </div>
             </div>
         </div>
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Profile Info</legend>
-                {{ u_form|crispy }}
-                {{ p_form|crispy }}
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Update</button>
-            </div>
-        </form>
+        
+
     </div>
 
-{% endblock content %}
+    
+    <!-- {% if is_paginated %}
+    
+        {% if page_obj.has_previous %}
+            <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+        
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
 
-{% block optionbar %}
-<div class="content-section">
-    <h3>User Options</h3>
-    <p class='text-muted'>
-    <ul class="list-group">
-        {% if user.profile.user_status == 1 and not user.profile.PENDING_REQUEST_BECOME_INSTRUCTOR %}
-        <a href="{% url 'user-upgrade' user.username user.profile.user_status %}"><li class="list-group-item list-group-item-light">Apply to become an Instructor</li></a>
+        {% if page_obj.has_next %}
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
         {% endif %}
-        {% if user.profile.user_status == 2 and not user.profile.PENDING_REQUEST_BECOME_ADMIN %}
-        <li class="list-group-item list-group-item-light">Apply to become an Admin</li>
-        {% endif %}
-        {% if not user.profile.PENDING_REQUEST_CHANGE_PASSWORD %}
-        <li class="list-group-item list-group-item-light">Change my Password</li>
-        {% endif %}
-        <li class="list-group-item list-group-item-light">Delete Account</li>
-    </ul>
-    </p>
-</div>
+
+    {% endif %} -->
+
 {% endblock %}
+
+
+{% block extrajs %}
+    <script src="{% static 'common/js/jquery-3.4.1.min.js' %}" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        // define variables
+        var user_is_authenticated = '{{ user.is_authenticated }}'==='True'?true:false;
+        {% if profile_user == user %}
+            var profile_is_users = true;
+        {% else %}
+            var profile_is_users = false;
+        {% endif %}
+    </script>
+
+    <script src="{% static 'users/js/profile.js' %}" type="text/javascript"></script>
+    <!-- <script src="{% static 'feeds/js/server.js' %}" type="text/javascript"></script> -->
+
+    {% if page == "posts" or page == "comments" or page == "saved" or page == "upvoted" or page == "downvoted" %}
+    <script type="text/javascript">
+        // define variables
+        {% if sort == "latest" %}
+            var curr_sort = '1'
+        {% else %}
+            var curr_sort = '0'
+        {% endif %}
+    </script>
+    <script src="{% static 'users/js/sort.js' %}" type="text/javascript"></script>
+    {% endif %}
+
+    <script type="text/javascript">
+        var curr_tab = {% if page == "posts" %} '0' {% elif page == "comments" %} '1' {% elif page == "saved" %} '2' {% elif page == "upvoted" %} '3' {% elif page == "downvoted" %} '4' {% elif page == "editprofile" %} '5' {% elif page == "modpanel" %} '6' {% endif %}
+    </script>
+    
+    <script src="{% static 'users/js/tab.js' %}" type="text/javascript"></script>
+
+{% endblock %}
+
+
+
+

@@ -17,7 +17,7 @@ SECRET_KEY = ')a1yx87-7lwrn!o9sj^g$bse2)*5k956j=-5_6w3@g-iyn6f63'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.10.52', 'localhost', ]
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'mptt',
     'trix',
     'django_summernote',
+    'django_user_agents',
     # my apps
     'users.apps.UsersConfig',
     'common.apps.CommonConfig',
@@ -47,7 +48,27 @@ INSTALLED_APPS = [
     'django_extensions',
 ]
 
+PARENT_SITE_URL = 'http://192.168.10.52:8000'
+MOBILE_SITE_URL = 'http://192.168.10.52:8001'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'main_site_cache',
+    }
+}
+
+# Name of cache backend to cache user agents. If it not specified default
+# cache alias will be used. Set to `None` to disable caching.
+USER_AGENTS_CACHE = 'default'
+
 MIDDLEWARE = [
+    # imported middlewares...
+    'django_user_agents.middleware.UserAgentMiddleware',
+
+    # my middleware
+    'wroovie.middleware.SiteFlavorMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

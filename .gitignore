@@ -5,6 +5,10 @@
 __pycache__
 db.sqlite3
 
+# local files
+wroovie/settings.py
+media/
+
 # Python # 
 *.py[cod] 
 *$py.class

@@ -6,8 +6,8 @@ __pycache__
 db.sqlite3
 
 # local files
-wroovie/settings.py
-media/
+env.ps1
+envr.ps1
 
 # Python # 
 *.py[cod] 

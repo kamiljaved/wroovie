@@ -292,7 +292,7 @@ def emailVerify(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user2 = User.objects.get(pk=uid)
-    except(TypeError, ValueError, OverflowError, user2.DoesNotExist):
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user2 = None
     if user2 is not None and emailVerificationToken.check_token(user2, token):
         user2.profile.email_verified = True

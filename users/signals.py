@@ -12,17 +12,17 @@ def CreateProfile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
 
-#####~~~~~ SIGNAL ~~~~~#####
-@receiver(post_save, sender=User)
-def SaveProfile(sender, instance, **kwargs):
-    instance.profile.save()
+# #####~~~~~ SIGNAL ~~~~~#####
+# @receiver(post_save, sender=User)
+# def SaveProfile(sender, instance, **kwargs):
+#     instance.profile.save()
 
-#####~~~~~ SIGNAL ~~~~~#####
-@receiver(user_logged_out)
-def on_user_logged_out(sender, request, **kwargs):
-    messages.add_message(request, messages.WARNING, 'You are now Logged Out')
+# #####~~~~~ SIGNAL ~~~~~#####
+# @receiver(user_logged_out)
+# def on_user_logged_out(sender, request, **kwargs):
+#     messages.add_message(request, messages.WARNING, 'You are now Logged Out')
 
-#####~~~~~ SIGNAL ~~~~~#####
-@receiver(user_logged_in)
-def on_user_logged_in(sender, request, **kwargs):
-    messages.add_message(request, messages.SUCCESS, 'Successfully Logged In')
+# #####~~~~~ SIGNAL ~~~~~#####
+# @receiver(user_logged_in)
+# def on_user_logged_in(sender, request, **kwargs):
+#     messages.add_message(request, messages.SUCCESS, 'Successfully Logged In')

@@ -1,9 +1,6 @@
 import os
 
 
-#####~~~~~ RELATED CONSTRAINTS ~~~~~#####
-# 6. Uploaded (attached/embedded) content of a Post must not exceed a certain size limit (limit is TBD).
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -17,7 +14,23 @@ SECRET_KEY = ')a1yx87-7lwrn!o9sj^g$bse2)*5k956j=-5_6w3@g-iyn6f63'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
+##################### LOCAL ########################
 ALLOWED_HOSTS = ['192.168.10.52', 'localhost', ]
+SESSION_COOKIE_NAME = 'wroovie'
+SESSION_COOKIE_DOMAIN = '192.168.10.52'
+PARENT_SITE_URL = 'http://192.168.10.52:8000'
+MOBILE_SITE_URL = 'http://192.168.10.52:8001'
+##################### LOCAL ########################
+
+
+##################### WEBSERVER ########################
+# ALLOWED_HOSTS = [ 'wroovie.pythonanywhere.com', 'mobilewroovie.pythonanywhere.com',]
+# SESSION_COOKIE_NAME = 'wroovie'
+# SESSION_COOKIE_DOMAIN = '.pythonanywhere.com'
+# PARENT_SITE_URL = 'https://wroovie.pythonanywhere.com'
+# MOBILE_SITE_URL = 'https://mobilewroovie.pythonanywhere.com'
+##################### WEBSERVER ########################
 
 
 # Application definition
@@ -39,17 +52,14 @@ INSTALLED_APPS = [
     'trix',
     'django_summernote',
     'django_user_agents',
+    # apps for debugging
+    'django_extensions',
     # my apps
     'users.apps.UsersConfig',
     'common.apps.CommonConfig',
     'community.apps.CommunityConfig',
     'posts.apps.PostsConfig',
-    # apps for debugging
-    'django_extensions',
 ]
-
-PARENT_SITE_URL = 'http://192.168.10.52:8000'
-MOBILE_SITE_URL = 'http://192.168.10.52:8001'
 
 CACHES = {
     'default': {
@@ -58,17 +68,15 @@ CACHES = {
     }
 }
 
-# Name of cache backend to cache user agents. If it not specified default
-# cache alias will be used. Set to `None` to disable caching.
+# Name of cache backend to cache user agents. If it not specified default cache alias will be used. Set to `None` to disable caching.
 USER_AGENTS_CACHE = 'default'
 
 MIDDLEWARE = [
-    # imported middlewares...
+    # imported middleware
     'django_user_agents.middleware.UserAgentMiddleware',
-
     # my middleware
     'wroovie.middleware.SiteFlavorMiddleware',
-
+    # django middleware
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -106,17 +114,33 @@ WSGI_APPLICATION = 'wroovie.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+
+##################### LOCAL ########################
 DATABASES = {
   'default': {
-      'ENGINE': 'django.db.backends.mysql',
-      'NAME': os.environ.get('WROOVIE_DB_NAME'),
-      'USER': os.environ.get('WROOVIE_DB_USER'),
-      'PASSWORD': os.environ.get('WROOVIE_DB_PASS'),
-      'HOST': 'localhost',
-      'PORT': '3306',
+      'ENGINE':     'django.db.backends.mysql',
+      'NAME':       'wroovie_db',                   # os.environ.get('WROOVIE_DB_NAME'),
+      'USER':       'root',                         # os.environ.get('WROOVIE_DB_USER'),
+      'PASSWORD':   'kamiljaved23',                 # os.environ.get('WROOVIE_DB_PASS'),
+      'HOST':       'localhost',
+      'PORT':       '3306',
     }
 }
+##################### LOCAL ########################
 
+
+##################### WEBSERVER ########################
+# DATABASES = {
+#   'default': {
+#       'ENGINE':     'django.db.backends.mysql',
+#       'NAME':       'wroovie$wroovie_db',           # os.environ.get('WROOVIE_DB_NAME'),
+#       'USER':       'wroovie',                      # os.environ.get('WROOVIE_DB_USER'),
+#       'PASSWORD':   'kaua1J3c6zxWJg4' ,             # os.environ.get('WROOVIE_DB_PASS'),
+#       'HOST':       'wroovie.mysql.pythonanywhere-services.com',
+#       'PORT':       '3306',
+#     }
+# }
+##################### WEBSERVER ########################
 
 
 # Password validation
@@ -156,11 +180,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 
-
 STATIC_URL = '/static/'
-STATICFILES_DIRS = ( os.path.join('static'), )
+STATICFILES_DIRS = ( os.path.join('static'), )          # LOCAL
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')          # WEBSERVER
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.abspath(os.path.join(BASE_DIR, '..', 'wroovie-media'))
 MEDIA_URL = '/media/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -168,19 +192,22 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('WROOVIE_EMAIL_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('WROOVIE_EMAIL_PASS')
+EMAIL_BACKEND =         'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST =            'smtp.gmail.com'
+EMAIL_PORT =            587
+EMAIL_USE_TLS =         True
+EMAIL_HOST_USER =       'wroovie@gmail.com'     # os.environ.get('WROOVIE_EMAIL_USER')
+EMAIL_HOST_PASSWORD =   'yrtplmrrwcmjdfwg'      # os.environ.get('WROOVIE_EMAIL_PASS')      # LOCAL
+# EMAIL_HOST_PASSWORD =   'yehzmrmssfxzrgrx'      # os.environ.get('WROOVIE_EMAIL_PASS')      # WEBSERVER
 
 # summernote settings
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 SUMMERNOTE_THEME = 'bs4'
 
 SUMMERNOTE_CONFIG = {
-    #####~~~~~ CONSTRAINT (6) ~~~~~#####
+
+    'attachment_absolute_uri': True,
+
     # file-size limit on uploaded images for an article
     'attachment_filesize_limit': 1024 * 1024 * 3,       # specify the file size
 
@@ -190,8 +217,6 @@ SUMMERNOTE_CONFIG = {
     # You can add custom css/js for SummernoteWidget.
     'css': ('/static/posts/css/summernote.css',),
 }
-
-
 
 
 

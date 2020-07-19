@@ -511,7 +511,7 @@
     min-width: 100%;
     min-height: 100%;
 
-    background: url('/media/site_assets/stock_bgs/bg_3.png');
+    background: url('/static/common/site_assets/stock_bgs/bg_3.png');
     
     background-repeat: no-repeat;
     background-size: 100% 100%;
@@ -523,16 +523,16 @@
 
 
 @keyframes signup-rot-im-bg-2 {
-    0%, 7%, 98%, 100%  {background: url('/media/site_assets/stock_bgs/bg_3.png'), url('/media/site_assets/stock_bgs/bg_6.png'); background-size: 100% 100%;} 
-    8%, 17%            {background: url('/media/site_assets/stock_bgs/bg_6.png'), url('/media/site_assets/stock_bgs/bg_3.png'); background-size: 100% 100%;}   
-    18%, 27%           {background: url('/media/site_assets/stock_bgs/bg_3.png'), url('/media/site_assets/stock_bgs/bg_4.png'); background-size: 100% 100%;}   
-    28%, 37%           {background: url('/media/site_assets/stock_bgs/bg_4.png'), url('/media/site_assets/stock_bgs/bg_10.png'); background-size: 100% 100%;}  
-    38%, 47%           {background: url('/media/site_assets/stock_bgs/bg_10.png'), url('/media/site_assets/stock_bgs/bg_6.png'); background-size: 100% 100%;}   
-    48%, 57%           {background: url('/media/site_assets/stock_bgs/bg_6.png'), url('/media/site_assets/stock_bgs/bg_3.png'); background-size: 100% 100%;}
-    58%, 67%           {background: url('/media/site_assets/stock_bgs/bg_3.png'), url('/media/site_assets/stock_bgs/bg_8.png'); background-size: 100% 100%;}  
-    68%, 77%           {background: url('/media/site_assets/stock_bgs/bg_8.png'), url('/media/site_assets/stock_bgs/bg_9.png'); background-size: 100% 100%;}    
-    78%, 87%           {background: url('/media/site_assets/stock_bgs/bg_9.png'), url('/media/site_assets/stock_bgs/bg_10.png'); background-size: 100% 100%;}    
-    88%, 97%           {background: url('/media/site_assets/stock_bgs/bg_10.png'); background-size: 100% 100%;}    
+    0%, 7%, 98%, 100%  {background: url('/static/common/site_assets/stock_bgs/bg_3.png'), url('/static/common/site_assets/stock_bgs/bg_6.png'); background-size: 100% 100%;} 
+    8%, 17%            {background: url('/static/common/site_assets/stock_bgs/bg_6.png'), url('/static/common/site_assets/stock_bgs/bg_3.png'); background-size: 100% 100%;}   
+    18%, 27%           {background: url('/static/common/site_assets/stock_bgs/bg_3.png'), url('/static/common/site_assets/stock_bgs/bg_4.png'); background-size: 100% 100%;}   
+    28%, 37%           {background: url('/static/common/site_assets/stock_bgs/bg_4.png'), url('/static/common/site_assets/stock_bgs/bg_10.png'); background-size: 100% 100%;}  
+    38%, 47%           {background: url('/static/common/site_assets/stock_bgs/bg_10.png'), url('/static/common/site_assets/stock_bgs/bg_6.png'); background-size: 100% 100%;}   
+    48%, 57%           {background: url('/static/common/site_assets/stock_bgs/bg_6.png'), url('/static/common/site_assets/stock_bgs/bg_3.png'); background-size: 100% 100%;}
+    58%, 67%           {background: url('/static/common/site_assets/stock_bgs/bg_3.png'), url('/static/common/site_assets/stock_bgs/bg_8.png'); background-size: 100% 100%;}  
+    68%, 77%           {background: url('/static/common/site_assets/stock_bgs/bg_8.png'), url('/static/common/site_assets/stock_bgs/bg_9.png'); background-size: 100% 100%;}    
+    78%, 87%           {background: url('/static/common/site_assets/stock_bgs/bg_9.png'), url('/static/common/site_assets/stock_bgs/bg_10.png'); background-size: 100% 100%;}    
+    88%, 97%           {background: url('/static/common/site_assets/stock_bgs/bg_10.png'); background-size: 100% 100%;}    
 
 
 }

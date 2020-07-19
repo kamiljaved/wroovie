@@ -400,7 +400,7 @@
                 </li>
             {% else %}
                 <li class="nav-item login">
-                    <a href="{% url 'login' %}?next={{request.path}}" class="nav-link login-button">
+                    <a href="{% url 'login' %}?next={% block login_redirect_path %}{{request.path}}{% endblock %}" class="nav-link login-button">
 
                         <span class="link-text">Login</span>
                     </a>                    

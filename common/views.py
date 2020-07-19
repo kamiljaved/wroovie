@@ -345,4 +345,5 @@ def search_view(request, search_qry):
 #####~~~~~ VIEW ~~~~~#####
 # default HTTP 404 (ERROR: NOT FOUND) page view
 def handler404(request, exception):
-    return render(request, '404.html', {})
+    print('nope')
+    return render(request, BASE_TEMPLATE_URL + '/404.html', {})

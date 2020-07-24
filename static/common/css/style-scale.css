@@ -1,0 +1,40 @@
+/* smaller screen */
+
+/* font-size: 16px */
+
+/* 65.5rem = 1048px */
+@media only screen and (max-width: 65.5rem) {
+
+    .comm-1-1.wrap-main-content {
+        
+        /* align-self: center; */
+        width: auto;
+
+        min-width: calc(45rem - 18rem);
+        max-width: calc(65rem - 18rem);
+    }
+    
+    .comm-1-2.wrap-sidebar {
+        display: none;
+        width: 0;
+
+        align-items: center;
+        margin-left: 0;
+    }
+
+    .comm-1
+    {
+        position: relative;
+
+        min-width: calc(45rem - 18rem);
+        max-width: calc(65rem - 18rem);
+    }
+
+    .sidebar-toggle-button
+    {
+        opacity: 100%;
+        /* right: 100%; */
+
+        right: 10px;
+    }
+}

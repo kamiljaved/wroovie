@@ -187,7 +187,7 @@ STATICFILES_DIRS = ( os.path.join('static'), )          # LOCAL
 MEDIA_ROOT = os.path.abspath(os.path.join(BASE_DIR, '..', 'wroovie-media'))
 MEDIA_URL = '/media/'
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_TEMPLATE_PACK = 'uni_form'
 
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'

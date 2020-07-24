@@ -1,0 +1,14 @@
+/* smaller screen */
+@media only screen and (max-width: 620px) {
+
+    .comm-1-1 {
+        
+        width: 100%;
+  
+    }
+    
+    .comm-1-2 {
+        display: none;
+    }
+
+}

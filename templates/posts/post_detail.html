@@ -18,9 +18,9 @@
 {% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" type="text/css" href="{% static 'community/css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'common/css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'common/css/style-scale.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'posts/css/base.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'posts/css/scale.css' %}">
 
     {% if user.is_authenticated %}
         <link rel="stylesheet" type="text/css" href="{% static 'common/css/trix.css' %}">
@@ -43,7 +43,7 @@
             <!-- <div class="display-timeframe">
                  days search data
             </div> -->
-            <div class="comm-1-1">
+            <div class="comm-1-1 wrap-main-content">
                 <div class="comm-content-box pdetail">
     
                     <div class="comm-content-box-1">
@@ -360,7 +360,7 @@
 
 
             <!-- sidebar -->
-            <div class="comm-1-2">
+            <div class="comm-1-2 wrap-sidebar">
                 <div class="comm-sidebar">
 
                     <div class="comm-sidebar-box top"> 

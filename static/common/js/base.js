@@ -1,3 +1,7 @@
+// size vars
+var vis_size_searchTaskBtn = 40*16; // 40rem * 16px = 640px
+var vis_size_min = 22*16;           // 22rem * 16px = 352px
+
 var searchItem = document.querySelector(".search")
 var searchbar = document.querySelector(".searchbar")
 var searchLink = document.querySelector(".search-link")
@@ -5,7 +9,7 @@ var searchSVG = searchItem.querySelector(".search-svg")
 var searchClear = searchItem.querySelector(".search-clear")
 var mouse_in_search_item = false
 
-var url_search = '/search/'
+const url_search = '/search/'
 
 searchClear.addEventListener("click", function() {
     searchClear.style.display = "none";
@@ -32,9 +36,15 @@ searchbar.addEventListener("focus", function() {
 
     searchSVG.style.right = "0"
     searchSVG.style.transform = "translateX(0)"
-    searchSVG.style.margin = "0rem 2rem"
+    searchSVG.style.margin = "0rem 1.5rem"
 
     searchSVG.style.cursor = "pointer"
+
+    // if (searchbar.value)
+    // {
+    //     searchbar.value = searchbar.value;
+    //     searchbar.selectionStart = searchbar.selectionEnd = searchbar.value.length;
+    // }
 });
 
 searchbar.addEventListener("focusout", function() {
@@ -44,11 +54,25 @@ searchbar.addEventListener("focusout", function() {
         searchLink.style.background = "none"
         searchLink.style.color = "var(--text-primary)"
 
-        searchSVG.style.right = "calc(100% - 8rem)"
-        searchSVG.style.transform = "translateX(50%)"
-        searchSVG.style.margin = "0rem 0rem"
+        // if (window.innerWidth <= vis_size_searchTaskBtn)
+        // {
+        //     searchSVG.style.right = "calc(100% - 9rem)"
+        // }
+        // else
+        // {
+        //     searchSVG.style.right = "calc(100% - 7rem)"
+        // }
+
+        // searchSVG.style.transform = "translateX(50%)"
+        // searchSVG.style.margin = "0rem 0rem"
+
+        searchSVG.style = ""
 
         searchSVG.style.cursor = "text"
+    }
+    else
+    {
+        searchbar.value = searchbar.value.trim();
     }
 });
 
@@ -60,7 +84,7 @@ searchItem.addEventListener("mouseenter", function() {
 
     searchSVG.style.right = "0"
     searchSVG.style.transform = "translateX(0)"
-    searchSVG.style.margin = "0rem 2rem"
+    searchSVG.style.margin = "0rem 1.5rem"
 
     searchSVG.style.cursor = "pointer"
 })
@@ -73,9 +97,19 @@ searchItem.addEventListener("mouseleave", function() {
         searchLink.style.background = "none"
         searchLink.style.color = "var(--text-primary)"
 
-        searchSVG.style.right = "calc(100% - 8rem)"
-        searchSVG.style.transform = "translateX(50%)"
-        searchSVG.style.margin = "0rem 0rem"
+        // if (window.innerWidth <= vis_size_searchTaskBtn)
+        // {
+        //     searchSVG.style.right = "calc(100% - 9rem)"
+        // }
+        // else
+        // {
+        //     searchSVG.style.right = "calc(100% - 7rem)"
+        // }
+        
+        // searchSVG.style.transform = "translateX(50%)"
+        // searchSVG.style.margin = "0rem 0rem"
+
+        searchSVG.style = ""
 
         searchSVG.style.cursor = "text"
     }
@@ -96,6 +130,10 @@ searchbar.addEventListener('keypress', function (e) {
         window.location.href = url_search + searchbar.value;
     }
 });
+
+
+
+
 
 var ddUserOptions = document.querySelector(".user-options")
 var userBox = document.querySelector(".user-box")
@@ -157,9 +195,9 @@ document.onload = function() {
     if (user_is_authenticated) navbarFixes();
 }
 
-window.onresize = function() {
-    if (user_is_authenticated) navbarFixes();
-}   
+// window.onresize = function() {
+    
+// }   
 
 function navbarFixes() {
     if (userBox.clientWidth > ddUserOptions.clientWidth)        // ddUserOptions.clientWidth should initially be min-width
@@ -203,3 +241,69 @@ else
     searchClear.style.display = "none";
     searchClear.style.cursor = "text"
 }
+
+
+
+// minified search button handlers
+var searchTaskBtn = document.querySelector('.nav-tasks.tsk-search')
+var searchExitBtn = document.querySelector(".nav-item.search .search-exit-svg")
+var postCreateTaskBtn = document.querySelector('.nav-tasks.tsk-create-post')
+var logoItem = document.querySelector(".nav-item.wroovie")
+
+searchTaskBtn.addEventListener('click', function(){
+    if (window.innerWidth <= vis_size_searchTaskBtn)
+    {
+        searchItem.style.display = "block"
+        searchExitBtn.style.display = "block"
+
+        browseBox.style.display = "none"
+        searchTaskBtn.style.display = "none"
+        postCreateTaskBtn.style.display = "none"
+        logoItem.style.display = "none"
+
+        if (window.innerWidth <= vis_size_min)
+        {
+            // Hide everything on navbar and show searchbar
+            userBox.style.display = "none"
+            settingsBox.style.display = "none"
+        }
+
+        searchbar.focus()
+    }
+})
+
+
+searchExitBtn.addEventListener('click', function(){
+
+    searchItem.style = ""
+    searchExitBtn.style = ""
+    searchTaskBtn.style = ""
+    
+    browseBox.style = ""
+    postCreateTaskBtn.style = ""
+    logoItem.style = ""
+
+    userBox.style = ""
+    settingsBox.style = ""
+
+    if (user_is_authenticated) navbarFixes();
+    
+})
+
+window.addEventListener('resize', function() {
+    //if (window.innerWidth > vis_size_searchTaskBtn)
+
+    searchItem.style = ""
+    searchExitBtn.style = ""
+    browseBox.style = ""
+    searchTaskBtn.style = ""
+    postCreateTaskBtn.style = ""
+    logoItem.style = ""
+
+    searchSVG.style = ""
+
+    userBox.style = ""
+    settingsBox.style = ""
+
+    if (user_is_authenticated) navbarFixes();
+})

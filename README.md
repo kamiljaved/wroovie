@@ -117,5 +117,5 @@ Or 	<a href="https://wroovie.pythonanywhere.com/">   visit live website</a>.
 
 ---
 
-> [kamiljaved.epizy.com](http://kamiljaved.epizy.com/) &nbsp;&middot;&nbsp;
+> [kamiljaved.pythonanywhere.com](https://kamiljaved.pythonanywhere.com/) &nbsp;&middot;&nbsp;
 > GitHub [@kamiljaved98](https://github.com/kamiljaved98) [@UsmanAhmad4146](https://github.com/UsmanAhmad4146)

@@ -113,9 +113,9 @@ Or 	<a href="https://wroovie.pythonanywhere.com/">   visit live website</a>.
 
 ## Notes
 
-* To avoid having to set up a MySQL server and database, set up wroovie/settings.py to use the default SQLite database.
+* To avoid having to set up a MySQL server and database, modify wroovie/settings.py to use the default SQLite database.
 
 ---
 
 > [kamiljaved.epizy.com](http://kamiljaved.epizy.com/) &nbsp;&middot;&nbsp;
-> GitHub [@kamiljaved98](https://github.com/kamiljaved98)
+> GitHub [@kamiljaved98](https://github.com/kamiljaved98) [@UsmanAhmad4146](https://github.com/UsmanAhmad4146)

@@ -73,15 +73,22 @@
 
 .post-create-opt {
     height: 100%;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .post-create-button svg {
-    display: none;
+    /* display: none; */
+    width: 0;
+    opacity: 0;
+    transition: opacity 300ms ease-in-out, filter 150ms ease-in-out;
 }
 
 .post-create-button svg.sel
 {
-    display: block;
+    /* display: block; */
+    width: auto;
+    opacity: 1;
 }
 
 .fa-primary {

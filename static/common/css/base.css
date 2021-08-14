@@ -24,7 +24,8 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 9px;
+  height: 9px;
 }
 
 /* Track */
@@ -32,7 +33,11 @@ body {
   background: #f1f1f1; 
   background: transparent;
 }
- 
+
+::-webkit-scrollbar-corner
+{
+  background: transparent;
+}
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(136, 136, 136, 0.719); 
@@ -835,4 +840,10 @@ body {
 
 .search-exit-svg:hover {
   filter: grayscale(0%) opacity(1);
+}
+
+
+.base-text-secondary
+{
+  color: #a1a1a1;
 }

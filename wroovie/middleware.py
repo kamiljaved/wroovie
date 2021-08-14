@@ -6,8 +6,8 @@ class SiteFlavorMiddleware:
         self.get_response = get_response
         self.media_dir = settings.MEDIA_URL.strip('/')
         # One-time configuration and initialization.
-        print(settings.BASE_DIR)
-        print(settings.MEDIA_ROOT)
+        # print(settings.BASE_DIR)
+        # print(settings.MEDIA_ROOT)
 
     def __call__(self, request):
         # Code to be executed for each request before

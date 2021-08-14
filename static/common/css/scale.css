@@ -48,7 +48,7 @@
   @media only screen and (min-width:620px) and (max-width: 800px){
 
     .link-text{
-      font-size: 14px;
+      /* font-size: 14px; */
       margin: 0rem 0rem;
     }
 
@@ -338,6 +338,17 @@
   .nav-tasks.first.tsk-create-post
   {
     margin-left: 0;
+  }
+
+  .nav-item.login
+  {
+    margin-left: 0;
+    min-width: var(--nav-height);
+  }
+
+  .nav-item.signup
+  {
+    min-width: var(--nav-height);
   }
 
   .nav-tasks.tsk-search

@@ -42,7 +42,7 @@
 
     {% endblock %}
 
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %} - wroovie{% endblock %}</title>
     
 </head>
 
@@ -104,8 +104,14 @@
                     
                     <li class="nav-item sz-med-3 hovhl">
                         <a class="drop-link">
-                            <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="home-lg-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="svg-inline--fa fa-home-lg-alt fa-w-18 fa-9x"><g class="fa-group"><path fill="currentColor" d="M352 496V368a16 16 0 0 0-16-16h-96a16 16 0 0 0-16 16v128a16 16 0 0 1-16 16H80a16 16 0 0 1-16-16V311.07c1.78-1.21 3.85-1.89 5.47-3.35L288 115l218.74 192.9c1.54 1.38 3.56 2 5.26 3.2V496a16 16 0 0 1-16 16H368a16 16 0 0 1-16-16z" class="fa-secondary"></path><path fill="currentColor" d="M527.92 283.91L298.6 81.64a16 16 0 0 0-21.17 0L48.11 283.92a16 16 0 0 1-22.59-1.21L4.1 258.89a16 16 0 0 1 1.21-22.59l256-226a39.85 39.85 0 0 1 53.45 0l255.94 226a16 16 0 0 1 1.22 22.59l-21.4 23.82a16 16 0 0 1-22.6 1.2z" class="fa-primary"></path></g></svg>
-                            <span class="link-text">Home</span>
+                            {% block browse_current_page_icon_min %}
+                                <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="home-lg-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="svg-inline--fa fa-home-lg-alt fa-w-18 fa-9x"><g class="fa-group"><path fill="currentColor" d="M352 496V368a16 16 0 0 0-16-16h-96a16 16 0 0 0-16 16v128a16 16 0 0 1-16 16H80a16 16 0 0 1-16-16V311.07c1.78-1.21 3.85-1.89 5.47-3.35L288 115l218.74 192.9c1.54 1.38 3.56 2 5.26 3.2V496a16 16 0 0 1-16 16H368a16 16 0 0 1-16-16z" class="fa-secondary"></path><path fill="currentColor" d="M527.92 283.91L298.6 81.64a16 16 0 0 0-21.17 0L48.11 283.92a16 16 0 0 1-22.59-1.21L4.1 258.89a16 16 0 0 1 1.21-22.59l256-226a39.85 39.85 0 0 1 53.45 0l255.94 226a16 16 0 0 1 1.22 22.59l-21.4 23.82a16 16 0 0 1-22.6 1.2z" class="fa-primary"></path></g></svg>
+                            {% endblock %}
+                            <span class="link-text">
+                                {% block browse_current_page_name_min %}
+                                    Base
+                                {% endblock %}
+                            </span>
                         </a>
                     </li>
 
@@ -204,22 +210,25 @@
 				</a>
 			</li>
 
+            <li class="nav-tasks first tsk-search">
+                <a class="nav-link">
+                    <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="search" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="search-svg svg-inline--fa fa-search fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M208 80a128 128 0 1 1-90.51 37.49A127.15 127.15 0 0 1 208 80m0-80C93.12 0 0 93.12 0 208s93.12 208 208 208 208-93.12 208-208S322.88 0 208 0z" class="fa-secondary"></path><path fill="currentColor" d="M504.9 476.7L476.6 505a23.9 23.9 0 0 1-33.9 0L343 405.3a24 24 0 0 1-7-17V372l36-36h16.3a24 24 0 0 1 17 7l99.7 99.7a24.11 24.11 0 0 1-.1 34z" class="fa-primary"></path></g></svg>
+                </a>
+            </li>
+            
             {% if user.is_authenticated %}
 
-                <li class="nav-tasks first tsk-search">
-                    <a class="nav-link">
-                        <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="search" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="search-svg svg-inline--fa fa-search fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M208 80a128 128 0 1 1-90.51 37.49A127.15 127.15 0 0 1 208 80m0-80C93.12 0 0 93.12 0 208s93.12 208 208 208 208-93.12 208-208S322.88 0 208 0z" class="fa-secondary"></path><path fill="currentColor" d="M504.9 476.7L476.6 505a23.9 23.9 0 0 1-33.9 0L343 405.3a24 24 0 0 1-7-17V372l36-36h16.3a24 24 0 0 1 17 7l99.7 99.7a24.11 24.11 0 0 1-.1 34z" class="fa-primary"></path></g></svg>
-                    </a>
-                </li>
-            
+
+                {% if user.profile.email_verified %}
                 <li class="nav-tasks first tsk-create-post">
-                    {% if user.profile.email_verified %}
+                    
                     <a href="{% url 'create-post' %}" class="nav-link">
                         <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="pen" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-pen fa-w-16 fa-9x"><g class="fa-group"><path fill="currentColor" d="M498 142.08l-56.6 56.55-128-128 56.55-56.55a48 48 0 0 1 67.91 0L498 74.17a48 48 0 0 1 0 67.91z" class="fa-secondary"></path><path fill="currentColor" d="M12.85 371.11L.15 485.33a24 24 0 0 0 26.49 26.51l114.14-12.6 278-278-128-128z" class="fa-primary"></path></g></svg>
                     </a>
-                    {% endif %}
+                    
                 </li>
-
+                {% endif %}
+                
                 <li class="nav-tasks tsk-notif">
                     <a href="#" class="nav-link">
                         <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="bell" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-bell fa-w-14 fa-9x"><g class="fa-group"><path fill="currentColor" d="M448 384c-.1 16.4-13 32-32.1 32H32.08C13 416 .09 400.4 0 384a31.25 31.25 0 0 1 8.61-21.71c19.32-20.76 55.47-52 55.47-154.29 0-77.7 54.48-139.9 127.94-155.16V32a32 32 0 1 1 64 0v20.84C329.42 68.1 383.9 130.3 383.9 208c0 102.3 36.15 133.53 55.47 154.29A31.27 31.27 0 0 1 448 384z" class="fa-primary"></path><path fill="currentColor" d="M160 448h128a64 64 0 0 1-128 0z" class="fa-secondary"></path></g></svg>
@@ -246,7 +255,7 @@
 
                         <li class="nav-item sz-med hovhl txt-cntr">
                             <a class="drop-link">
-                                <span class="link-text">u/{{ user.username }}</span>
+                                <span class="link-text"><span class="base-text-secondary">u/</span>{{ user.username }}</span>
                             </a>
                         </li>
                         <li class="nav-item">

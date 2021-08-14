@@ -1,19 +1,65 @@
-/* smaller screen */
+@media only screen and (max-width: 65.5rem) {
+
+    .comm-1
+    {
+        width: auto;
+        min-width: none;
+    }
+    .comm-content-box-2
+    {
+        flex-wrap: wrap;
+    }
+}
+
+
+
 
 /* font-size: 16px */
 
 /* 65.5rem = 1048px */
 @media only screen and (max-width: 65.5rem) {
 
+    .create-opt
+    {
+        display: none;
+    }
+    .post-text *:not(.post-overlay)
+    {
+        word-break: break-all !important;
+        /* word-wrap: break-word !important; */
+        text-overflow: ellipsis !important;
+        /* display: none; */
+        hyphens: auto !important;
+
+        /* min-width: none !important; */
+        /* width: auto !important; */
+    }
+
+
+    .post-text img
+    {
+        width: 0px !important;
+    }
+
     .comm-1-1.wrap-main-content {
-        
+
         /* align-self: center; */
-        width: auto;
+
 
         min-width: calc(45rem - 18rem);
         max-width: calc(65rem - 18rem);
+
+        min-width: 20rem;
+
+        width: auto;
     }
-    
+
+    .comm-1-1.wrap-main-content .comm-content-box-2
+    {
+        flex-wrap: wrap;
+    }
+
+
     .comm-1-2.wrap-sidebar {
         display: none;
         width: 0;
@@ -28,6 +74,10 @@
 
         min-width: calc(45rem - 18rem);
         max-width: calc(65rem - 18rem);
+
+        min-width: 20rem;
+        width: auto;
+        flex-wrap: wrap;
     }
 
     .sidebar-toggle-button

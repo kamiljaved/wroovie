@@ -43,9 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_cleanup.apps.CleanupConfig',
     'django.contrib.sites',
     # imported apps
+    'django_cleanup.apps.CleanupConfig',
     'django.contrib.humanize',
     'crispy_forms',
     'mptt',

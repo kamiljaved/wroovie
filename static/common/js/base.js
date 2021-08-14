@@ -249,6 +249,8 @@ var searchTaskBtn = document.querySelector('.nav-tasks.tsk-search')
 var searchExitBtn = document.querySelector(".nav-item.search .search-exit-svg")
 var postCreateTaskBtn = document.querySelector('.nav-tasks.tsk-create-post')
 var logoItem = document.querySelector(".nav-item.wroovie")
+var loginItem = document.querySelector(".nav-item.login")
+var signupItem = document.querySelector(".nav-item.signup")
 
 searchTaskBtn.addEventListener('click', function(){
     if (window.innerWidth <= vis_size_searchTaskBtn)
@@ -256,15 +258,19 @@ searchTaskBtn.addEventListener('click', function(){
         searchItem.style.display = "block"
         searchExitBtn.style.display = "block"
 
-        browseBox.style.display = "none"
         searchTaskBtn.style.display = "none"
-        postCreateTaskBtn.style.display = "none"
+
+        if (browseBox) browseBox.style.display = "none"
+        if (postCreateTaskBtn) postCreateTaskBtn.style.display = "none"
         logoItem.style.display = "none"
+
+        if (loginItem) loginItem.style.display = "none"
+        if (signupItem) signupItem.style.display = "none"
 
         if (window.innerWidth <= vis_size_min)
         {
             // Hide everything on navbar and show searchbar
-            userBox.style.display = "none"
+            if (userBox) userBox.style.display = "none"
             settingsBox.style.display = "none"
         }
 
@@ -279,12 +285,15 @@ searchExitBtn.addEventListener('click', function(){
     searchExitBtn.style = ""
     searchTaskBtn.style = ""
     
-    browseBox.style = ""
-    postCreateTaskBtn.style = ""
+    if (browseBox) browseBox.style = ""
+    if (postCreateTaskBtn) postCreateTaskBtn.style = ""
     logoItem.style = ""
 
-    userBox.style = ""
+    if (userBox) userBox.style = ""
     settingsBox.style = ""
+
+    if (loginItem) loginItem.style = ""
+    if (signupItem) signupItem.style = ""
 
     if (user_is_authenticated) navbarFixes();
     
@@ -295,15 +304,56 @@ window.addEventListener('resize', function() {
 
     searchItem.style = ""
     searchExitBtn.style = ""
-    browseBox.style = ""
+    if (browseBox) browseBox.style = ""
+    if (postCreateTaskBtn) postCreateTaskBtn.style = ""
     searchTaskBtn.style = ""
-    postCreateTaskBtn.style = ""
     logoItem.style = ""
 
     searchSVG.style = ""
 
-    userBox.style = ""
+    if (userBox) userBox.style = ""
     settingsBox.style = ""
+
+    if (loginItem) loginItem.style = ""
+    if (signupItem) signupItem.style = ""
 
     if (user_is_authenticated) navbarFixes();
 })
+
+
+// misc. stuff
+
+// userBoxList = userBox.querySelector(".dropdown")
+
+var ddUOLinks = ddUserOptions.querySelectorAll(".dropdown .drop-link")
+var ddSOLinks = ddSettingsOptions.querySelectorAll(".dropdown .drop-link")
+
+if (userBox)
+{
+    settingsBox.addEventListener("mouseenter", function() {
+        ddUserOptions.style.transition = "none"
+        ddUOLinks.forEach(function(el) {
+            el.style.transition = "none"
+        })
+    })
+    settingsBox.addEventListener("mouseleave", function() {
+        ddUserOptions.style.removeProperty('transition')
+        ddUOLinks.forEach(function(el) {
+            el.style.removeProperty('transition');
+        })
+    })
+
+    userBox.addEventListener("mouseenter", function() {
+        ddSettingsOptions.style.transition = "none"
+        ddSOLinks.forEach(function(el) {
+            el.style.transition = "none"
+        })
+    })
+    userBox.addEventListener("mouseleave", function() {
+        ddSettingsOptions.style.removeProperty('transition')  
+        ddSOLinks.forEach(function(el) {
+            el.style.removeProperty('transition');
+        })
+    })
+}
+

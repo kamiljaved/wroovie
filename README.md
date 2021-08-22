@@ -115,6 +115,17 @@ Or 	<a href="https://wroovie.pythonanywhere.com/">   visit live website</a>.
 
 * To avoid having to set up a MySQL server and database, modify wroovie/settings.py to use the default SQLite database.
 
+## Manual Fixes Required
+
+* In the installed python libraries, locate the "<b>trix</b>" app folder, and find the following line (usually line no. 10) in "<b>trix/widgets.py</b>":
+	```python
+		def render(self, name, value, attrs=None):
+	```
+	Change it to:
+	```python
+		def render(self, name, value, attrs=None, renderer=None):
+	```
+
 ---
 
 > [kamiljaved.pythonanywhere.com](https://kamiljaved.pythonanywhere.com/) &nbsp;&middot;&nbsp;

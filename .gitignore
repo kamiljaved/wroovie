@@ -28,4 +28,8 @@ venv.bak/
 !.vscode/tasks.json 
 !.vscode/launch.json 
 !.vscode/extensions.json 
-.history
+.
+
+# secrets modules/files
+common/secrets.py
+server_help.py

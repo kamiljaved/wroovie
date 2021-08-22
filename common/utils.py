@@ -107,5 +107,49 @@ def get_timesince_minified(dt):
             return '0m'
     return '0d'
 
-# def CreateBannerFromColors(path):
-#     pass
+
+
+def createSecretsFile(base_dir):
+    import os
+    from django.core.management.utils import get_random_secret_key
+
+    secrets_file_path = os.path.join(base_dir, 'common', 'secrets.py')
+
+    def secretsFileGenerator(flag):
+        SECRETS_FILE_EXAMPLE = {
+            'WRV_SCRT_SECRET_KEY': get_random_secret_key(), 
+            'WRV_SCRT_DB_NAME': 'wroovie_db',
+            'WRV_SCRT_DB_USER': 'root',
+            'WRV_SCRT_DB_PASS': '',
+            'WRV_SCRT_DB_HOST': 'localhost',
+            'WRV_SCRT_DB_PORT': '3306',
+            'WRV_SCRT_EMAIL_USER': 'example@gmail.com', 
+            'WRV_SCRT_EMAIL_PASS': '',
+        }
+        with open(secrets_file_path, flag) as fp:
+            for key, item in SECRETS_FILE_EXAMPLE.items():
+                fp.write(f"{key} = '{item}'\n")
+
+    if os.path.exists(secrets_file_path): 
+        # comment old stuff
+        with open(secrets_file_path, 'r+') as secrets_fp:
+            dat = ''
+            for line in secrets_fp:
+                strp = line.strip()
+                if strp != "":
+                    if strp[0] == '#':
+                        dat += strp + "\n"    
+                    else:
+                        dat += "# " + strp + "\n"
+            secrets_fp.seek(0)
+            secrets_fp.truncate()
+            secrets_fp.write(dat)
+        secretsFileGenerator('a')   # append new data
+    else:
+        secretsFileGenerator('w')   # create new file
+
+
+def CreateBannerFromColors(path):
+    pass
+
+

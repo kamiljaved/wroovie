@@ -1,0 +1,2 @@
+in env/Libs/trix/widgets.py,
+	add "renerder=None" to def render( ..., attr=None, <add here>, ...)

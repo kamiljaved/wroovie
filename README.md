@@ -72,7 +72,7 @@
 * Create a new community
   - Customize it to the user’s liking
   - Add new moderators from members
-* Explore suggested posts and communities (contentbased filtering)
+* Explore suggested posts and communities (content-based filtering)
 * Explore top and popular communities
 * Save a post if the user really likes it
 * Search for content
@@ -115,7 +115,7 @@ Or 	<a href="https://wroovie.pythonanywhere.com/">   visit live website</a>.
 
 * To avoid having to set up a MySQL server and database, modify wroovie/settings.py to use the default SQLite database.
 
-* Manual Fixes Required:
+* Manual Fixes required:
 
   1. In the installed python libraries, locate the "<b>trix</b>" app folder, and find the following line (usually line no. 10) in "<b>trix/widgets.py</b>":
 		

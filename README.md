@@ -131,4 +131,4 @@ Or 	<a href="https://wroovie.pythonanywhere.com/">   visit live website</a>.
 ---
 
 > [kamiljaved.pythonanywhere.com](https://kamiljaved.pythonanywhere.com/) &nbsp;&middot;&nbsp;
-> GitHub [@kamiljaved98](https://github.com/kamiljaved98) [@UsmanAhmad4146](https://github.com/UsmanAhmad4146)
+> GitHub [@kamiljaved](https://github.com/kamiljaved) [@UsmanAhmad4146](https://github.com/UsmanAhmad4146)
